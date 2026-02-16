@@ -29,6 +29,13 @@ Opcionalmente, informe explicitamente o alvo:
 powershell -ExecutionPolicy Bypass -File C:\Code\AgentsSkillRulesWorkflows\tools\setup-links.ps1 -TargetProjectRoot C:\Code\Bagual
 ```
 
+### Comando genérico (independente da pasta atual)
+Se você sempre clonar `AgentsSkillRulesWorkflows` dentro do projeto (ex.: `./AgentsSkillRulesWorkflows`), rode de qualquer pasta:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File (Resolve-Path .\AgentsSkillRulesWorkflows\tools\setup-links.ps1) -TargetProjectRoot (Get-Location).Path
+```
+
 ### Requisitos
 - Windows com PowerShell
 - Permissão para criar Junction (não precisa modo desenvolvedor)
