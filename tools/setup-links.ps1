@@ -78,20 +78,36 @@ function Ensure-Dir-Clean([string]$path) {
   New-Item -ItemType Directory -Path $path | Out-Null
 }
 
-# Flatten skills: .windsurf/skills/<skill>.md apontando para SKILL.md
+# Flatten skills: .windsurf/skills/<skill>/SKILL.md (pasta real para detecção)
 $windsurfSkills = Join-Path $windsurfRoot 'skills'
 Ensure-Dir-Clean $windsurfSkills
 
 $skillFiles = Get-ChildItem -Path $canonical.skills -Filter 'SKILL.md' -File -Recurse -ErrorAction SilentlyContinue
 $seenSkillNames = @{}
 foreach ($file in $skillFiles) {
-  $name = $file.Directory.Name
+  $name = $null
+  $header = Get-Content -Path $file.FullName -TotalCount 20 -ErrorAction SilentlyContinue
+  foreach ($line in $header) {
+    if ($line -match '^name:\s*(.+)$') {
+      $name = $Matches[1].Trim()
+      break
+    }
+  }
+  if ([string]::IsNullOrWhiteSpace($name)) {
+    $name = $file.Directory.Name
+  }
   if ($seenSkillNames.ContainsKey($name)) {
     $name = "$($file.Directory.Parent.Name)-$name" # evita colisao
   }
   $seenSkillNames[$name] = $true
-  $dest = Join-Path $windsurfSkills ($name + '.md')
-  Ensure-LinkedFile $dest $file.FullName
+  $skillDir = Join-Path $windsurfSkills $name
+  Ensure-Dir $skillDir
+  Ensure-LinkedFile (Join-Path $skillDir 'SKILL.md') $file.FullName
+
+  $resources = Join-Path $file.Directory.FullName 'resources'
+  if (Test-Path $resources) {
+    Ensure-Junction (Join-Path $skillDir 'resources') $resources
+  }
 }
 
 # Flatten rules: criar links de arquivo direto em .windsurf/rules
