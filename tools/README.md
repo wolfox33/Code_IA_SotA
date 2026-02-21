@@ -1,15 +1,13 @@
 # Tools
 
 ## setup-links.ps1
-Cria/atualiza junctions para espelhar a estrutura canônica em `.agent/` (Antigravity) e `.windsurf/` (Windsurf).
+Cria/atualiza espelhos mínimos do Windsurf (`.windsurf/`) para **rules** e **workflows**, usando `.agents/` como fonte canônica.
 
 ### O que faz
-- Garante que `.agent` e `.windsurf` tenham links para:
-  - `skills/`
-  - `Agents/`
-  - `Rules/`
-  - `workflows/` (incluído em ambos)
-- Remove e recria o junction se já existir com alvo diferente.
+- Usa `.agents/` como fonte de verdade (`agents.md`, `subagents/`, `workflows/`).
+- Gera `.windsurf/rules/` a partir de `agents.md` + `subagents/`.
+- Gera `.windsurf/workflows/` a partir de `workflows/`.
+- Recria os espelhos quando necessário.
 
 ### Como rodar
 ```powershell
@@ -36,16 +34,19 @@ Se você sempre clonar `AgentsSkillRulesWorkflows` dentro do projeto (ex.: `./Ag
 powershell -ExecutionPolicy Bypass -File (Resolve-Path .\AgentsSkillRulesWorkflows\tools\setup-links.ps1) -TargetProjectRoot (Get-Location).Path
 ```
 
+### Parâmetros
+- `-TargetProjectRoot`: raiz do projeto onde `.windsurf` será criado.
+- `-SourceRoot`: raiz do repositório template (onde existe `.agents/`).
+
 ### Requisitos
 - Windows com PowerShell
 - Permissão para criar Junction (não precisa modo desenvolvedor)
 
 ### Verificar
 ```powershell
-Get-Item .agent\* , .windsurf\* | Select-Object FullName, LinkType, Target
+Get-Item .windsurf\* | Select-Object FullName, LinkType, Target
 ```
 
 ### Observações
 - Junctions não são versionados pelo Git. Após clonar em outra máquina, rode o script novamente para recriar os espelhos.
-- Edite SEMPRE na pasta canônica (`skills/`, `Agents/`, `Rules/`, `workflows/`); os espelhos só apontam para lá.
-- Se `workflows/` estiver vazio, `.windsurf/workflows` também ficará vazio (por ser espelho). Adicione os arquivos `.md` de workflow na pasta canônica `workflows/`.
+- Edite SEMPRE na pasta canônica `.agents/`; os espelhos apenas materializam compatibilidade.
