@@ -45,6 +45,26 @@ $canonical = @{
 Assert-Path $canonicalRoot
 foreach ($target in $canonical.Values) { Assert-Path $target }
 
+# Replicate .agents into target root
+$targetAgents = Join-Path $targetRoot '.agents'
+if (Test-Path $targetAgents) { Remove-Item -Recurse -Force $targetAgents }
+Copy-Item -Path $canonicalRoot -Destination $targetAgents -Recurse -Force
+
+# Ensure .codeiumignore exists with defaults
+$codeiumignorePath = Join-Path $targetRoot '.codeiumignore'
+$codeiumignoreContent = @"
+# No .codeiumignore
+.env
+.cache/
+__pycache__/
+node_modules/
+"@
+Set-Content -Path $codeiumignorePath -Value $codeiumignoreContent -Encoding UTF8
+
+# Remove local .git in target project (not parent repo)
+$targetGit = Join-Path $targetRoot '.git'
+if (Test-Path $targetGit) { Remove-Item -Recurse -Force $targetGit }
+
 # .windsurf (Windsurf compatibility: rules/workflows)
 $windsurfRoot = Join-Path $targetRoot '.windsurf'
 Ensure-Dir $windsurfRoot
