@@ -3,8 +3,7 @@
 
 param(
   [string]$TargetProjectRoot = (Get-Location).Path,
-  [string]$SourceRoot = "",
-  [switch]$RemoveGitInTarget = $false
+  [string]$SourceRoot = ""
 )
 
 if ([string]::IsNullOrWhiteSpace($SourceRoot)) {
@@ -14,6 +13,7 @@ if ([string]::IsNullOrWhiteSpace($SourceRoot)) {
 $sourceRoot = (Resolve-Path $SourceRoot).Path
 $targetRoot = (Resolve-Path $TargetProjectRoot).Path
 $canonicalRoot = Join-Path $sourceRoot '.agents'
+$templateName = Split-Path $sourceRoot -Leaf
 
 function Assert-Path([string]$path) {
   if (-not (Test-Path $path)) { throw "Required path not found: $path" }
@@ -35,6 +35,14 @@ function Ensure-LinkedFile([string]$path, [string]$target) {
   } catch {
     Copy-Item -Path $target -Destination $path -Force
   }
+}
+
+function Should-RemoveGit([string]$root, [string]$templateName) {
+  $targetGit = Join-Path $root '.git'
+  if (-not (Test-Path $targetGit)) { return $false }
+
+  $rootName = Split-Path $root -Leaf
+  return $rootName -eq $templateName
 }
 
 $canonical = @{
@@ -62,12 +70,13 @@ node_modules/
 "@
 Set-Content -Path $codeiumignorePath -Value $codeiumignoreContent -Encoding UTF8
 
-# Remove local .git in target project (opt-in)
-if ($RemoveGitInTarget) {
+# Remove local .git only when target matches template name (e.g., Code_IA_SotA)
+if (Should-RemoveGit $targetRoot $templateName) {
   $targetGit = Join-Path $targetRoot '.git'
-  if (Test-Path $targetGit) { Remove-Item -Recurse -Force $targetGit }
+  Remove-Item -Recurse -Force $targetGit
+  Write-Host ".git removed from '$targetRoot'" -ForegroundColor Yellow
 } else {
-  Write-Host "Skipping .git removal in target (use -RemoveGitInTarget to delete)" -ForegroundColor Yellow
+  Write-Host "Keeping .git in '$targetRoot'" -ForegroundColor Yellow
 }
 
 # .windsurf (Windsurf compatibility: rules/workflows)
