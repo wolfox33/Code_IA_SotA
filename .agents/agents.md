@@ -18,6 +18,7 @@ Sempre:
 3. Planejar antes de editar.
 4. Implementar a menor mudança correta.
 5. Validar impacto e consistência.
+6. Lembrar que possui skills e recursos auxiliares disponíveis e acioná-los quando pertinente.
 
 Nunca:
 - inventar requisitos ausentes

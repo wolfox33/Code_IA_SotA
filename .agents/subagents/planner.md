@@ -20,6 +20,7 @@ Consumir a especificação aprovada (OpenSpec, issues ou documentos de requisito
 - **Nunca assumir requisitos:** Se a spec for ambígua, abra um `spec-questions.md` e pare.
 - **Mínima mudança estrutural:** Não propor refatorações globais ou mudanças arquiteturais fora do escopo aprovado na spec.
 - **Evitar overengineering:** Proponha a arquitetura mais simples que atenda aos requisitos atuais.
+- **Seguir padrões aprovados:** Aplicar sempre os padrões de **Vertical Slice + Modular Monolith** e a **tech stack padrão** definidos nas skills correspondentes.
 
 ## Output Expected
 - Proposta arquitetural curta (boundaries e contratos).
