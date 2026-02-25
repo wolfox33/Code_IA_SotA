@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 5
   tags: [database, drizzle, postgresql, schema, migrations, chat]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Database Schema Design for Chat

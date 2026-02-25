@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 6
   tags: [chat, realtime, streaming, sse, websockets, optimistic-updates, react]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Real-time Chat Implementation

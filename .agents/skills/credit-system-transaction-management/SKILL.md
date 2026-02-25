@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 6
   tags: [credits, transactions, drizzle, postgresql, acid, concurrency, audit]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Credit System & Transaction Management

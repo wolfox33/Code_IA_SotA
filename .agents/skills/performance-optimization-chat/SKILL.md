@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 6
   tags: [performance, optimization, caching, monitoring, database, chat]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Performance Optimization for Chat

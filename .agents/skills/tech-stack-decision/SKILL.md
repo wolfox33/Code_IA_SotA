@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 3
   tags: [stack, technology, decision, saas, framework, library]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Tech Stack Decision Guide

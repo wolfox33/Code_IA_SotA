@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 5
   tags: [stripe, payments, webhooks, saas, credits, billing]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Stripe Integration Best Practices

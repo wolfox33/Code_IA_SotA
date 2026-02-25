@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 6
   tags: [langgraph, ai, agents, chat, streaming, checkpointing, state-management]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # LangGraph Agent Patterns

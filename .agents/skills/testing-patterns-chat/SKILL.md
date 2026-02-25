@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 6
   tags: [testing, jest, playwright, vitest, mocking, e2e, chat]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Testing Patterns for Chat Applications

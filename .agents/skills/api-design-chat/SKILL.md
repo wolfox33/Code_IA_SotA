@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 5
   tags: [api, rest, nextjs, authentication, validation, chat]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # API Design for Chat Applications

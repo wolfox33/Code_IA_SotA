@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 5
   tags: [deployment, vercel, cicd, monitoring, production, devops]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Deployment Best Practices

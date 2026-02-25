@@ -8,7 +8,7 @@ metadata:
   category: architecture
   complexity: 4
   tags: [architecture, vertical-slice, modular-monolith, saas, clean-code]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Vertical Slice + Modular Monolith Architecture

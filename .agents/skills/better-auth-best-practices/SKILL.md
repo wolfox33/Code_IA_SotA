@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 4
   tags: [auth, better-auth, typescript, security, oauth, session]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Better Auth Best Practices

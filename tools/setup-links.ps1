@@ -49,6 +49,7 @@ $canonical = @{
   agentsMd  = Join-Path $canonicalRoot 'agents.md'
   subagents = Join-Path $canonicalRoot 'subagents'
   workflows = Join-Path $canonicalRoot 'workflows'
+  skills    = Join-Path $canonicalRoot 'skills'
 }
 
 Assert-Path $canonicalRoot
@@ -97,6 +98,13 @@ if (Should-RemoveGit $targetRoot $templateName) {
 # .windsurf (Windsurf compatibility: rules/workflows)
 $windsurfRoot = Join-Path $targetRoot '.windsurf'
 Ensure-Dir $windsurfRoot
+
+# Skills: mirror to .windsurf/skills
+$windsurfSkills = Join-Path $windsurfRoot 'skills'
+Ensure-Dir-Clean $windsurfSkills
+Get-ChildItem -Path $canonical.skills -Filter '*.md' -File -ErrorAction SilentlyContinue | ForEach-Object {
+  Ensure-LinkedFile (Join-Path $windsurfSkills $_.Name) $_.FullName
+}
 
 # Rules: flatten global + subagents
 $windsurfRules = Join-Path $windsurfRoot 'rules'

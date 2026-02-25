@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 5
   tags: [nextjs, react, server-components, app-router, streaming, suspense]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Next.js App Router Patterns

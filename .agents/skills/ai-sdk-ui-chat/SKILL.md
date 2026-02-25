@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 6
   tags: [ai-sdk, useChat, streaming, chat-ui, react, nextjs, vercel-ai]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # AI SDK UI for Chat Applications

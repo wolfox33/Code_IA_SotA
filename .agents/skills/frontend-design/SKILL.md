@@ -8,7 +8,7 @@ metadata:
   category: development
   complexity: 5
   tags: [frontend, design, ui, ux, tailwind, shadcn, branding, bagual]
-  compatible_with: [antigravity, claude, cursor, copilot]
+  compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # Frontend Design — Bagual
