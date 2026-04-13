@@ -32,12 +32,7 @@
 
 ## Active Skills
 
-> Skills ativas neste projeto — lista completa em `.agents/project/skills.md`.
-
-<!-- liste apenas as marcadas como ativas, ex:
-- `vps-docker-deploy`
-- `better-auth-best-practices`
--->
+<!-- liste as relevantes para este projeto, ex: vps-docker-deploy, better-auth-best-practices -->
 
 ## Architecture Decisions
 
