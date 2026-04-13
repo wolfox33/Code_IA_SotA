@@ -12,8 +12,8 @@ Quando você abre um projeto em uma IDE com IA ou executa um agente CLI, a IA n�
 
 O estado da arte exige que o contexto seja **Progressivo** (carregado apenas quando necessário) e **Estruturado**. Para isso, as ferramentas buscam arquivos padrão na raiz do repositório.
 
-### O Arquivo Canônico: `agents.md` (ou `.agents/agents.md`)
-O `agents.md` atua como a "Constituição" do seu repositório. Assim que a sessão da IA é iniciada, ela procura por esse arquivo (ou equivalentes legados como `.cursorrules` ou `CLAUDE.md`). **Nota importante:** Este arquivo **não utiliza Frontmatter**. Como ele é de carregamento obrigatório e contínuo (Always On), a IA não precisa tomar uma decisão de roteamento para lê-lo; ele é injetado diretamente no System Prompt.
+### O Arquivo Canônico: `AGENTS.md`
+O `AGENTS.md` na raiz atua como a "Constituição" do seu repositório. Assim que a sessão da IA é iniciada, ela procura por esse arquivo (ou equivalentes legados como `.cursorrules` ou `CLAUDE.md`). **Nota importante:** Este arquivo **não utiliza Frontmatter**. Como ele é de carregamento obrigatório e contínuo (Always On), a IA não precisa tomar uma decisão de roteamento para lê-lo; ele é injetado diretamente no System Prompt.
 
 **Por que ele existe?**
 Para definir as regras globais inegociáveis. Se a IA não souber que o projeto usa uma arquitetura específica ou exige a escrita de testes antes do código, ela vai "alucinar" o padrão comum da internet.
@@ -29,12 +29,12 @@ Para definir as regras globais inegociáveis. Se a IA não souber que o projeto 
 
 Para evitar que a IA consuma todos os tokens disponíveis apenas lendo regras (o que custa dinheiro e degrada a performance), dividimos o contexto em camadas:
 
-### Nível 1: Global Rules (`agents.md`)
+### Nível 1: Global Rules (`AGENTS.md`)
 - **O que é:** Regras universais de comportamento.
 - **O que colocar aqui:** "Sempre priorize legibilidade sobre esperteza", "Nunca assuma requisitos ausentes", "Siga o protocolo de Spec-Gap em caso de dúvida".
 - **Carregamento:** Sempre ativo (Always On). Não requer Frontmatter.
 
-### Nível 2: Project Context (`project/context.md`)
+### Nível 2: Project Context (`.agents/project/context.md`)
 - **O que é:** O DNA específico do projeto atual.
 - **O que colocar aqui:** Stack tecnológica (React, Node, PostgreSQL), arquitetura adotada (Vertical Slice), SLOs de negócio.
 - **Carregamento:** Injetado manualmente ou incluído nas instruções de inicialização de tarefas.
@@ -117,9 +117,9 @@ Embora o sistema de Skills e Subagentes resolva a maioria dos problemas, as anti
 
 Quando você pede para a IA "Criar a API de Pagamento":
 
-1. **Discovery Inicial:** A IA lê o `agents.md` (Aprende que não deve inventar requisitos e deve ler o contexto).
+1. **Discovery Inicial:** A IA lê o `AGENTS.md` (Aprende que não deve inventar requisitos e deve ler o contexto).
 2. **Roteamento:** A IA percebe que é uma tarefa de arquitetura inicial. Aciona o subagente `planner.md`.
-3. **Planejamento:** O `planner` lê a `project/context.md` para ver as diretrizes da stack e elabora os boundaries.
+3. **Planejamento:** O `planner` lê a `.agents/project/context.md` para ver as diretrizes da stack e elabora os boundaries.
 4. **Construção:** O roteamento troca o agente para o `builder.md`.
 5. **Invocação de Skills:** O `builder` vê que a tarefa envolve pagamentos. Ele busca em `.agents/skills/` e encontra a skill `stripe-integration`. Ele lê a skill e injeta o conhecimento.
 6. **Revisão:** A IA troca para o `reviewer.md` para checar vulnerabilidades e regressões.
@@ -130,7 +130,7 @@ Quando você pede para a IA "Criar a API de Pagamento":
 ## Conclusão: Princípios para Recriar a Estrutura
 
 Para recriar uma estrutura SOTA no seu projeto, siga este roteiro:
-1. **Tenha um `agents.md`** na raiz ou pasta `.agents/` para as leis inegociáveis.
+1. **Tenha um `AGENTS.md` na raiz** para as leis inegociáveis.
 2. **Divida personas** (planner, builder, reviewer) de forma simples e pragmática (não crie personas hiperespecíficas como "Agente de Botão CSS").
 3. **Isole conhecimento em Skills** (`.agents/skills/`). Se o conhecimento for longo e específico de uma tecnologia, transforme-o em uma skill com Frontmatter.
 4. **Use metadados precisos** (`description` de Skills e Subagentes) para que a IA faça o roteamento correto sem precisar ler o conteúdo todo de antemão.

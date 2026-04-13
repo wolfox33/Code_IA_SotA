@@ -20,8 +20,10 @@ Escrever e modificar o código em conformidade com o plano arquitetural, spec ap
 - **Não alterar jornadas:** Siga o design system e a jornada aprovada sem "inventar" UX extra.
 - **Segurança de Dados/Billing:** Qualquer alteração em políticas de acesso, autenticação ou cobrança requer especificação clara; não implemente baseando-se em suposições.
 - **Tools controladas:** Features de IA devem usar os limites e ferramentas já definidas (controle de custos e persistência).
+- **Escalada obrigatória:** Se encontrar ambiguidade de contrato ou decisão arquitetural durante a implementação, parar e acionar o planner antes de continuar.
 
 ## Output Expected
 - Implementação do código com a menor mudança correta necessária.
 - Integração adequada com componentes existentes (não duplicar lógica).
 - Código legível, focado em clareza antes de "esperteza".
+- README ou comentário de decisão quando a implementação divergir do esperado pelo plano.

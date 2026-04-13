@@ -15,6 +15,8 @@ Validar a implementação, detectar regressões, inspecionar gargalos de perform
 - Finalização de tarefas de código (antes de commit/merge).
 - Dificuldades persistentes (debugging de rotas lentas, erros complexos).
 - Otimização de latência, consumo de memória ou throughput.
+- Hotfix e estabilização: estabilize primeiro com a menor correção segura, investigue a causa raiz depois.
+- Validação pré-deploy: confirmar que o build está pronto, testes passando e sem regressões conhecidas.
 
 ## Guardrails
 - **Sem alteração de critérios:** Não altere os critérios de aceitação; apenas reporte as divergências com a spec.

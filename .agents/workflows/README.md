@@ -1,0 +1,14 @@
+# Workflows
+
+Esta pasta contém workflows reutilizáveis do projeto.
+
+## Papel na arquitetura
+- `AGENTS.md` na raiz define a orquestração global.
+- `.agents/workflows/` contém sequências operacionais reutilizáveis carregadas sob demanda.
+- `tools/` pode materializar compatibilidade para superfícies que exigem workflows em outro formato ou diretório.
+
+## Diretrizes
+- Cada workflow deve ser um arquivo Markdown.
+- Workflows devem descrever sequência operacional, não política global.
+- Conhecimento técnico especializado deve permanecer em `skills/`, não em workflows.
+- Workflows devem ser curtos, executáveis e focados em um objetivo claro.
