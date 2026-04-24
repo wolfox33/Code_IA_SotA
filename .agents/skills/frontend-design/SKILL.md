@@ -1,38 +1,38 @@
 ---
 name: frontend-design
-description: Skill de design frontend para o SaaS Bagual. Define design system (cores, tipografia, espaçamento), padrões de componentes com Tailwind CSS v4, shadcn/ui e Next.js 16. Inclui branding guidelines, UX patterns, acessibilidade, responsividade e anti-patterns a evitar.
+description: Skill generalista de design frontend. Padrões de layout, motion, acessibilidade, responsividade e anti-patterns. Usa Google Design.md como formato padrão para documentação de design systems. Design system específico do projeto deve estar em `.agents/project/context-design.md`.
 metadata:
   model: inherit
   version: 1.0.0
   author: Custom Stack
   category: development
   complexity: 5
-  tags: [frontend, design, ui, ux, tailwind, shadcn, branding, bagual]
+  tags: [frontend, design, ui, ux, tailwind, shadcn, accessibility, responsive]
   compatible_with: [antigravity, windsurf, opencode]
 ---
 
-# Frontend Design — Bagual
+# Frontend Design — Generalista
 
-Skill de design frontend para o SaaS Bagual (bagual.org). Define o design system completo, padrões visuais, componentes e boas práticas de UI/UX com Tailwind CSS v4, shadcn/ui e Next.js 16.
+Skill generalista de design frontend. Define padrões de layout, motion, acessibilidade, responsividade e componentes com Tailwind CSS v4, shadcn/ui e Next.js 16. Design system específico do projeto deve ser definido em `.agents/project/context-design.md`.
 
 ## 🎯 Objetivo
 
 Garantir que toda interface gerada:
-- Siga o **branding Bagual** (cores, tipografia, tom)
+- Siga o design system do projeto (se definido em context-design.md)
 - Use **Tailwind CSS v4** com CSS variables e design tokens
 - Aproveite **shadcn/ui** como base de componentes
 - Seja **acessível** (WCAG AA mínimo)
 - Seja **responsiva** (mobile-first: 375px → 768px → 1024px → 1440px)
-- Tenha **personalidade visual** — nunca pareça genérico/AI slop
+- Tenha **personalidade visual** — evite parecer genérico/AI slop
 
 ## Use this skill when
 
 - Criando qualquer componente, página ou layout
-- Definindo estilos visuais para novas features
+- Definindo padrões visuais para um projeto
+- Documentando design system em formato DESIGN.md
+- Validando tokens de design via CLI
 - Revisando ou melhorando UI existente
 - Implementando landing pages, dashboards, formulários
-- Precisando de decisão sobre cor, tipografia, espaçamento
-- Construindo componentes reutilizáveis
 
 ## Do not use this skill when
 
@@ -42,16 +42,17 @@ Garantir que toda interface gerada:
 
 ## Instructions
 
-1. **Consultar Design System** abaixo antes de qualquer decisão visual
-2. **Usar Tailwind v4 CSS variables** — nunca hardcodar cores
-3. **Estender shadcn/ui** — customizar, não recriar do zero
-4. **Validar acessibilidade** — contraste, focus states, aria labels
-5. **Testar responsividade** — mobile-first, breakpoints definidos
-6. **Verificar checklist** antes de entregar qualquer componente
+1. **Consultar context-design.md** se disponível para design system específico
+2. **Usar padrões generalistas** abaixo se não houver design system específico
+3. **Usar Tailwind v4 CSS variables** — nunca hardcodar cores
+4. **Estender shadcn/ui** — customizar, não recriar do zero
+5. **Validar acessibilidade** — contraste, focus states, aria labels
+6. **Testar responsividade** — mobile-first, breakpoints definidos
+7. **Verificar checklist** antes de entregar qualquer componente
 
 ## Safety
 
-- **NUNCA** usar cores fora da paleta sem justificativa
+- **NUNCA** usar cores fora da paleta do projeto sem justificativa
 - **NUNCA** remover focus states ou indicadores de acessibilidade
 - **NUNCA** usar `dangerouslySetInnerHTML` sem sanitização
 - **SEMPRE** respeitar `prefers-reduced-motion` em animações
@@ -60,175 +61,140 @@ Garantir que toda interface gerada:
 
 ---
 
-## 🎨 Design System — Bagual
+## 📋 Google Design.md — Formato Padrão
 
-### Identidade da Marca
+### O que é
 
-| Atributo | Valor |
-|----------|-------|
-| **Nome** | Bagual |
-| **Domínio** | bagual.org |
-| **Símbolo** | Cavalo em galope (sketch style) |
-| **Tom** | Forte, direto, eficiente |
-| **Personalidade** | Agilidade, independência, robustez |
-| **Estilo Visual** | Orgânico + minimalista, rústico refinado |
+Formato estruturado que combina tokens legíveis por máquina (YAML frontmatter) com rationale legível por humanos (markdown). Útil para:
+- Documentação de design systems compartilháveis entre agentes
+- Validação automática via CLI (`npx @google/design.md lint`)
+- Exportação para outros formatos (Tailwind, tokens.json, Figma)
+- Controle de versão de mudanças de design
 
-### Paleta de Cores
+### Quando usar
 
-```css
-/* Tailwind v4 — app.css ou globals.css */
-@theme {
-  --color-smoky-black: #11120D;
-  --color-olive-drab: #565449;
-  --color-bone: #D8CFBC;
-  --color-floral-white: #FFFBF4;
+**Criar DESIGN.md quando:**
+- Projeto tem design system definido e precisa ser documentado
+- Precisa validar tokens automaticamente (contrast-ratio, referências quebradas)
+- Precisa exportar para outras ferramentas (Figma, Tailwind theme)
+- Precisa versionar mudanças de design com diff
 
-  /* Semantic aliases */
-  --color-background: #FFFBF4;
-  --color-foreground: #11120D;
-  --color-muted: #D8CFBC;
-  --color-muted-foreground: #565449;
-  --color-primary: #11120D;
-  --color-primary-foreground: #FFFBF4;
-  --color-secondary: #D8CFBC;
-  --color-secondary-foreground: #11120D;
-  --color-accent: #565449;
-  --color-accent-foreground: #FFFBF4;
-  --color-border: #D8CFBC;
-  --color-ring: #565449;
-  --color-destructive: #B91C1C;
-  --color-destructive-foreground: #FFFBF4;
-  --color-success: #15803D;
-  --color-warning: #A16207;
-}
+**Não criar DESIGN.md quando:**
+- Projeto não tem design system definido
+- Design é ad-hoc/evolutivo sem tokens estruturados
+- Prefere documentação informal
+
+### Estrutura do DESIGN.md
+
+```yaml
+---
+version: alpha
+name: [Nome do Design System]
+description: [Descrição]
+colors:
+  primary: "#HEX"
+  secondary: "#HEX"
+  [outros tokens]
+typography:
+  h1:
+    fontFamily: [Font]
+    fontSize: [Tamanho]
+    [outras propriedades]
+rounded:
+  sm: 4px
+  md: 8px
+spacing:
+  xs: 4px
+  sm: 8px
+components:
+  [component-name]:
+    backgroundColor: "{colors.primary}"
+    [outras propriedades]
+---
+
+## Overview
+[Rationale do design system]
+
+## Colors
+[Explicação das cores e quando usar]
+
+## Typography
+[Explicação da tipografia]
 ```
 
-| Nome | Hex | Uso |
-|------|-----|-----|
-| **Smoky Black** | `#11120D` | Textos principais, títulos, ícones, CTAs primários |
-| **Olive Drab** | `#565449` | Textos secundários, bordas, ícones muted |
-| **Bone** | `#D8CFBC` | Superfícies, cards, fundos de seção, separadores |
-| **Floral White** | `#FFFBF4` | Background principal — leitura confortável |
+### Ferramentas CLI
 
-**Regras de uso:**
-- Background predominante: `floral-white` (evitar branco puro `#FFF`)
-- CTAs primários: `smoky-black` com texto `floral-white`
-- Cards e áreas de conteúdo: `bone` para diferenciar do fundo
-- Texto principal: `smoky-black` sobre `floral-white` (contraste 18.5:1 ✅)
-- Texto secundário: `olive-drab` sobre `floral-white` (contraste 5.8:1 ✅)
+```bash
+# Instalar
+npm install @google/design.md
+
+# Lint — validar DESIGN.md
+npx @google/design.md lint DESIGN.md
+
+# Diff — comparar versões
+npx @google/design.md diff DESIGN.md DESIGN-v2.md
+
+# Export — converter para Tailwind/tokens.json
+npx @google/design.md export --format tailwind DESIGN.md > tailwind.theme.json
+
+# Spec — output da especificação
+npx @google/design.md spec
+```
+
+---
+
+## 🎨 Padrões Generalistas
+
+### Cores
+
+Defina paleta de cores em DESIGN.md ou context-design.md. Padrões gerais:
+- Usar escala de cores com primary, secondary, accent, neutral
+- Garantir contraste WCAG AA mínimo (4.5:1 para texto)
+- Definir semantic aliases: background, foreground, muted, border, destructive, success, warning
 
 ### Tipografia
 
-```css
-@theme {
-  --font-heading: 'Ubuntu', sans-serif;
-  --font-body: 'Open Sans', sans-serif;
-}
-```
-
-| Elemento | Fonte | Peso | Uso |
-|----------|-------|------|-----|
-| **Headings (h1-h3)** | Ubuntu | Bold (700) | Títulos, hero text, section headers |
-| **Subheadings (h4-h6)** | Ubuntu | Medium (500) | Subtítulos, card headers |
-| **Body** | Open Sans | Regular (400) | Texto corrido, descrições, labels |
-| **Body emphasis** | Open Sans | SemiBold (600) | Destaques em texto, links, badges |
-| **Small/Caption** | Open Sans | Regular (400) | Metadata, timestamps, helper text |
-
-**Google Fonts import:**
-```html
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-```
-
-**Ou via `next/font` (recomendado):**
-```typescript
-// app/layout.tsx
-import { Ubuntu, Open_Sans } from 'next/font/google'
-
-const ubuntu = Ubuntu({
-  subsets: ['latin'],
-  weight: ['500', '700'],
-  variable: '--font-heading',
-  display: 'swap',
-})
-
-const openSans = Open_Sans({
-  subsets: ['latin'],
-  weight: ['400', '600'],
-  variable: '--font-body',
-  display: 'swap',
-})
-
-export default function RootLayout({ children }) {
-  return (
-    <html className={`${ubuntu.variable} ${openSans.variable}`}>
-      <body className="font-body bg-floral-white text-smoky-black">
-        {children}
-      </body>
-    </html>
-  )
-}
-```
-
-### Escala Tipográfica
-
-| Nível | Tamanho | Line Height | Letter Spacing | Classe Tailwind |
-|-------|---------|-------------|----------------|-----------------|
-| **Display** | 48px / 3rem | 1.1 | -0.02em | `text-5xl font-heading font-bold` |
-| **H1** | 36px / 2.25rem | 1.2 | -0.01em | `text-4xl font-heading font-bold` |
-| **H2** | 30px / 1.875rem | 1.25 | -0.01em | `text-3xl font-heading font-bold` |
-| **H3** | 24px / 1.5rem | 1.3 | 0 | `text-2xl font-heading font-bold` |
-| **H4** | 20px / 1.25rem | 1.4 | 0 | `text-xl font-heading font-medium` |
-| **Body Large** | 18px / 1.125rem | 1.6 | 0 | `text-lg` |
-| **Body** | 16px / 1rem | 1.6 | 0 | `text-base` |
-| **Small** | 14px / 0.875rem | 1.5 | 0 | `text-sm` |
-| **Caption** | 12px / 0.75rem | 1.5 | 0.01em | `text-xs` |
+Defina fontes em DESIGN.md ou context-design.md. Padrões gerais:
+- Font heading para títulos (h1-h6)
+- Font body para texto corrido
+- Escala tipográfica consistente (ex: 12px, 14px, 16px, 18px, 24px, 30px, 36px, 48px)
+- Line height apropriado (1.2-1.6 para legibilidade)
 
 ### Espaçamento
 
-Usar escala de 4px (Tailwind default). Valores mais usados:
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `gap-1` / `p-1` | 4px | Espaço mínimo entre ícone e texto |
-| `gap-2` / `p-2` | 8px | Padding interno de badges, chips |
-| `gap-3` / `p-3` | 12px | Padding de inputs compactos |
-| `gap-4` / `p-4` | 16px | Padding padrão de cards, inputs |
-| `gap-6` / `p-6` | 24px | Padding de seções internas |
-| `gap-8` / `p-8` | 32px | Espaço entre seções |
-| `gap-12` / `p-12` | 48px | Espaço entre blocos maiores |
-| `gap-16` / `p-16` | 64px | Padding de hero sections |
-| `gap-24` / `p-24` | 96px | Espaço entre seções de landing page |
+Usar escala de 4px (Tailwind default):
+- `gap-1` / `p-1`: 4px — espaço mínimo
+- `gap-2` / `p-2`: 8px — padding compacto
+- `gap-3` / `p-3`: 12px — inputs compactos
+- `gap-4` / `p-4`: 16px — padrão
+- `gap-6` / `p-6`: 24px — seções internas
+- `gap-8` / `p-8`: 32px — entre seções
+- `gap-12` / `p-12`: 48px — blocos maiores
+- `gap-16` / `p-16`: 64px — hero sections
 
 ### Border Radius
 
-| Uso | Valor | Classe |
-|-----|-------|--------|
-| **Botões** | 8px | `rounded-lg` |
-| **Cards** | 12px | `rounded-xl` |
-| **Inputs** | 8px | `rounded-lg` |
-| **Modals** | 16px | `rounded-2xl` |
-| **Avatares** | full | `rounded-full` |
-| **Badges** | full | `rounded-full` |
+| Uso | Valor padrão |
+|-----|-------------|
+| **Botões** | 8px (`rounded-lg`) |
+| **Cards** | 12px (`rounded-xl`) |
+| **Inputs** | 8px (`rounded-lg`) |
+| **Modals** | 16px (`rounded-2xl`) |
+| **Avatares** | full (`rounded-full`) |
+| **Badges** | full (`rounded-full`) |
 
 ### Sombras
 
 ```css
-@theme {
-  --shadow-sm: 0 1px 2px 0 rgb(17 18 13 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(17 18 13 / 0.07), 0 2px 4px -2px rgb(17 18 13 / 0.05);
-  --shadow-lg: 0 10px 15px -3px rgb(17 18 13 / 0.08), 0 4px 6px -4px rgb(17 18 13 / 0.04);
-}
+/* Exemplo de escala de sombras */
+--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07);
+--shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08);
 ```
-
-| Nível | Uso |
-|-------|-----|
-| `shadow-sm` | Cards em repouso, inputs |
-| `shadow-md` | Cards em hover, dropdowns |
-| `shadow-lg` | Modals, popovers, elementos flutuantes |
 
 ---
 
-## 🧩 Componentes — Padrões shadcn/ui + Bagual
+## 🧩 Componentes — Padrões shadcn/ui
 
 ### Princípio
 
@@ -237,28 +203,28 @@ Usar shadcn/ui como base e **customizar via CSS variables** do Tailwind v4. Nunc
 ### Botão Primário (CTA)
 
 ```tsx
-<Button className="bg-smoky-black text-floral-white hover:bg-olive-drab transition-colors duration-200 cursor-pointer rounded-lg px-6 py-3 font-heading font-bold">
-  Começar agora
+<Button className="bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200 cursor-pointer rounded-lg px-6 py-3 font-heading font-bold">
+  CTA Principal
 </Button>
 ```
 
 ### Botão Secundário
 
 ```tsx
-<Button variant="outline" className="border-bone text-smoky-black hover:bg-bone transition-colors duration-200 cursor-pointer rounded-lg">
-  Saiba mais
+<Button variant="outline" className="border-border text-foreground hover:bg-muted transition-colors duration-200 cursor-pointer rounded-lg">
+  CTA Secundário
 </Button>
 ```
 
 ### Card
 
 ```tsx
-<Card className="bg-bone/50 border-bone rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+<Card className="bg-muted/50 border-border rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
   <CardHeader>
-    <CardTitle className="font-heading font-bold text-smoky-black">
+    <CardTitle className="font-heading font-bold text-foreground">
       Título
     </CardTitle>
-    <CardDescription className="text-olive-drab">
+    <CardDescription className="text-muted-foreground">
       Descrição do card
     </CardDescription>
   </CardHeader>
@@ -272,7 +238,7 @@ Usar shadcn/ui como base e **customizar via CSS variables** do Tailwind v4. Nunc
 
 ```tsx
 <Input
-  className="border-bone bg-floral-white text-smoky-black placeholder:text-olive-drab/60 focus:ring-olive-drab focus:border-olive-drab rounded-lg"
+  className="border-border bg-background text-foreground placeholder:text-muted-foreground/60 focus:ring-ring focus:border-ring rounded-lg"
   placeholder="Digite aqui..."
 />
 ```
@@ -280,8 +246,8 @@ Usar shadcn/ui como base e **customizar via CSS variables** do Tailwind v4. Nunc
 ### Badge
 
 ```tsx
-<Badge className="bg-bone text-smoky-black font-body text-xs rounded-full px-3 py-1">
-  Novo
+<Badge className="bg-muted text-foreground font-body text-xs rounded-full px-3 py-1">
+  Badge
 </Badge>
 ```
 
@@ -310,26 +276,19 @@ Usar shadcn/ui como base e **customizar via CSS variables** do Tailwind v4. Nunc
 Antes de implementar qualquer interface, responder:
 
 1. **Propósito**: Que problema esta interface resolve? Quem usa?
-2. **Tom**: O Bagual é **forte, direto, eficiente** — interfaces devem refletir isso
+2. **Tom**: Definido no design system do projeto (context-design.md)
 3. **Diferencial**: O que torna esta tela memorável? Qual é o elemento que o usuário vai lembrar?
 4. **Restrições**: Performance, acessibilidade, responsividade
 
-### Direção Estética do Bagual
+### Direção Estética
 
-| Aspecto | Direção |
-|---------|---------|
-| **Estilo** | Minimalismo refinado com toques orgânicos/rústicos |
-| **Layout** | Limpo, generoso em whitespace, hierarquia clara |
-| **Atmosfera** | Terroso, sofisticado, confiável |
-| **Movimento** | Sutil e funcional — transições suaves, sem exagero |
-| **Ícones** | Lucide React (consistente, clean) — nunca emojis como ícones |
-| **Imagens** | Quando usar, manter tom terroso/natural, evitar stock genérico |
-
-### Voz Visual
-
-- **Forte**: Títulos em Ubuntu Bold, CTAs com alto contraste
-- **Direta**: Sem decoração desnecessária, cada elemento tem propósito
-- **Eficiente**: Informação acessível rapidamente, hierarquia visual clara
+Consulte context-design.md para direção estética específica do projeto. Padrões gerais:
+- **Estilo**: Consistente com identidade do projeto
+- **Layout**: Limpo, generoso em whitespace, hierarquia clara
+- **Atmosfera**: Definida pelo branding do projeto
+- **Movimento**: Sutil e funcional — transições suaves, sem exagero
+- **Ícones**: Lucide React (consistente, clean) — nunca emojis como ícones
+- **Imagens**: Consistentes com tom e estilo do projeto
 
 ---
 
@@ -355,20 +314,20 @@ Antes de implementar qualquer interface, responder:
 ### Hero Section
 
 ```tsx
-<section className="bg-floral-white py-16 lg:py-24">
+<section className="bg-background py-16 lg:py-24">
   <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div className="max-w-3xl">
-      <h1 className="text-4xl lg:text-5xl font-heading font-bold text-smoky-black leading-tight">
+      <h1 className="text-4xl lg:text-5xl font-heading font-bold text-foreground leading-tight">
         Título principal do hero
       </h1>
-      <p className="mt-6 text-lg text-olive-drab leading-relaxed">
+      <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
         Descrição clara e direta do valor entregue.
       </p>
       <div className="mt-8 flex flex-col sm:flex-row gap-4">
-        <Button className="bg-smoky-black text-floral-white hover:bg-olive-drab">
+        <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
           CTA Primário
         </Button>
-        <Button variant="outline" className="border-bone text-smoky-black hover:bg-bone">
+        <Button variant="outline" className="border-border text-foreground hover:bg-muted">
           CTA Secundário
         </Button>
       </div>
@@ -380,9 +339,9 @@ Antes de implementar qualquer interface, responder:
 ### Dashboard Layout
 
 ```tsx
-<div className="flex h-screen bg-floral-white">
+<div className="flex h-screen bg-background">
   {/* Sidebar */}
-  <aside className="hidden lg:flex w-64 flex-col border-r border-bone bg-bone/30">
+  <aside className="hidden lg:flex w-64 flex-col border-r border-border bg-muted/30">
     <nav className="flex-1 p-4 space-y-1">
       {/* nav items */}
     </nav>
@@ -390,7 +349,7 @@ Antes de implementar qualquer interface, responder:
 
   {/* Main content */}
   <main className="flex-1 overflow-y-auto">
-    <header className="sticky top-0 z-10 bg-floral-white/80 backdrop-blur-sm border-b border-bone px-6 py-4">
+    <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border px-6 py-4">
       {/* top bar */}
     </header>
     <div className="p-6">
@@ -403,9 +362,9 @@ Antes de implementar qualquer interface, responder:
 ### Seção com fundo diferenciado
 
 ```tsx
-<section className="bg-bone/40 py-12 lg:py-16">
+<section className="bg-muted/40 py-12 lg:py-16">
   <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    {/* conteúdo com fundo bone para diferenciar do floral-white */}
+    {/* conteúdo com fundo diferenciado */}
   </div>
 </section>
 ```
@@ -574,13 +533,11 @@ Antes de implementar qualquer interface, responder:
 
 ### Visual
 
-- ❌ **Branco puro** (`#FFFFFF`) como background — usar `floral-white` (#FFFBF4)
+- ❌ **Cores fora da paleta do projeto** sem justificativa documentada
 - ❌ **Gradientes roxo/rosa AI** — clichê de "feito por AI"
-- ❌ **Inter, Roboto, Arial** como fonte — usar Ubuntu + Open Sans
-- ❌ **Emojis como ícones** — usar Lucide React (SVG)
-- ❌ **Cores fora da paleta** sem justificativa documentada
-- ❌ **Sombras exageradas** ou efeitos 3D desnecessários
 - ❌ **Fontes genéricas** (system-ui, sans-serif) sem fallback definido
+- ❌ **Emojis como ícones** — usar Lucide React (SVG)
+- ❌ **Sombras exageradas** ou efeitos 3D desnecessários
 
 ### UX
 
@@ -608,10 +565,10 @@ Antes de implementar qualquer interface, responder:
 Antes de entregar qualquer componente ou página, verificar:
 
 ### Visual
-- [ ] Cores seguem a paleta Bagual (smoky-black, olive-drab, bone, floral-white)
-- [ ] Tipografia usa Ubuntu (headings) + Open Sans (body)
+- [ ] Cores seguem a paleta do projeto (definida em context-design.md)
+- [ ] Tipografia usa fontes definidas no design system
 - [ ] Espaçamento segue escala de 4px do Tailwind
-- [ ] Border radius consistente (lg para botões/inputs, xl para cards)
+- [ ] Border radius consistente
 - [ ] Sombras usam tokens definidos (sm, md, lg)
 
 ### Interação
@@ -642,7 +599,7 @@ Antes de entregar qualquer componente ou página, verificar:
 
 ### Código
 - [ ] Sem emojis como ícones (usar Lucide React SVG)
-- [ ] Sem cores hardcoded (usar tokens Tailwind)
+- [ ] Sem cores hardcoded (usar tokens Tailwind ou do design system)
 - [ ] Sem inline styles
 - [ ] Componentes seguem padrão shadcn/ui
 
@@ -681,17 +638,20 @@ src/
 
 ## 📖 Resources
 
+- [Google Design.md GitHub](https://github.com/google-labs-code/design.md)
+- [Google Design.md Docs](https://stitch.withgoogle.com/docs/design-md/overview)
+- [Design Token Community Group Spec](https://www.designtokens.org/tr/2025.10/format/)
 - [Tailwind CSS v4 Docs](https://tailwindcss.com/docs)
 - [shadcn/ui Components](https://ui.shadcn.com)
 - [Lucide Icons](https://lucide.dev)
-- [Google Fonts — Ubuntu](https://fonts.google.com/specimen/Ubuntu)
-- [Google Fonts — Open Sans](https://fonts.google.com/specimen/Open+Sans)
 - [WCAG 2.1 AA Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 
 ## Example Interactions
 
-- "Criar landing page para o Bagual"
+- "Criar landing page seguindo o design system do projeto"
+- "Documentar design system em formato DESIGN.md"
+- "Validar DESIGN.md via CLI"
 - "Implementar dashboard com sidebar e cards"
 - "Criar formulário de login seguindo o design system"
 - "Adicionar dark mode ao design system"
@@ -702,7 +662,7 @@ src/
 
 ## Behavioral Traits
 
-- Sempre aplica a paleta Bagual antes de qualquer outra decisão
+- Consulta context-design.md antes de qualquer decisão visual
 - Prioriza legibilidade e hierarquia visual clara
 - Usa shadcn/ui como base, customiza via tokens — nunca recria
 - Prefere simplicidade refinada a complexidade decorativa

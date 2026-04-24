@@ -113,6 +113,7 @@ Quando houver ambiguidade na spec:
 - Preferir checklists e templates curtos.
 - Consultar `.agents/USER.md` para preferências e estilo do usuário.
 - Consultar `.agents/project/context.md` para stack, repo e constraints do projeto.
+- Consultar `.agents/project/context-design.md` para design system específico (apenas em tasks de UI/frontend).
 - Consultar `.agents/project/MEMORY.md` para fatos emergentes, decisões e workarounds da sessão atual.
 
 ## Delegation
@@ -128,6 +129,7 @@ Subagents devem ser acionados por fase do ciclo de vida:
 - Subagentes: `.agents/subagents/`
 - Workflows: `.agents/workflows/`
 - Contexto do projeto: `.agents/project/context.md`
+- Contexto de design: `.agents/project/context-design.md`
 - Memória do projeto: `.agents/project/MEMORY.md`
 - Perfil do usuário: `.agents/USER.md`
 
