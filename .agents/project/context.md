@@ -41,3 +41,25 @@
 ## Known Constraints
 
 > Limitações que o agente deve respeitar. Se já estão na OpenSpec, aponte para lá — não duplique.
+
+## Engineering Conventions
+
+### General
+- preferir funções puras quando possível e isolar efeitos colaterais
+- usar nomes explícitos e sem ambiguidade
+- manter arquivos coesos e focados em uma responsabilidade
+- evitar abstração prematura
+
+### Backend / API
+- validar entradas na borda do sistema
+- retornar erros com contexto e semântica adequada
+- não concentrar lógica de negócio em controllers ou handlers rasos
+
+### Frontend
+- preferir componentes pequenos e composáveis
+- usar estado local antes de introduzir estado global
+- acessibilidade é requisito, não detalhe opcional
+
+### Testing
+- testar fluxos críticos e lógica de negócio
+- ao corrigir bug, validar a causa raiz e, quando fizer sentido, adicionar cobertura para evitar regressão
