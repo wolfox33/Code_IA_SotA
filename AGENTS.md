@@ -77,6 +77,13 @@ Para qualquer tarefa significativa, seguir esta sequência:
 4. Testar: rodar testes relacionados e criar novos quando a mudança exigir cobertura adicional.
 5. Revisar: reler o diff, validar impacto e só então considerar a tarefa concluída.
 
+### Optional Process Skills
+Carregar estas capacidades apenas quando o contexto justificar; não transformar em overhead para tarefas triviais:
+- **Spec-first workflow**: usar `.agents/workflows/spec-first-development.md` para demandas significativas, vagas, multi-step ou com contratos. Se OpenSpec estiver ativo em `.agents/project/context.md`, OpenSpec é a fonte canônica e o workflow apenas roteia discovery/clarificação.
+- **TDD**: usar `.agents/skills/test-driven-development/SKILL.md` para bugfix reproduzível, regra de negócio, lógica nova ou regressão. Não substitui skills técnicas de teste, como `testing-patterns-chat`; define a ordem RED-GREEN-REFACTOR quando aplicável.
+- **Debugging sistemático**: usar `.agents/skills/systematic-debugging/SKILL.md` para bugs, testes falhando ou comportamento inesperado cuja causa não esteja comprovada.
+- **Verificação antes de concluir**: usar `.agents/skills/verification-before-completion/SKILL.md` antes de finalizar tarefas significativas, especialmente mudanças multi-arquivo, commits, workflows ou skills.
+
 ### Goal-Driven Execution
 Para tarefas multi-step, transformar instruções imperativas em objetivos verificáveis com loop de validação:
 
