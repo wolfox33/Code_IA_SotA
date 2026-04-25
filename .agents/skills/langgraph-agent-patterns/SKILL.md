@@ -1,770 +1,372 @@
 ---
 name: langgraph-agent-patterns
-description: Padrões de implementação de agentes AI com LangGraph 1.0 para chat SaaS. Cobre setup, template system, checkpointing, streaming, state management, cost tracking (1 crédito = 1 mensagem), error handling e multi-agent patterns. Integração com PostgreSQL persistence.
+description: Padrões atuais para desenvolver agentes Python com LangGraph: orquestrador StateGraph, agentes especialistas, tool calling, middlewares, skills internas do agente, checkpointing PostgreSQL e boundary FastAPI sem frontend.
 metadata:
   model: inherit
-  version: 1.0.0
+  version: 2.0.0
   author: Custom Stack
-  category: development
-  complexity: 6
-  tags: [langgraph, ai, agents, chat, streaming, checkpointing, state-management]
+  category: backend
+  complexity: 7
+  tags: [langgraph, python, agents, orchestration, tools, middleware, checkpointing]
   compatible_with: [antigravity, windsurf, opencode]
 ---
 
 # LangGraph Agent Patterns
 
-Guia completo de implementação de agentes AI com LangGraph 1.0 para aplicações SaaS de chat, com foco em templates, persistência e streaming.
+Skill para projetar e implementar runtimes de agentes em Python com LangGraph atual. O foco e o backend do agente: orquestracao, especialistas, ferramentas, middlewares, persistencia e contrato de execucao. Interface web, componentes de chat e detalhes de frontend ficam fora desta skill.
 
-## 🎯 Objetivo
+## Objetivo
 
-Fornecer:
-- **Setup correto** do LangGraph 1.0
-- **Template system** para diferentes tipos de agentes
-- **Checkpointing** com PostgreSQL
-- **Streaming** de respostas
-- **State management** robusto
-- **Cost tracking** (créditos por mensagem)
-- **Error handling** e fallbacks
-- **Multi-agent patterns**
+Produzir agentes production-ready com:
+
+- `StateGraph` explicito como camada primaria de orquestracao.
+- Agentes especialistas como nos/workers, normalmente criados com `create_agent` quando isso reduzir codigo.
+- Tool calling com schemas claros, permissao explicita e tratamento de erro.
+- Middlewares LangChain v1 para prompt dinamico, model routing, tool error handling, PII, moderacao e human-in-the-loop.
+- Skills internas do agente como modulos Python plugaveis, independentes das skills do harness local.
+- Checkpointing PostgreSQL para estado de execucao e store/memoria separado para memoria de longo prazo.
+- Boundary FastAPI fino, apenas chamando o runtime do agente e injetando contexto.
 
 ## Use this skill when
 
-- Implementando sistema de chat com AI
-- Configurando templates de agentes
-- Debugando problemas de state/persistence
-- Implementando streaming de respostas
-- Tracking custos de LLM calls
-- Criando multiple agent templates
-- Integrando checkpointing com DB
+- Implementar um orquestrador Python com LangGraph.
+- Criar fluxo `orchestrator + specialist agents`.
+- Adicionar ferramentas a agentes com tool calling.
+- Definir middlewares de agente para seguranca, roteamento, prompts ou erros de tools.
+- Projetar um registry de skills internas do agente.
+- Configurar checkpointing, streaming ou memoria para agentes LangGraph.
+- Expor o runtime por FastAPI sem acoplar a frontend.
 
 ## Do not use this skill when
 
-- Não usa AI/LLMs no projeto
-- Usa outro framework (LangChain sem Graph, custom)
-- Chat muito simples (single prompt/response)
-- Não precisa de state persistence
+- A tarefa for UI, componentes de chat, rotas de frontend ou experiencia visual.
+- O projeto usar apenas uma chamada simples de LLM sem estado, tools ou orquestracao.
+- A tarefa for editar skills do harness `.agents/skills`; aqui "skills" significa capacidades Python internas do agente.
+- A necessidade principal for cobranca, creditos ou produto SaaS.
 
-## Instructions
+## Procedure
 
-1. **Setup inicial**: Instalar LangGraph e dependencies
-2. **Configure checkpointer**: Setup PostgreSQL persistence
-3. **Criar base graph**: Implementar graph básico
-4. **Implementar templates**: Criar templates para diferentes use cases
-5. **Add streaming**: Configurar SSE para real-time responses
-6. **State management**: Handle conversation state
-7. **Cost tracking**: Track tokens/créditos por mensagem
-8. **Error handling**: Implement fallbacks e retry
+### 1. Defina o limite do runtime
 
-Consulte `resources/template-system.md` para sistema de templates, `resources/checkpointing-guide.md` para persistence e `resources/streaming-patterns.md` para streaming.
+Modele o agente como um pacote Python isolado:
 
-## Safety
-
-- **Sempre** validar user input
-- **Implementar** rate limiting
-- **Track** token usage para billing
-- **Usar** timeouts em LLM calls
-- **Sanitizar** output antes de exibir
-- **Log** todas as interações
-- **Implementar** fallbacks para errors
-- **Validar** state antes de persistir
-
-## 📚 Quick Reference
-
-### Installation
-
-```bash
-npm install @langchain/langgraph
-npm install @langchain/core
-npm install @langchain/openai
-npm install @langchain/anthropic
-npm install @langchain/postgres
+```text
+agent_runtime/
+  app/
+    api.py
+    graph.py
+    context.py
+    models.py
+    middleware.py
+    persistence.py
+    tools/
+      registry.py
+    skills/
+      base.py
+      registry.py
 ```
 
-### Environment Variables
+O frontend fala com FastAPI. FastAPI valida entrada, autentica, cria contexto e chama o grafo; nao decide fluxo, nao monta prompts complexos e nao executa tools diretamente.
 
-```bash
-# LLM Provider
-OPENAI_API_KEY="sk-..."
-ANTHROPIC_API_KEY="sk-ant-..."
+### 2. Use `StateGraph` como orquestrador principal
 
-# Database
-DATABASE_URL="postgresql://user:pass@localhost:5432/db"
+Use `StateGraph` quando houver roteamento, multiplos especialistas, revisao, memoria, retries ou sintese. Use `MessagesState` para fluxos conversacionais simples e `TypedDict` quando o grafo precisar de campos explicitos.
+
+```python
+from typing import Literal
+
+from langchain.chat_models import init_chat_model
+from langchain.messages import SystemMessage
+from langgraph.graph import END, START, MessagesState, StateGraph
+
+router_model = init_chat_model("openai:gpt-5.4-mini", temperature=0)
+
+
+class OrchestratorState(MessagesState):
+    route: str
+
+
+def orchestrator(state: OrchestratorState) -> dict:
+    decision = router_model.invoke(
+        [
+            SystemMessage(
+                "Route the request to one specialist: research, coding, or final."
+            ),
+            *state["messages"],
+        ]
+    )
+    content = str(decision.content).lower()
+    if "code" in content:
+        route = "coding_agent"
+    elif "research" in content:
+        route = "research_agent"
+    else:
+        route = "synthesizer"
+    return {"route": route}
+
+
+def route_next(
+    state: OrchestratorState,
+) -> Literal["research_agent", "coding_agent", "synthesizer"]:
+    return state["route"]
+
+
+builder = StateGraph(OrchestratorState)
+builder.add_node("orchestrator", orchestrator)
+builder.add_node("research_agent", research_agent)
+builder.add_node("coding_agent", coding_agent)
+builder.add_node("synthesizer", synthesizer)
+builder.add_edge(START, "orchestrator")
+builder.add_conditional_edges(
+    "orchestrator",
+    route_next,
+    {
+        "research_agent": "research_agent",
+        "coding_agent": "coding_agent",
+        "synthesizer": "synthesizer",
+    },
+)
+builder.add_edge("research_agent", "synthesizer")
+builder.add_edge("coding_agent", "synthesizer")
+builder.add_edge("synthesizer", END)
+
+graph = builder.compile()
 ```
 
-### Create Basic Agent
+Prefira retornos pequenos de estado. Nao grave objetos inteiros de usuario, conexoes, clientes ou payloads grandes no checkpoint; grave ids e resumos.
 
-```typescript
-import { StateGraph } from "@langchain/langgraph"
-import { ChatOpenAI } from "@langchain/openai"
+### 3. Crie especialistas com `create_agent` quando bastar
 
-const model = new ChatOpenAI({ modelName: "gpt-4" })
+Dentro de um no especialista, `create_agent` e adequado para um agente simples com tools e middleware. O orquestrador continua sendo `StateGraph`.
 
-const graph = new StateGraph({
-  channels: {
-    messages: { value: (x, y) => x.concat(y), default: () => [] },
-  },
-})
-  .addNode("agent", async (state) => {
-    const response = await model.invoke(state.messages)
-    return { messages: [response] }
-  })
-  .addEdge("__start__", "agent")
-  .addEdge("agent", "__end__")
+```python
+from langchain.agents import create_agent
+from langchain.tools import tool
 
-const app = graph.compile()
-```
 
-## 🏗️ Core Setup
+@tool
+def search_knowledge_base(query: str) -> str:
+    """Search approved internal knowledge for the given query."""
+    return retrieve_answer(query)
 
-### 1. Cliente LLM
 
-```typescript
-// core/llm.ts
-import { ChatOpenAI } from '@langchain/openai'
-import { ChatAnthropic } from '@langchain/anthropic'
-
-export const models = {
-  'gpt-4': new ChatOpenAI({
-    modelName: 'gpt-4',
-    temperature: 0.7,
-    maxTokens: 2000,
-  }),
-  'gpt-3.5-turbo': new ChatOpenAI({
-    modelName: 'gpt-3.5-turbo',
-    temperature: 0.7,
-    maxTokens: 1500,
-  }),
-  'claude-3-opus': new ChatAnthropic({
-    modelName: 'claude-3-opus-20240229',
-    temperature: 0.7,
-    maxTokens: 2000,
-  }),
-}
-
-export type ModelName = keyof typeof models
-```
-
-### 2. PostgreSQL Checkpointer
-
-```typescript
-// core/checkpointer.ts
-import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres'
-import { Pool } from 'pg'
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-})
-
-export const checkpointer = PostgresSaver.fromConnString(
-  process.env.DATABASE_URL!
+research_agent_app = create_agent(
+    model="anthropic:claude-sonnet-4-6",
+    tools=[search_knowledge_base],
+    system_prompt="You are a research specialist. Use only approved tools.",
+    middleware=[handle_tool_errors],
 )
 
-// Setup tables (run once)
-export async function setupCheckpointer() {
-  await checkpointer.setup()
-}
+
+def research_agent(state: MessagesState) -> dict:
+    result = research_agent_app.invoke({"messages": state["messages"]})
+    return {"messages": [result["messages"][-1]]}
 ```
 
-### 3. State Schema
+Use `create_agent` para workers simples. Se o especialista tambem tiver roteamento, revisao humana ou fluxo multi-step, modele esse especialista como outro `StateGraph` e chame como subgrafo.
 
-```typescript
-// features/chat/agents/state.ts
-import { BaseMessage } from '@langchain/core/messages'
-import { StateGraphArgs } from '@langchain/langgraph'
+### 4. Implemente tool calling com schemas e permissoes
 
-export interface AgentState {
-  messages: BaseMessage[]
-  userId: number
-  conversationId: number
-  templateId: number
-  metadata?: Record<string, any>
-}
+Ferramentas devem ter nome claro, docstring objetiva, argumentos tipados e regra de permissao fora do prompt.
 
-export const stateChannels: StateGraphArgs<AgentState>['channels'] = {
-  messages: {
-    value: (x: BaseMessage[], y: BaseMessage[]) => x.concat(y),
-    default: () => [],
-  },
-  userId: {
-    value: (x?: number, y?: number) => y ?? x,
-    default: () => 0,
-  },
-  conversationId: {
-    value: (x?: number, y?: number) => y ?? x,
-    default: () => 0,
-  },
-  templateId: {
-    value: (x?: number, y?: number) => y ?? x,
-    default: () => 0,
-  },
-  metadata: {
-    value: (x?: Record<string, any>, y?: Record<string, any>) => ({ ...x, ...y }),
-    default: () => ({}),
-  },
-}
+```python
+from langchain.tools import tool
+from pydantic import BaseModel, Field
+
+
+class SearchInput(BaseModel):
+    query: str = Field(min_length=3, max_length=300)
+    max_results: int = Field(default=5, ge=1, le=10)
+
+
+@tool(args_schema=SearchInput)
+def search_documents(query: str, max_results: int = 5) -> str:
+    """Search indexed documents available to the current tenant."""
+    return document_search(query=query, limit=max_results)
 ```
 
-## 🎨 Template System
+Para graphs manuais, use `ToolNode` e `tools_condition` quando o fluxo for o loop classico LLM -> tools -> LLM.
 
-### Template Schema (Database)
+```python
+from langchain.chat_models import init_chat_model
+from langgraph.graph import END, START, MessagesState, StateGraph
+from langgraph.prebuilt import ToolNode, tools_condition
 
-```typescript
-// core/db/schema.ts
-export const templates = pgTable('templates', {
-  id: serial('id').primaryKey(),
-  name: text('name').notNull().unique(),
-  description: text('description'),
-  systemPrompt: text('system_prompt').notNull(),
-  model: text('model').notNull(), // 'gpt-4' | 'claude-3-opus'
-  temperature: real('temperature').default(0.7),
-  maxTokens: integer('max_tokens').default(2000),
-  tools: jsonb('tools'), // Available tools
-  config: jsonb('config'), // Additional config
-  createdAt: timestamp('created_at').defaultNow(),
-})
+tools = [search_documents]
+model = init_chat_model("openai:gpt-5.4-mini").bind_tools(tools)
+
+
+def call_model(state: MessagesState) -> dict:
+    response = model.invoke(state["messages"])
+    return {"messages": [response]}
+
+
+builder = StateGraph(MessagesState)
+builder.add_node("model", call_model)
+builder.add_node("tools", ToolNode(tools))
+builder.add_edge(START, "model")
+builder.add_conditional_edges("model", tools_condition, {"tools": "tools", END: END})
+builder.add_edge("tools", "model")
+agent = builder.compile()
 ```
 
-### Template Examples
+### 5. Use middlewares para comportamento transversal
 
-```typescript
-// Seed templates
-const TEMPLATES = [
-  {
-    name: 'generic',
-    description: 'Generic helpful assistant',
-    systemPrompt: 'You are a helpful AI assistant. Provide clear, concise answers.',
-    model: 'gpt-3.5-turbo',
-  },
-  {
-    name: 'legal',
-    description: 'Legal advice assistant',
-    systemPrompt: `You are a legal AI assistant specialized in Brazilian law.
-    Provide accurate legal information but always remind users to consult a lawyer.`,
-    model: 'gpt-4',
-    temperature: 0.3,
-  },
-  {
-    name: 'financial',
-    description: 'Financial advisor',
-    systemPrompt: `You are a financial advisor AI. Help users with budgeting, 
-    investing, and financial planning. Always include risk disclaimers.`,
-    model: 'gpt-4',
-    tools: ['calculator', 'web_search'],
-  },
-  {
-    name: 'creative',
-    description: 'Creative writing assistant',
-    systemPrompt: 'You are a creative writing assistant. Help with storytelling, brainstorming, and creative ideas.',
-    model: 'claude-3-opus',
-    temperature: 0.9,
-  },
-]
+Middlewares sao a forma correta de aplicar politicas transversais sem espalhar logica nos nos:
+
+- `dynamic_prompt`: prompt por papel, tenant, plano, idioma ou modo.
+- `wrap_model_call`: selecao dinamica de modelo, tools ou parametros.
+- `wrap_tool_call`: tratamento de erro, auditoria ou bloqueios de tools.
+- `AgentMiddleware`: casos mais complexos que precisam de estado, contexto e override.
+- Middlewares prontos: PII, summarization, human-in-the-loop e moderacao quando o risco justificar.
+
+```python
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+
+
+@wrap_tool_call
+def handle_tool_errors(request, handler):
+    try:
+        return handler(request)
+    except Exception as exc:
+        return ToolMessage(
+            content=f"Tool failed: {type(exc).__name__}. Check arguments and retry.",
+            tool_call_id=request.tool_call["id"],
+        )
 ```
 
-### Load Template
+```python
+from typing import Callable
 
-```typescript
-// features/chat/service/load-template.ts
-import { db } from '@/core/db'
-import { templates } from '@/core/db/schema'
-import { eq } from 'drizzle-orm'
+from langchain.agents.middleware import AgentMiddleware, ModelRequest
+from langchain.agents.middleware.types import ModelResponse
+from langchain.chat_models import init_chat_model
 
-export async function loadTemplate(templateId: number) {
-  const template = await db
-    .select()
-    .from(templates)
-    .where(eq(templates.id, templateId))
-    .limit(1)
 
-  if (!template[0]) {
-    throw new Error(`Template ${templateId} not found`)
-  }
-
-  return template[0]
-}
+class ModelRoutingMiddleware(AgentMiddleware):
+    def wrap_model_call(
+        self,
+        request: ModelRequest,
+        handler: Callable[[ModelRequest], ModelResponse],
+    ) -> ModelResponse:
+        model = init_chat_model(request.runtime.context.model_name)
+        return handler(request.override(model=model))
 ```
 
-## 🔄 Agent Graph Implementation
+### 6. Defina skills internas do agente como modulos Python
 
-### Base Agent
+Skills internas sao capacidades do runtime do agente, nao arquivos do harness local. Elas devem ser registraveis, testaveis e convertiveis em prompt, tools ou agentes especialistas.
 
-```typescript
-// features/chat/agents/graph.ts
-import { StateGraph, END } from '@langchain/langgraph'
-import { HumanMessage, AIMessage, SystemMessage } from '@langchain/core/messages'
-import { models } from '@/core/llm'
-import { checkpointer } from '@/core/checkpointer'
-import { stateChannels, AgentState } from './state'
-import { loadTemplate } from '../service/load-template'
+```python
+from dataclasses import dataclass, field
+from typing import Sequence
 
-export async function createAgentGraph(templateId: number) {
-  const template = await loadTemplate(templateId)
-  const model = models[template.model as keyof typeof models]
+from langchain_core.tools import BaseTool
 
-  const graph = new StateGraph<AgentState>({ channels: stateChannels })
-    .addNode('agent', async (state) => {
-      // Construir messages com system prompt
-      const messages = [
-        new SystemMessage(template.systemPrompt),
-        ...state.messages,
-      ]
 
-      // Call LLM
-      const response = await model.invoke(messages)
+@dataclass(frozen=True)
+class AgentSkill:
+    name: str
+    description: str
+    prompt_fragment: str
+    tools: Sequence[BaseTool] = field(default_factory=tuple)
+    required_permissions: frozenset[str] = frozenset()
+    dependencies: frozenset[str] = frozenset()
 
-      return {
-        messages: [response],
-      }
-    })
-    .addEdge('__start__', 'agent')
-    .addEdge('agent', END)
 
-  // Compile com checkpointer
-  const app = graph.compile({
-    checkpointer,
-  })
-
-  return app
-}
-```
-
-### Invoke Agent
-
-```typescript
-// features/chat/service/send-message.ts
-import { createAgentGraph } from '../agents/graph'
-import { HumanMessage } from '@langchain/core/messages'
-import { debitCredits } from '@/features/credits/service/debit-credits'
-
-interface SendMessageParams {
-  userId: number
-  conversationId: number
-  templateId: number
-  content: string
-}
-
-export async function sendMessage(params: SendMessageParams) {
-  const { userId, conversationId, templateId, content } = params
-
-  // Debit credit BEFORE processing
-  await debitCredits(userId, 1)
-
-  try {
-    const app = await createAgentGraph(templateId)
-
-    // Thread ID para persistence
-    const threadId = `conversation_${conversationId}`
-
-    // Invoke agent
-    const result = await app.invoke(
-      {
-        messages: [new HumanMessage(content)],
-        userId,
-        conversationId,
-        templateId,
-      },
-      {
-        configurable: {
-          thread_id: threadId,
-        },
-      }
+def register_skill() -> AgentSkill:
+    return AgentSkill(
+        name="document_research",
+        description="Research approved documents and cite retrieved evidence.",
+        prompt_fragment="Use document tools when the answer depends on internal docs.",
+        tools=(search_documents,),
+        required_permissions=frozenset({"documents:read"}),
     )
-
-    const aiMessage = result.messages[result.messages.length - 1]
-
-    return {
-      role: 'assistant',
-      content: aiMessage.content,
-    }
-  } catch (error) {
-    // Refund credit on error
-    await addCredits(userId, 1)
-    throw error
-  }
-}
 ```
 
-## 📡 Streaming Implementation
+O registry filtra skills por tenant, usuario, permissoes e tipo de tarefa antes de expor tools ou prompt ao agente. Consulte `resources/agent-skills-registry.md`.
 
-### Stream Response
+### 7. Configure persistencia e memoria separadamente
 
-```typescript
-// features/chat/service/stream-response.ts
-import { createAgentGraph } from '../agents/graph'
-import { HumanMessage } from '@langchain/core/messages'
+Use checkpointer para continuidade de execucao por `thread_id`. Use store/memoria para fatos reutilizaveis entre threads. Em producao, prefira PostgreSQL.
 
-export async function streamResponse(params: SendMessageParams) {
-  const { userId, conversationId, templateId, content } = params
+```python
+from langgraph.checkpoint.postgres import PostgresSaver
 
-  const app = await createAgentGraph(templateId)
-  const threadId = `conversation_${conversationId}`
+DB_URI = "postgresql://user:pass@localhost:5432/app?sslmode=disable"
 
-  // Stream events
-  const stream = await app.stream(
-    {
-      messages: [new HumanMessage(content)],
-      userId,
-      conversationId,
-      templateId,
-    },
-    {
-      configurable: {
-        thread_id: threadId,
-      },
-      streamMode: 'values', // 'values' | 'updates' | 'messages'
-    }
-  )
-
-  return stream
-}
+with PostgresSaver.from_conn_string(DB_URI) as checkpointer:
+    # Execute uma vez em migration/startup controlado:
+    # checkpointer.setup()
+    graph = builder.compile(checkpointer=checkpointer)
 ```
 
-### SSE API Route
+Consulte `resources/checkpointing-guide.md`.
 
-```typescript
-// app/api/chat/stream/route.ts
-import { NextRequest } from 'next/server'
-import { auth } from '@/core/auth'
-import { streamResponse } from '@/features/chat/service/stream-response'
-import { debitCredits, hasCredits } from '@/features/credits/service/debit-credits'
-import { z } from 'zod'
+### 8. Exponha por FastAPI como boundary fino
 
-const streamSchema = z.object({
-  conversationId: z.number().int().positive(),
-  content: z.string().min(1).max(10000),
-  templateId: z.number().int().positive().optional(),
-})
+FastAPI deve validar request, autenticar, montar `context`, escolher `thread_id` e chamar `graph.invoke`, `graph.stream`, `graph.ainvoke` ou `graph.astream`.
 
-export async function POST(req: NextRequest) {
-  // 1. Autenticar
-  const session = await auth.api.getSession({ headers: req.headers })
-  if (!session) {
-    return new Response('Unauthorized', { status: 401 })
-  }
+```python
+from fastapi import APIRouter
+from pydantic import BaseModel, Field
 
-  // 2. Validar input
-  const body = await req.json()
-  const parsed = streamSchema.safeParse(body)
-  if (!parsed.success) {
-    return new Response('Invalid input', { status: 400 })
-  }
+router = APIRouter()
 
-  const { conversationId, content, templateId } = parsed.data
 
-  // 3. Verificar ownership da conversa (prevenir IDOR)
-  const conversation = await db
-    .select()
-    .from(conversations)
-    .where(
-      and(
-        eq(conversations.id, conversationId),
-        eq(conversations.userId, session.user.id)
-      )
+class AgentRequest(BaseModel):
+    thread_id: str = Field(min_length=1, max_length=120)
+    message: str = Field(min_length=1, max_length=20_000)
+
+
+@router.post("/agent/invoke")
+async def invoke_agent(payload: AgentRequest):
+    result = await graph.ainvoke(
+        {"messages": [{"role": "user", "content": payload.message}]},
+        {"configurable": {"thread_id": payload.thread_id}},
+        context={"model_name": "openai:gpt-5.4-mini"},
     )
-    .limit(1)
-
-  if (!conversation[0]) {
-    return new Response('Conversation not found', { status: 404 })
-  }
-
-  // 4. Verificar se tem créditos ANTES (sem debitar)
-  const hasBalance = await hasCredits(session.user.id, 1)
-  if (!hasBalance) {
-    return new Response('Insufficient credits', { status: 402 })
-  }
-
-  try {
-    const stream = await streamResponse({
-      userId: session.user.id,
-      conversationId,
-      templateId,
-      content,
-    })
-
-    // Create SSE stream
-    const encoder = new TextEncoder()
-    let streamCompleted = false
-
-    const readable = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const chunk of stream) {
-            const messages = chunk.messages
-            const lastMessage = messages[messages.length - 1]
-
-            if (lastMessage.content) {
-              const data = JSON.stringify({
-                content: lastMessage.content,
-                done: false,
-              })
-
-              controller.enqueue(encoder.encode(`data: ${data}\n\n`))
-            }
-          }
-
-          streamCompleted = true
-
-          // ✅ Debitar crédito SOMENTE após streaming completo com sucesso
-          await debitCredits(session.user.id, 1, 'message_sent', {
-            conversationId,
-          })
-
-          // Send done signal
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ done: true })}\n\n`))
-          controller.close()
-        } catch (error) {
-          console.error('Streaming error:', error)
-          // ❌ Streaming falhou → NÃO debitar crédito
-          controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({ error: 'Stream failed', done: true })}\n\n`)
-          )
-          controller.close()
-        }
-      },
-    })
-
-    return new Response(readable, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-      },
-    })
-  } catch (error) {
-    console.error('Stream error:', error)
-    return new Response('Internal error', { status: 500 })
-  }
-}
+    return {"message": result["messages"][-1].content}
 ```
 
-## 💾 State Persistence
+Consulte `resources/streaming-patterns.md` para streaming no nivel do runtime.
 
-### Load Conversation History
+## Pitfalls
 
-```typescript
-// features/chat/service/load-conversation.ts
-import { createAgentGraph } from '../agents/graph'
+- Nao misture esta skill com as skills locais do harness `.agents/skills`; elas sao instrucoes para o agente de desenvolvimento, nao capacidades do runtime Python.
+- Nao coloque regra de negocio ou roteamento complexo em FastAPI. O grafo deve conter a logica do agente.
+- Nao use `create_agent` como substituto do orquestrador quando houver multiplos especialistas e estado compartilhado.
+- Nao exponha todas as tools para todos os agentes. Tools devem passar por registry, permissoes e escopo.
+- Nao persista payloads grandes ou dados sensiveis no checkpoint sem necessidade.
+- Nao modele memoria longa como historico infinito de mensagens; use store dedicado e resumos.
 
-export async function loadConversationHistory(
-  conversationId: number,
-  templateId: number
-) {
-  const app = await createAgentGraph(templateId)
-  const threadId = `conversation_${conversationId}`
+## Verification
 
-  // Get state from checkpointer
-  const state = await app.getState({
-    configurable: {
-      thread_id: threadId,
-    },
-  })
+- A implementacao usa Python e LangGraph atual.
+- O orquestrador principal e `StateGraph`.
+- `create_agent` aparece apenas como implementacao de agente especialista ou caso simples.
+- Tools possuem schemas, docstrings e tratamento de erro.
+- Middlewares estao documentados como extensao transversal.
+- Skills sao capacidades Python internas do agente e nao skills do harness local.
+- FastAPI aparece apenas como boundary backend.
+- Nao ha exemplos de frontend, cobranca ou SDK de UI.
 
-  return state.values.messages || []
-}
-```
+## Resources
 
-### Update State
+- `resources/agent-skills-registry.md`
+- `resources/checkpointing-guide.md`
+- `resources/streaming-patterns.md`
 
-```typescript
-// Update state manualmente (se necessário)
-export async function updateConversationState(
-  conversationId: number,
-  templateId: number,
-  updates: Partial<AgentState>
-) {
-  const app = await createAgentGraph(templateId)
-  const threadId = `conversation_${conversationId}`
+## Official Docs
 
-  await app.updateState(
-    {
-      configurable: {
-        thread_id: threadId,
-      },
-    },
-    updates
-  )
-}
-```
+- [LangGraph Python overview](https://docs.langchain.com/oss/python/langgraph/overview)
+- [Workflows and agents](https://docs.langchain.com/oss/python/langgraph/workflows-agents)
+- [LangGraph quickstart](https://docs.langchain.com/oss/python/langgraph/quickstart)
+- [Memory and checkpointing](https://docs.langchain.com/oss/python/langgraph/add-memory)
+- [LangChain agents and middleware](https://docs.langchain.com/oss/python/langchain/agents)
 
-## 💰 Cost Tracking
+---
 
-### Token Tracking
-
-```typescript
-// core/token-counter.ts
-import { encoding_for_model } from '@dqbd/tiktoken'
-
-export function countTokens(text: string, model: string = 'gpt-3.5-turbo'): number {
-  const encoding = encoding_for_model(model as any)
-  const tokens = encoding.encode(text)
-  encoding.free()
-  return tokens.length
-}
-
-export function estimateCost(
-  inputTokens: number,
-  outputTokens: number,
-  model: string
-): number {
-  const pricing = {
-    'gpt-4': { input: 0.03 / 1000, output: 0.06 / 1000 },
-    'gpt-3.5-turbo': { input: 0.0015 / 1000, output: 0.002 / 1000 },
-    'claude-3-opus': { input: 0.015 / 1000, output: 0.075 / 1000 },
-  }
-
-  const price = pricing[model as keyof typeof pricing] || pricing['gpt-3.5-turbo']
-
-  return inputTokens * price.input + outputTokens * price.output
-}
-```
-
-### Log Usage
-
-```typescript
-// core/db/schema.ts
-export const usage = pgTable('usage', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id').references(() => users.id),
-  conversationId: integer('conversation_id').references(() => conversations.id),
-  model: text('model').notNull(),
-  inputTokens: integer('input_tokens').notNull(),
-  outputTokens: integer('output_tokens').notNull(),
-  cost: real('cost').notNull(), // USD
-  createdAt: timestamp('created_at').defaultNow(),
-})
-```
-
-### Track in Agent
-
-```typescript
-.addNode('agent', async (state) => {
-  const messages = [new SystemMessage(template.systemPrompt), ...state.messages]
-
-  // Count input tokens
-  const inputText = messages.map(m => m.content).join('\n')
-  const inputTokens = countTokens(inputText, template.model)
-
-  const response = await model.invoke(messages)
-
-  // Count output tokens
-  const outputTokens = countTokens(response.content as string, template.model)
-
-  // Estimate cost
-  const cost = estimateCost(inputTokens, outputTokens, template.model)
-
-  // Log usage
-  await db.insert(usage).values({
-    userId: state.userId,
-    conversationId: state.conversationId,
-    model: template.model,
-    inputTokens,
-    outputTokens,
-    cost,
-  })
-
-  return { messages: [response] }
-})
-```
-
-## 🛡️ Error Handling
-
-### Retry Logic
-
-```typescript
-async function invokeWithRetry(model: any, messages: any[], maxRetries = 3) {
-  let lastError: Error | undefined
-
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
-    try {
-      return await model.invoke(messages)
-    } catch (error) {
-      lastError = error as Error
-      console.error(`Attempt ${attempt + 1} failed:`, error)
-
-      if (attempt < maxRetries - 1) {
-        const delay = Math.min(1000 * 2 ** attempt, 5000)
-        await new Promise(resolve => setTimeout(resolve, delay))
-      }
-    }
-  }
-
-  throw lastError
-}
-```
-
-### Timeout
-
-```typescript
-async function invokeWithTimeout(model: any, messages: any[], timeoutMs = 30000) {
-  return Promise.race([
-    model.invoke(messages),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Request timeout')), timeoutMs)
-    ),
-  ])
-}
-```
-
-### Fallback Response
-
-```typescript
-.addNode('agent', async (state) => {
-  try {
-    const response = await invokeWithTimeout(model, messages, 30000)
-    return { messages: [response] }
-  } catch (error) {
-    console.error('Agent error:', error)
-
-    // Fallback response
-    return {
-      messages: [
-        new AIMessage(
-          'Desculpe, estou com dificuldades para processar sua mensagem no momento. Por favor, tente novamente.'
-        ),
-      ],
-    }
-  }
-})
-```
-
-## 🎯 Alinhamento com Arquitetura
-
-### Vertical Slice Structure
-
-```
-src/features/chat/
-├── api/
-│   ├── send.ts              # POST /api/chat/send
-│   └── stream.ts             # POST /api/chat/stream
-├── service/
-│   ├── send-message.ts       # Non-streaming
-│   ├── stream-response.ts    # Streaming
-│   ├── load-template.ts      # Template loading
-│   └── load-conversation.ts  # History loading
-├── agents/
-│   ├── graph.ts              # LangGraph definition
-│   ├── state.ts              # State schema
-│   └── templates/
-│       ├── generic.ts
-│       ├── legal.ts
-│       └── financial.ts
-├── repo/
-│   ├── conversations.ts
-│   └── messages.ts
-└── components/
-    ├── ChatInterface.tsx
-    └── MessageList.tsx
-```
-
-## 📖 Resources
-
-- [Template System](./resources/template-system.md) - Sistema de templates
-- [Checkpointing Guide](./resources/checkpointing-guide.md) - Persistence guide
-- [Streaming Patterns](./resources/streaming-patterns.md) - Streaming implementation
-
-## 🔗 Links Úteis
-
-- [LangGraph Docs](https://langchain-ai.github.io/langgraph/)
-- [State Persistence](https://langchain-ai.github.io/langgraph/how-tos/persistence/)
-- [Streaming](https://langchain-ai.github.io/langgraph/how-tos/streaming/)
-- [PostgreSQL Checkpointer](https://langchain-ai.github.io/langgraph/reference/checkpoints/)
+> **Skill log**
+> - [2026-04-25] Reescrita para Python/LangGraph atual, com foco em orquestrador StateGraph, agentes especialistas, tools, middlewares, skills internas do agente e boundary FastAPI sem frontend.

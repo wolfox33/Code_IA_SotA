@@ -1,601 +1,162 @@
-# LangGraph Checkpointing Guide
+# LangGraph Python Checkpointing
 
-Guia completo de persistência de estado (checkpointing) com PostgreSQL para manter histórico de conversações.
+Checkpointing salva o estado de execucao do grafo por thread. Use para continuar conversas, retomar fluxos interrompidos, auditar passos e suportar human-in-the-loop. Nao use checkpoint como memoria longa indiscriminada.
 
-## 🎯 O que é Checkpointing
-
-Checkpointing permite salvar o estado do agent em cada step, possibilitando:
-- **Persistir** histórico de conversas
-- **Retomar** conversas de onde pararam
-- **Replay** de conversas
-- **Time-travel** debugging
-- **Auditoria** completa
-
-## 📦 Setup
-
-### Instalação
+## Dependencias
 
 ```bash
-npm install @langchain/langgraph-checkpoint-postgres
-npm install pg
+pip install -U langgraph langchain langgraph-checkpoint-postgres psycopg
 ```
 
-### Database Schema
+Instale tambem os pacotes dos providers de modelo usados pelo projeto, por exemplo `langchain-openai` ou `langchain-anthropic`.
 
-O PostgreSQL checkpointer cria automaticamente as tabelas necessárias:
+## PostgreSQL checkpointer
 
-```sql
-CREATE TABLE IF NOT EXISTS checkpoints (
-  thread_id TEXT NOT NULL,
-  checkpoint_id TEXT NOT NULL,
-  parent_checkpoint_id TEXT,
-  checkpoint JSONB NOT NULL,
-  metadata JSONB,
-  created_at TIMESTAMP DEFAULT NOW(),
-  PRIMARY KEY (thread_id, checkpoint_id)
-);
+Use PostgreSQL em producao. Execute `setup()` em migration/startup controlado antes de usar as tabelas pela primeira vez.
 
-CREATE INDEX IF NOT EXISTS idx_checkpoints_thread_id ON checkpoints(thread_id);
-CREATE INDEX IF NOT EXISTS idx_checkpoints_parent ON checkpoints(parent_checkpoint_id);
-```
+```python
+from langgraph.checkpoint.postgres import PostgresSaver
+from langgraph.graph import START, MessagesState, StateGraph
 
-### Initialize Checkpointer
 
-```typescript
-// core/checkpointer.ts
-import { PostgresSaver } from '@langchain/langgraph-checkpoint-postgres'
-import { Pool } from 'pg'
+DB_URI = "postgresql://user:pass@localhost:5432/app?sslmode=disable"
 
-// Create connection pool
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  max: 20, // Max connections
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-})
 
-// Create checkpointer
-export const checkpointer = PostgresSaver.fromConnString(
-  process.env.DATABASE_URL!
-)
+def call_model(state: MessagesState) -> dict:
+    response = model.invoke(state["messages"])
+    return {"messages": [response]}
 
-// Setup tables (run once during deployment)
-export async function setupCheckpointer() {
-  try {
-    await checkpointer.setup()
-    console.log('Checkpointer tables created successfully')
-  } catch (error) {
-    console.error('Failed to setup checkpointer:', error)
-    throw error
-  }
-}
-```
 
-### Migration Script
+builder = StateGraph(MessagesState)
+builder.add_node("call_model", call_model)
+builder.add_edge(START, "call_model")
 
-```typescript
-// scripts/setup-checkpointer.ts
-import { setupCheckpointer } from '../core/checkpointer'
+with PostgresSaver.from_conn_string(DB_URI) as checkpointer:
+    # Execute uma vez antes do primeiro uso:
+    # checkpointer.setup()
+    graph = builder.compile(checkpointer=checkpointer)
 
-async function main() {
-  console.log('Setting up checkpointer tables...')
-  await setupCheckpointer()
-  console.log('Done!')
-  process.exit(0)
-}
-
-main().catch((error) => {
-  console.error(error)
-  process.exit(1)
-})
-```
-
-Run once:
-```bash
-npx tsx scripts/setup-checkpointer.ts
-```
-
-## 🔧 Compile Graph with Checkpointer
-
-```typescript
-// features/chat/agents/graph.ts
-import { StateGraph, END } from '@langchain/langgraph'
-import { checkpointer } from '@/core/checkpointer'
-import { stateChannels } from './state'
-
-export function createGraph() {
-  const graph = new StateGraph({ channels: stateChannels })
-    .addNode('agent', async (state) => {
-      // Agent logic...
-      return { messages: [response] }
-    })
-    .addEdge('__start__', 'agent')
-    .addEdge('agent', END)
-
-  // Compile WITH checkpointer
-  return graph.compile({
-    checkpointer, // Enable state persistence
-  })
-}
-```
-
-## 💾 Using Thread IDs
-
-Thread ID identifica uma conversa única. Use pattern consistente:
-
-```typescript
-// Pattern: conversation_{conversationId}
-const threadId = `conversation_${conversationId}`
-
-// Invoke with thread
-const result = await app.invoke(
-  { messages: [new HumanMessage('Hello')] },
-  {
-    configurable: {
-      thread_id: threadId,
-    },
-  }
-)
-```
-
-### Thread ID Best Practices
-
-```typescript
-// ✅ GOOD: Use conversation ID
-const threadId = `conversation_${conversationId}`
-
-// ✅ GOOD: User + date for daily threads
-const threadId = `user_${userId}_${date}`
-
-// ✅ GOOD: Session-based
-const threadId = `session_${sessionId}`
-
-// ❌ BAD: Random UUID (can't resume)
-const threadId = crypto.randomUUID()
-
-// ❌ BAD: User ID only (can't have multiple conversations)
-const threadId = `user_${userId}`
-```
-
-## 📖 Loading Conversation History
-
-### Get State
-
-```typescript
-export async function loadConversation(conversationId: number) {
-  const app = createGraph()
-  const threadId = `conversation_${conversationId}`
-
-  // Get current state
-  const state = await app.getState({
-    configurable: {
-      thread_id: threadId,
-    },
-  })
-
-  return {
-    messages: state.values.messages || [],
-    metadata: state.metadata,
-    checkpoint_id: state.config?.configurable?.checkpoint_id,
-  }
-}
-```
-
-### Get State History
-
-```typescript
-export async function getConversationHistory(
-  conversationId: number,
-  limit: number = 10
-) {
-  const app = createGraph()
-  const threadId = `conversation_${conversationId}`
-
-  // Get state history
-  const history = await app.getStateHistory({
-    configurable: {
-      thread_id: threadId,
-    },
-    limit,
-  })
-
-  const states = []
-  for await (const state of history) {
-    states.push({
-      checkpoint_id: state.config?.configurable?.checkpoint_id,
-      messages: state.values.messages,
-      metadata: state.metadata,
-      parent_checkpoint_id: state.config?.configurable?.checkpoint_id,
-    })
-  }
-
-  return states
-}
-```
-
-## 🔄 Resuming Conversations
-
-### Continue from Last State
-
-```typescript
-export async function continueConversation(
-  conversationId: number,
-  newMessage: string
-) {
-  const app = createGraph()
-  const threadId = `conversation_${conversationId}`
-
-  // LangGraph automatically loads previous state
-  const result = await app.invoke(
-    {
-      messages: [new HumanMessage(newMessage)],
-    },
-    {
-      configurable: {
-        thread_id: threadId,
-      },
-    }
-  )
-
-  return result
-}
-```
-
-### Resume from Specific Checkpoint
-
-```typescript
-export async function resumeFromCheckpoint(
-  conversationId: number,
-  checkpointId: string,
-  newMessage: string
-) {
-  const app = createGraph()
-  const threadId = `conversation_${conversationId}`
-
-  const result = await app.invoke(
-    {
-      messages: [new HumanMessage(newMessage)],
-    },
-    {
-      configurable: {
-        thread_id: threadId,
-        checkpoint_id: checkpointId, // Resume from specific point
-      },
-    }
-  )
-
-  return result
-}
-```
-
-## 🔀 Branching Conversations
-
-### Create Branch
-
-```typescript
-export async function branchConversation(
-  conversationId: number,
-  checkpointId: string,
-  newConversationId: number
-) {
-  const app = createGraph()
-  const sourceThread = `conversation_${conversationId}`
-  const newThread = `conversation_${newConversationId}`
-
-  // Get state from specific checkpoint
-  const state = await app.getState({
-    configurable: {
-      thread_id: sourceThread,
-      checkpoint_id: checkpointId,
-    },
-  })
-
-  // Start new thread from that state
-  await app.updateState(
-    {
-      configurable: {
-        thread_id: newThread,
-      },
-    },
-    state.values
-  )
-
-  return newThread
-}
-```
-
-## 🗑️ Cleanup Old Checkpoints
-
-### Delete Thread Checkpoints
-
-```typescript
-export async function deleteConversationCheckpoints(conversationId: number) {
-  const threadId = `conversation_${conversationId}`
-
-  // Direct database deletion
-  await pool.query('DELETE FROM checkpoints WHERE thread_id = $1', [threadId])
-}
-```
-
-### Cleanup Old Checkpoints (Cron Job)
-
-```typescript
-export async function cleanupOldCheckpoints(daysOld: number = 90) {
-  const cutoffDate = new Date()
-  cutoffDate.setDate(cutoffDate.getDate() - daysOld)
-
-  const result = await pool.query(
-    'DELETE FROM checkpoints WHERE created_at < $1',
-    [cutoffDate]
-  )
-
-  console.log(`Deleted ${result.rowCount} old checkpoints`)
-  return result.rowCount
-}
-
-// Run daily via cron
-// 0 2 * * * (2 AM daily)
-```
-
-### Archive Instead of Delete
-
-```typescript
-export const archivedCheckpoints = pgTable('archived_checkpoints', {
-  // Same schema as checkpoints
-  threadId: text('thread_id').notNull(),
-  checkpointId: text('checkpoint_id').notNull(),
-  checkpoint: jsonb('checkpoint').notNull(),
-  metadata: jsonb('metadata'),
-  createdAt: timestamp('created_at').defaultNow(),
-  archivedAt: timestamp('archived_at').defaultNow(),
-})
-
-export async function archiveOldCheckpoints(daysOld: number = 90) {
-  const cutoffDate = new Date()
-  cutoffDate.setDate(cutoffDate.getDate() - daysOld)
-
-  // Copy to archive
-  await pool.query(
-    `INSERT INTO archived_checkpoints (thread_id, checkpoint_id, checkpoint, metadata, created_at)
-     SELECT thread_id, checkpoint_id, checkpoint, metadata, created_at
-     FROM checkpoints
-     WHERE created_at < $1`,
-    [cutoffDate]
-  )
-
-  // Delete from main table
-  const result = await pool.query(
-    'DELETE FROM checkpoints WHERE created_at < $1',
-    [cutoffDate]
-  )
-
-  return result.rowCount
-}
-```
-
-## 🎯 Metadata
-
-### Add Metadata to Checkpoints
-
-```typescript
-const result = await app.invoke(
-  { messages: [new HumanMessage('Hello')] },
-  {
-    configurable: {
-      thread_id: threadId,
-    },
-    metadata: {
-      userId: 123,
-      conversationId: 456,
-      templateId: 1,
-      source: 'web',
-      ipAddress: request.ip,
-    },
-  }
-)
-```
-
-### Query by Metadata
-
-```typescript
-export async function findConversationsByMetadata(
-  userId: number,
-  templateId: number
-) {
-  const result = await pool.query(
-    `SELECT DISTINCT thread_id, metadata
-     FROM checkpoints
-     WHERE metadata->>'userId' = $1
-     AND metadata->>'templateId' = $2
-     ORDER BY created_at DESC`,
-    [userId.toString(), templateId.toString()]
-  )
-
-  return result.rows
-}
-```
-
-## 🔍 Debugging with Checkpoints
-
-### Replay Conversation
-
-```typescript
-export async function replayConversation(conversationId: number) {
-  const app = createGraph()
-  const threadId = `conversation_${conversationId}`
-
-  const history = await app.getStateHistory({
-    configurable: {
-      thread_id: threadId,
-    },
-  })
-
-  console.log('=== Conversation Replay ===')
-  let step = 0
-
-  for await (const state of history) {
-   console.log(`\n--- Step ${step} ---`)
-    console.log('Messages:', state.values.messages)
-    console.log('Metadata:', state.metadata)
-    step++
-  }
-}
-```
-
-### Time-travel Debugging
-
-```typescript
-export async function debugFromCheckpoint(
-  conversationId: number,
-  checkpointId: string
-) {
-  const app = createGraph()
-  const threadId = `conversation_${conversationId}`
-
-  // Load state at specific checkpoint
-  const state = await app.getState({
-    configurable: {
-      thread_id: threadId,
-      checkpoint_id: checkpointId,
-    },
-  })
-
-  console.log('State at checkpoint:', state.values)
-
-  // Re-run from that point with different input
-  const result = await app.invoke(
-    { messages: [new HumanMessage('DEBUG: Alternative path')] },
-    {
-      configurable: {
-        thread_id: `debug_${threadId}`,
-        checkpoint_id: checkpointId,
-      },
-    }
-  )
-
-  return result
-}
-```
-
-## 📊 Analytics
-
-### Checkpoint Statistics
-
-```typescript
-export async function getCheckpointStats() {
-  const result = await pool.query(`
-    SELECT 
-      COUNT(DISTINCT thread_id) as total_threads,
-      COUNT(*) as total_checkpoints,
-      AVG(pg_column_size(checkpoint)) as avg_checkpoint_size,
-      MAX(created_at) as latest_checkpoint,
-      MIN(created_at) as oldest_checkpoint
-    FROM checkpoints
-  `)
-
-  return result.rows[0]
-}
-```
-
-### Thread Activity
-
-```typescript
-export async function getThreadActivity(days: number = 7) {
-  const result = await pool.query(
-    `SELECT 
-       DATE(created_at) as date,
-       COUNT(DISTINCT thread_id) as active_threads,
-       COUNT(*) as total_checkpoints
-     FROM checkpoints
-     WHERE created_at >= NOW() - INTERVAL '${days} days'
-     GROUP BY DATE(created_at)
-     ORDER BY date DESC`
-  )
-
-  return result.rows
-}
-```
-
-## ⚠️ Common Gotchas
-
-### 1. Thread ID Consistency
-
-```typescript
-// ❌ WRONG: Changing thread ID loses history
-const threadId1 = `conversation_${conversationId}`
-const threadId2 = `conv_${conversationId}` // Different format!
-
-// ✅ CORRECT: Use consistent format
-const threadId = `conversation_${conversationId}`
-```
-
-### 2. Checkpoint Cleanup
-
-```typescript
-// ❌ WRONG: Never cleanup (database grows forever)
-// No cleanup strategy
-
-// ✅ CORRECT: Regular cleanup
-await cleanupOldCheckpoints(90) // Run via cron
-```
-
-### 3. Large Checkpoints
-
-```typescript
-// ❌ WRONG: Storing too much in state
-const state = {
-  messages: allMessages, // Could be 1000s
-  userData: entireUserObject,
-  config: massiveConfig,
-}
-
-// ✅ CORRECT: Store only what's needed
-const state = {
-  messages: recentMessages.slice(-20), // Last 20 only
-  userId: user.id, // Reference, not full object
-}
-```
-
-## 🧪 Testing
-
-### Test Persistence
-
-```typescript
-describe('Checkpointing', () => {
-  it('should persist conversation state', async () => {
-    const app = createGraph()
-    const threadId = 'test_conversation_123'
-
-    // First message
-    await app.invoke(
-      { messages: [new HumanMessage('Hello')] },
-      { configurable: { thread_id: threadId } }
+    config = {"configurable": {"thread_id": "conversation-123"}}
+    graph.invoke(
+        {"messages": [{"role": "user", "content": "Remember my name is Ana"}]},
+        config,
     )
-
-    // Second message (should remember first)
-    const result = await app.invoke(
-      { messages: [new HumanMessage('What did I just say?')] },
-      { configurable: { thread_id: threadId } }
-    )
-
-    // Should have both messages in state
-expect(result.messages.length).toBeGreaterThan(2)
-  })
-})
 ```
 
-## 📚 Best Practices
+## Async checkpointer
 
-1. **Consistent Thread IDs**: Use formato padronizado
-2. **Cleanup Strategy**: Archive ou delete checkpoints antigos
-3. **Metadata Rich**: Store context útil para analytics
-4. **State Size**: Keep state lean, store referências
-5. **Error Handling**: Handle checkpoint failures gracefully
-6. **Monitoring**: Track checkpoint creation rate e size
-7. **Backups**: Regular backups da tabela checkpoints
+Use a variante async quando o runtime for async, como FastAPI com `ainvoke` ou `astream`.
 
-## 🔗 Resources
+```python
+from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 
-- [LangGraph Persistence](https://langchain-ai.github.io/langgraph/how-tos/persistence/)
-- [PostgreSQL Checkpointer](https://langchain-ai.github.io/langgraph/reference/checkpoints/)
-- [State Management](https://langchain-ai.github.io/langgraph/concepts/low_level/#state)
+
+async with AsyncPostgresSaver.from_conn_string(DB_URI) as checkpointer:
+    # await checkpointer.setup()
+    graph = builder.compile(checkpointer=checkpointer)
+
+    result = await graph.ainvoke(
+        {"messages": [{"role": "user", "content": "Continue"}]},
+        {"configurable": {"thread_id": "conversation-123"}},
+    )
+```
+
+## Thread ids
+
+`thread_id` e a chave de continuidade. Use ids estaveis e nao sensiveis.
+
+```python
+config = {
+    "configurable": {
+        "thread_id": f"conversation:{conversation_id}",
+    }
+}
+```
+
+Regras:
+
+- Uma conversa ou workflow duravel deve reutilizar o mesmo `thread_id`.
+- Nao use apenas `user_id` se o usuario puder ter multiplas conversas.
+- Nao inclua segredo, email ou dado pessoal direto no `thread_id`.
+- Para testes, use prefixos como `test:` e limpe o banco depois.
+
+## Checkpoint versus store
+
+Use checkpointer para estado de execucao da thread:
+
+- mensagens atuais;
+- rota escolhida;
+- pendencias human-in-the-loop;
+- resultados intermediarios pequenos.
+
+Use store/memoria para fatos reutilizaveis entre threads:
+
+- preferencias do usuario;
+- memorias aprovadas;
+- dados recuperaveis por namespace;
+- contexto de longo prazo.
+
+```python
+from dataclasses import dataclass
+
+from langgraph.runtime import Runtime
+
+
+@dataclass
+class Context:
+    user_id: str
+
+
+def call_model(state: MessagesState, runtime: Runtime[Context]) -> dict:
+    namespace = ("memories", runtime.context.user_id)
+    memories = runtime.store.search(namespace, query=str(state["messages"][-1].content))
+    memory_text = "\n".join(item.value["data"] for item in memories)
+    response = model.invoke(
+        [{"role": "system", "content": f"Known user facts:\n{memory_text}"}]
+        + state["messages"]
+    )
+    return {"messages": [response]}
+```
+
+Compile com `store=` apenas quando houver uma estrategia clara de memoria.
+
+## Human-in-the-loop
+
+Interrupcoes exigem checkpointer, porque a execucao precisa ser retomada depois.
+
+```python
+from langgraph.types import Command, interrupt
+
+
+def review_tool_call(state: dict) -> dict:
+    decision = interrupt(
+        {
+            "action": "review_tool_call",
+            "tool_call": state["pending_tool_call"],
+        }
+    )
+    return {"review_decision": decision}
+
+
+graph.invoke(
+    Command(resume={"type": "approve"}),
+    {"configurable": {"thread_id": "conversation-123"}},
+)
+```
+
+## Operational guidance
+
+- Chame `setup()` de forma idempotente em ambiente controlado, nao a cada request.
+- Monitore tamanho de checkpoints e taxa de crescimento.
+- Nao consulte tabelas internas do checkpointer como contrato de produto.
+- Se precisar analytics, grave eventos proprios fora das tabelas internas do checkpointer.
+- Para retencao, prefira politica de dados do produto e backups consistentes.
+- Em testes unitarios, `InMemorySaver` pode ser suficiente; em integracao, teste PostgreSQL.
+
+## Verification
+
+- O grafo e compilado com `checkpointer=checkpointer`.
+- Invocacoes duraveis passam `configurable.thread_id`.
+- O mesmo `thread_id` recupera contexto anterior.
+- Interrupcoes sao retomadas com `Command(resume=...)`.
+- Memoria longa usa store separado, nao historico infinito no checkpoint.
