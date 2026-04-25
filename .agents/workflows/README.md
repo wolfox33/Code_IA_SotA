@@ -5,7 +5,7 @@ Esta pasta contém workflows reutilizáveis do projeto.
 ## Papel na arquitetura
 - `AGENTS.md` na raiz define a orquestração global.
 - `.agents/workflows/` contém sequências operacionais reutilizáveis carregadas sob demanda.
-- `tools/` pode materializar compatibilidade para superfícies que exigem workflows em outro formato ou diretório.
+- Cada plataforma de AI agent tem seus próprios caminhos para workflows/skills/regras - veja `platform-workflow-paths.md`.
 
 ## Diretrizes
 - Cada workflow deve ser um arquivo Markdown.
