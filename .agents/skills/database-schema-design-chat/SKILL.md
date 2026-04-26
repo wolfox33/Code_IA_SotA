@@ -91,11 +91,6 @@ index('messages_conversation_id_idx').on(messages.conversationId),
 index('messages_created_at_idx').on(messages.createdAt),
 ```
 
-## 📖 Resources
-
-- [Schema Examples](./resources/schema-examples.md)
-- [Migration Guide](./resources/migration-guide.md)
-
 ## 🔗 Links Úteis  
 
 - [Drizzle ORM](https://orm.drizzle.team)

@@ -265,11 +265,6 @@ export async function GET(req: NextRequest) {
 }
 ```
 
-## 📖 Resources
-
-- [Optimization Guide](./resources/optimization-guide.md)
-- [Monitoring Setup](./resources/monitoring-setup.md)
-
 ## 🔗 Links Úteis
 
 - [Next.js Performance](https://nextjs.org/docs/app/building-your-application/optimizing)

@@ -1,6 +1,6 @@
 ---
 name: ai-sdk-ui-chat
-description: Padrões de implementação de interface de chat usando Vercel AI SDK UI (@ai-sdk/react) com useChat, streaming, persistência, tools, error handling e integração segura com Next.js App Router, Better Auth e sistema de créditos.
+description: Use somente quando a tarefa envolver interface React de chat com Vercel AI SDK UI (`@ai-sdk/react`), especialmente `useChat`, streaming de mensagens, tool calling no client ou persistência de UIMessage em Next.js.
 metadata:
   model: inherit
   version: 1.0.0
@@ -28,18 +28,20 @@ Fornecer:
 
 ## ⚡ Use when
 
-- Construir interface de chat com AI streaming
-- Precisar de gerenciamento de estado de chat (messages, status, error)
-- Integrar streaming de AI com Next.js App Router
-- Implementar tool calling na UI
-- Precisar de persistência de mensagens
-- Substituir implementação manual de SSE por abstração robusta
+- Criar ou alterar uma interface React de chat baseada em `@ai-sdk/react`.
+- Implementar `useChat`, `useCompletion`, `useObject` ou UIMessage.
+- Integrar streaming de AI com Next.js App Router no lado da UI.
+- Implementar tool calling visível na interface do chat.
+- Persistir mensagens de chat no formato esperado pelo AI SDK UI.
+- Migrar uma UI de chat manual para os hooks do Vercel AI SDK UI.
 
 ## 🚫 Do not use
 
-- Para operações one-shot sem streaming (usar `generateText` diretamente)
-- Para backends não-JavaScript (usar SSE manual)
-- Para chat sem AI (usar WebSockets direto)
+- Apenas porque a tarefa menciona LLM, prompt, agente ou backend de IA.
+- Para operações one-shot sem UI de chat ou sem streaming.
+- Para backends não-JavaScript sem client React usando `@ai-sdk/react`.
+- Para chat sem AI ou mensagens em tempo real genéricas; use padrões de realtime/SSE.
+- Para cobrança, créditos ou autenticação isolados sem impacto direto na UI do chat.
 
 ## 📦 Stack
 
@@ -766,11 +768,6 @@ import { auth } from '@/core/auth'
 import { db } from '@/core/db'
 import { conversations, messages } from '@/core/db/schema'
 ```
-
-## 📖 Resources
-
-- [AI SDK UI Chatbot Guide](./resources/chatbot-patterns.md)
-- [Message Persistence Guide](./resources/persistence-guide.md)
 
 ## 🔗 Links Úteis
 

@@ -1,6 +1,6 @@
 ---
 name: realtime-chat-implementation
-description: Patterns de implementação de chat em tempo real com streaming, Server-Sent Events (SSE), WebSockets, optimistic updates, message persistence, loading states e error handling. Integração com Next.js 16, React Server Components e Vercel AI SDK.
+description: Use quando a tarefa implementar comportamento realtime de chat ou mensagens: SSE, WebSockets, streaming, optimistic updates, ordenação, retry, loading states ou persistência de mensagens.
 metadata:
   model: inherit
   version: 1.0.0
@@ -28,20 +28,19 @@ Fornecer:
 
 ## Use this skill when
 
-- Implementando chat interface
-- Building real-time messaging
-- Streaming AI responses
-- Precisando de UX responsiva
-- Handling network issues
-- Implementing retry logic
-- Building conversation UI
+- Implementar transporte realtime para chat/mensagens com SSE ou WebSockets.
+- Adicionar streaming incremental de respostas, inclusive AI responses.
+- Projetar optimistic updates, estados de envio, retry/backoff ou timeout.
+- Garantir ordenação, persistência e reconciliação de mensagens.
+- Corrigir bugs de rede, duplicação ou perda de mensagens em conversa.
 
 ## Do not use this skill when
 
-- Apenas request/response simples
-- Não precisa de real-time
-- Batch processing (não interativo)
-- Sistema muito simples
+- A tarefa é request/response simples sem streaming, SSE ou WebSocket.
+- O problema é apenas prompt/modelo/LLM sem UI ou transporte realtime.
+- O foco é `@ai-sdk/react`/`useChat`; use `ai-sdk-ui-chat`.
+- Batch processing, jobs assíncronos ou notificações não conversacionais.
+- A mudança é apenas schema, auth, billing ou deploy sem impacto realtime.
 
 ## Instructions
 

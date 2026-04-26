@@ -254,11 +254,6 @@ export async function GET(req: NextRequest) {
 - [ ] Load testing performed
 - [ ] Security audit completed
 
-## 📖 Resources
-
-- [Deployment Guide](./resources/deployment-guide.md)
-- [Production Checklist](./resources/production-checklist.md)
-
 ## 🔗 Links Úteis
 
 - [Vercel Docs](https://vercel.com/docs)

@@ -1,6 +1,6 @@
 ---
 name: langgraph-agent-patterns
-description: Padrões atuais para desenvolver agentes Python com LangGraph: orquestrador StateGraph, agentes especialistas, tool calling, middlewares, skills internas do agente, checkpointing PostgreSQL e boundary FastAPI sem frontend.
+description: Use quando a tarefa implementar runtime Python com LangGraph: StateGraph, especialistas, tool calling, middleware, checkpointing, streaming do grafo, memória ou boundary FastAPI do agente.
 metadata:
   model: inherit
   version: 2.0.0
@@ -29,12 +29,12 @@ Produzir agentes production-ready com:
 
 ## Use this skill when
 
-- Implementar um orquestrador Python com LangGraph.
+- Implementar ou refatorar um grafo LangGraph em Python.
 - Criar fluxo `orchestrator + specialist agents`.
-- Adicionar ferramentas a agentes com tool calling.
-- Definir middlewares de agente para seguranca, roteamento, prompts ou erros de tools.
-- Projetar um registry de skills internas do agente.
-- Configurar checkpointing, streaming ou memoria para agentes LangGraph.
+- Adicionar tools, schemas, permissões ou tool error handling a agentes.
+- Definir middlewares de agente para segurança, roteamento, prompts ou human-in-the-loop.
+- Projetar registry de skills internas Python para o runtime do agente.
+- Configurar checkpointing, streaming ou memória de agentes LangGraph.
 - Expor o runtime por FastAPI sem acoplar a frontend.
 
 ## Do not use this skill when
@@ -43,6 +43,7 @@ Produzir agentes production-ready com:
 - O projeto usar apenas uma chamada simples de LLM sem estado, tools ou orquestracao.
 - A tarefa for editar skills do harness `.agents/skills`; aqui "skills" significa capacidades Python internas do agente.
 - A necessidade principal for cobranca, creditos ou produto SaaS.
+- A tarefa for integração com AI SDK, Next.js ou React sem runtime LangGraph Python.
 
 ## Procedure
 

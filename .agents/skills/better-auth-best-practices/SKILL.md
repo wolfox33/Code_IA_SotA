@@ -1,6 +1,6 @@
 ---
 name: better-auth-best-practices
-description: Best practices e guia completo de integração do Better Auth (v1.4.18+). Cobre configuração, database adapters, session management, plugins, hooks, type safety e gotchas comuns. TypeScript-first, framework-agnostic auth com email/password, OAuth, magic links, passkeys e mais.
+description: Use quando a tarefa implementar, configurar ou corrigir Better Auth diretamente: adapters, sessões, cookies, OAuth, email/password, plugins, hooks ou integração TypeScript com banco/framework.
 metadata:
   model: inherit
   version: 1.0.0
@@ -26,21 +26,20 @@ Fornecer:
 
 ## Use this skill when
 
-- Implementando autenticação em novo projeto
-- Configurando Better Auth pela primeira vez
-- Debugando problemas de sessão/auth
-- Adicionando OAuth providers
-- Implementando 2FA/MFA
-- Integrando com Drizzle/Prisma
-- Configurando email verification
-- Troubleshooting auth issues
+- Implementando Better Auth em um projeto TypeScript.
+- Configurando adapters, schema, migrations ou integração com Drizzle/Prisma.
+- Corrigindo sessão, cookies, trusted origins, CSRF ou callbacks do Better Auth.
+- Adicionando OAuth providers, email/password, magic links, 2FA/MFA ou passkeys.
+- Integrando hooks/client APIs do Better Auth em frontend ou backend.
+- Revisando segurança de configuração do Better Auth antes de deploy.
 
 ## Do not use this skill when
 
-- Projeto já usa outra solução de auth (NextAuth, Clerk, etc.)
-- Necessita apenas auth básica sem features avançadas
-- Não usa TypeScript
-- Projeto é muito simples (auth manual seria suficiente)
+- A tarefa só menciona usuário, sessão ou permissões sem tocar Better Auth.
+- Projeto já usa outra solução de auth (NextAuth, Clerk, Supabase Auth, etc.) e não haverá migração.
+- A mudança é autorização de domínio/RBAC sem alterar autenticação.
+- Não há TypeScript, adapter ou integração Better Auth envolvida.
+- A tarefa é apenas UI de login sem contrato de auth.
 
 ## Instructions
 
@@ -52,7 +51,7 @@ Fornecer:
 6. **Implementar client**: React/Vue/Svelte hooks
 7. **Testar fluxos**: Sign up, sign in, password reset, etc.
 
-Consulte `resources/integration-guide.md` para exemplos detalhados e `resources/common-gotchas.md` para problemas comuns.
+Use os exemplos e checklists deste arquivo como referência principal.
 
 ## Safety
 

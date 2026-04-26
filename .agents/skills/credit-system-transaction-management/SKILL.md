@@ -1,6 +1,6 @@
 ---
 name: credit-system-transaction-management
-description: Padrões de implementação de sistema de créditos robusto com database transactions, idempotency, optimistic/pessimistic locking, audit trail e race condition prevention. ACID guarantees com Drizzle ORM e PostgreSQL.
+description: Use quando a tarefa alterar ledger ou operações críticas de créditos/tokens: débito, crédito, reembolso, reserva, idempotência, locking, audit trail ou concorrência em PostgreSQL/Drizzle.
 metadata:
   model: inherit
   version: 1.0.0
@@ -28,20 +28,19 @@ Fornecer:
 
 ## Use this skill when
 
-- Implementando sistema de créditos/tokens
-- Lidando com transações financeiras
-- Precisando de ACID guarantees
-- Prevenindo race conditions
-- Implementando audit trail
-- Building billing systems
-- Handling concurrent operations
+- Implementar ou alterar débito, crédito, reserva, estorno ou expiração de créditos/tokens.
+- Garantir ACID, idempotência, locking ou consistência sob concorrência.
+- Criar audit trail/ledger para operações monetárias ou de uso.
+- Integrar eventos de billing a atualização transacional de saldo.
+- Escrever testes de race condition, double spend ou processamento duplicado.
 
 ## Do not use this skill when
 
-- Não precisa de transações
-- Sistema muito simples (single user)
-- Não há operações concorrentes
-- Accuracy não é crítica
+- A tarefa só menciona créditos como texto de UI, pricing ou copy.
+- O foco é checkout/webhook Stripe sem alterar ledger; use a skill Stripe.
+- Não há saldo, transação, concorrência, auditoria ou garantia de consistência.
+- Sistema é single-user ou protótipo sem risco de double spend.
+- Accuracy não é crítica para o comportamento solicitado.
 
 ## Instructions
 

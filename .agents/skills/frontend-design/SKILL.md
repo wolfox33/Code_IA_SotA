@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Skill generalista de design frontend. Padrões de layout, motion, acessibilidade, responsividade e anti-patterns. Usa Google Design.md como formato padrão para documentação de design systems. Design system específico do projeto deve estar em `.agents/project/context-design.md`.
+description: Use quando a tarefa criar, alterar ou revisar UI visual concreta: layout, componentes, responsividade, acessibilidade, motion, tokens ou documentação de design system em `.agents/project/context-design.md`.
 metadata:
   model: inherit
   version: 1.0.0
@@ -27,18 +27,18 @@ Garantir que toda interface gerada:
 
 ## Use this skill when
 
-- Criando qualquer componente, página ou layout
-- Definindo padrões visuais para um projeto
-- Documentando design system em formato DESIGN.md
-- Validando tokens de design via CLI
-- Revisando ou melhorando UI existente
-- Implementando landing pages, dashboards, formulários
+- Criando ou alterando componente, página, layout, formulário, dashboard ou landing page.
+- Definindo ou documentando tokens, design system ou `DESIGN.md`.
+- Revisando acessibilidade, responsividade, estados visuais, motion ou hierarquia visual.
+- Ajustando Tailwind/shadcn/ui por motivo visual ou de UX.
+- Validando uma UI por screenshot, contraste ou comportamento responsivo.
 
 ## Do not use this skill when
 
-- Trabalhando exclusivamente no backend/API
-- Configurando infraestrutura ou deploy
-- Implementando lógica de negócio sem UI
+- Trabalhando exclusivamente no backend, API, banco, auth, billing ou deploy.
+- A tarefa só menciona frontend como diretório, sem mudança visual ou UX.
+- Implementando lógica de negócio sem impacto em layout, estados ou acessibilidade.
+- Fazendo refactor mecânico, rename ou ajuste de tipos em componentes sem decisão de design.
 
 ## Instructions
 

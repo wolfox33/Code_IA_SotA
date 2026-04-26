@@ -1,6 +1,6 @@
 ---
 name: tech-stack-decision
-description: Guia de decisão de stack tecnológica para projetos SaaS. Define tecnologias padrão, versões estáveis e critérios de escolha quando o modelo estiver em dúvida. Cobre frontend (Next.js, Bun, Tailwind), backend (FastAPI, LangGraph), database (PostgreSQL, Drizzle) e ferramentas de teste.
+description: Use quando a tarefa exigir decisão explícita de tecnologia, versão, framework, runtime, banco, ORM, ferramenta de teste ou migração de stack para SaaS/app com requisitos ainda em aberto.
 metadata:
   model: inherit
   version: 1.0.0
@@ -26,20 +26,20 @@ Fornecer decisões claras e fundamentadas sobre:
 
 ## Use this skill when
 
-- Iniciando novo projeto e definindo stack
-- Em dúvida entre múltiplas tecnologias similares
-- Precisando validar escolha de framework/biblioteca
-- Atualizando versões de dependências
-- Avaliando trade-offs entre opções
-- Estabelecendo padrões de tecnologia para o time
-- Migrando de uma stack para outra
+- Iniciar projeto e escolher stack ainda não definida.
+- Comparar tecnologias similares com trade-offs reais.
+- Validar framework, biblioteca, runtime, ORM, banco ou ferramenta de teste antes de adotar.
+- Atualizar versões quando compatibilidade ou estabilidade forem parte da decisão.
+- Estabelecer padrão tecnológico do time/projeto.
+- Planejar migração de uma stack para outra.
 
 ## Do not use this skill when
 
-- Stack já está definida e funcionando bem
-- Projeto tem requisitos muito específicos não cobertos
-- Necessidade de tecnologia de nicho/especializada
-- Time já tem expertise consolidada em outra stack
+- A tarefa é implementar em uma stack já definida no projeto.
+- A dúvida é de API/uso de uma biblioteca específica, não escolha de tecnologia.
+- Projeto tem requisitos de nicho não cobertos por este guia.
+- Time já tem expertise consolidada e o usuário não pediu comparação.
+- A decisão é apenas arquitetura de módulos; use `vertical-slice-modular-monolith`.
 
 ## Instructions
 
@@ -49,7 +49,7 @@ Fornecer decisões claras e fundamentadas sobre:
 4. **Validar compatibilidade**: Garantir que tecnologias funcionam juntas
 5. **Documentar decisão**: Registrar escolha e justificativa
 
-Consulte `resources/stack-reference.md` para tabela completa de tecnologias e `resources/decision-matrix.md` para critérios de escolha.
+Consulte `resources/stack-reference.md` para tabela completa de tecnologias.
 
 ## Safety
 
@@ -338,9 +338,6 @@ Revisar em [data] ou quando [condição]
 ## Resources
 
 - `resources/stack-reference.md` - Referência completa de tecnologias
-- `resources/decision-matrix.md` - Matriz de decisão detalhada
-- `resources/migration-guides.md` - Guias de migração entre stacks
-- `resources/version-compatibility.md` - Tabela de compatibilidade de versões
 
 ## Example Interactions
 

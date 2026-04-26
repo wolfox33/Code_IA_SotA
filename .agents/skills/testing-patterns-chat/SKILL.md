@@ -237,11 +237,6 @@ describe('Concurrent Credits', () => {
 })
 ```
 
-## 📖 Resources
-
-- [Testing Guide](./resources/testing-guide.md)
-- [Mocking Patterns](./resources/mocking-patterns.md)
-
 ## 🔗 Links Úteis
 
 - [Vitest](https://vitest.dev)

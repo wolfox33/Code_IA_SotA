@@ -1,6 +1,6 @@
 ---
 name: vertical-slice-modular-monolith
-description: Arquitetura padrão para projetos SaaS combinando Vertical Slice Architecture e Modular Monolith. Prioriza escalabilidade, velocidade de desenvolvimento, baixo acoplamento e facilidade de manutenção. Evita overengineering e camadas desnecessárias. Use PROATIVAMENTE ao iniciar novos projetos ou refatorar aplicações existentes.
+description: Use quando a tarefa definir ou revisar arquitetura modular de SaaS/app web: boundaries de features, vertical slices, modular monolith, acoplamento entre módulos ou refactor estrutural.
 metadata:
   model: inherit
   version: 1.0.0
@@ -27,21 +27,19 @@ Criar aplicações que:
 
 ## Use this skill when
 
-- Iniciando um novo projeto SaaS ou aplicação web
-- Refatorando monólito tradicional em camadas
-- Estabelecendo padrões de arquitetura para o time
-- Projetando sistema que precisa escalar gradualmente
-- Buscando equilíbrio entre simplicidade e escalabilidade
-- Evitando complexidade prematura de microservices
-- Criando aplicação multi-tenant ou multi-módulo
+- Iniciando um SaaS/app web sem arquitetura de módulos definida.
+- Planejando boundaries entre features, domínios, services e dados.
+- Refatorando monólito em camadas para módulos/coortes de features.
+- Revisando acoplamento entre módulos ou criando padrões arquiteturais do projeto.
+- Projetando multi-tenant, multi-módulo ou crescimento gradual sem microservices.
 
 ## Do not use this skill when
 
-- Sistema já é microservices bem estabelecido
-- Projeto é script simples ou ferramenta CLI
-- Aplicação tem menos de 5 features/módulos
-- Time já tem arquitetura consolidada e funcional
-- Necessidade comprovada de separação física de serviços (múltiplos times, escala massiva)
+- A tarefa é uma correção local sem mudança estrutural.
+- Sistema já é microservices bem estabelecido.
+- Projeto é script simples, ferramenta CLI ou app com poucos módulos.
+- Time/projeto já tem arquitetura consolidada e funcional.
+- A necessidade comprovada é separação física de serviços, não monólito modular.
 
 ## Instructions
 
@@ -514,10 +512,7 @@ utils/
 ## Resources
 
 - `resources/implementation-guide.md` - Guia detalhado de implementação
-- `resources/feature-template/` - Template completo de feature
-- `resources/examples/` - Exemplos de features reais
-- `resources/migration-guide.md` - Migração de arquitetura tradicional
-- `resources/adr-template.md` - Template para Architecture Decision Records
+- `resources/feature-template.md` - Template de feature
 
 ## Example Interactions
 

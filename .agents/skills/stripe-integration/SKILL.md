@@ -1,6 +1,6 @@
 ---
 name: stripe-integration
-description: Best practices de integração do Stripe para sistemas de créditos SaaS. Cobre setup, checkout sessions, webhook handling com idempotência, customer portal, testing com Stripe CLI, error handling e security. Integração com Better Auth, Next.js 16 e Drizzle ORM.
+description: Use quando a tarefa tocar integração Stripe diretamente: checkout, prices/products, webhooks, customer portal, assinaturas, pagamentos, billing ou testes com Stripe CLI.
 metadata:
   model: inherit
   version: 1.0.0
@@ -28,20 +28,19 @@ Fornecer:
 
 ## Use this skill when
 
-- Implementando sistema de pagamentos em SaaS
-- Configurando venda de créditos/pacotes
-- Integrando Stripe webhooks
-- Debugando problemas de pagamento
-- Configurando Stripe Customer Portal
-- Implementando sistema de billing
-- Testando fluxos de pagamento
+- Criar ou alterar checkout sessions, payment links, subscriptions ou customer portal.
+- Configurar products/prices, venda de créditos/pacotes ou billing no Stripe.
+- Implementar, validar ou debugar webhooks Stripe e idempotência.
+- Processar eventos de pagamento que alteram créditos, acesso ou invoices.
+- Testar fluxos de pagamento com Stripe CLI ou fixtures.
 
 ## Do not use this skill when
 
-- Projeto não precisa de pagamentos
-- Usa outro gateway (PayPal, Mercado Pago, etc.)
-- Não usa sistema de créditos (apenas subscriptions simples)
-- Projeto muito simples sem backend
+- A tarefa só menciona créditos, planos ou limites sem Stripe, checkout, cobrança ou webhook.
+- Projeto não precisa de pagamentos ou usa outro gateway (PayPal, Mercado Pago, etc.).
+- A mudança é apenas ledger/transação interna; use a skill de créditos.
+- A tarefa é UI de pricing estática sem integração de pagamento.
+- Projeto não tem backend ou endpoint para processar eventos de pagamento.
 
 ## Instructions
 

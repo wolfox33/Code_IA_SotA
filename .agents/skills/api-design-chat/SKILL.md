@@ -145,11 +145,6 @@ export async function POST(req: NextRequest) {
 
 > **Produção**: Substituir Map por Redis (`@upstash/ratelimit` ou similar) para funcionar em múltiplas instâncias/serverless.
 
-## 📖 Resources
-
-- [API Patterns](./resources/api-patterns.md)
-- [Error Handling](./resources/error-handling.md)
-
 ## 🔗 Links Úteis
 
 - [Next.js Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers)

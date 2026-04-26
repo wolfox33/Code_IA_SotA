@@ -124,12 +124,13 @@ Quando houver ambiguidade na spec:
 - Consultar `.agents/project/MEMORY.md` para fatos emergentes, decisões e workarounds da sessão atual.
 
 ## Delegation
-Subagents devem ser acionados por fase do ciclo de vida:
-- **discovery**: `.agents/subagents/spec-analyst.md` (refinamento de spec e eliminação de ambiguidades)
-- **planning**: `.agents/subagents/planner.md` (arquitetura, quebra de tarefas e contratos)
-- **implementation**: `.agents/subagents/builder.md` (codificação de UI, API e domínios)
-- **review**: `.agents/subagents/reviewer.md` (code review, QA, segurança e performance)
-- **deployment**: `.agents/subagents/devops.md` (infra, CI/CD, deploy e operação)
+Subagents são perfis opcionais por fase. Use-os quando a tarefa exigir especialização real, paralelismo útil ou handoff claro; não acione subagents para consultas simples, mudanças pequenas ou trabalho que o agente principal consegue concluir diretamente com baixo risco.
+
+- **discovery**: use `.agents/subagents/spec-analyst.md` para requisitos vagos, specs incompletas ou ambiguidades de produto. Não use quando a intenção e os critérios de aceite já estiverem claros.
+- **planning**: use `.agents/subagents/planner.md` para decisões arquiteturais, contratos entre módulos ou decomposição de épicos. Não use para correções localizadas com caminho evidente.
+- **implementation**: use `.agents/subagents/builder.md` para implementação com escopo bem definido em UI, API, integrações ou domínio. Não use quando a mudança for pequena o suficiente para edição direta.
+- **review**: use `.agents/subagents/reviewer.md` para revisão antes de merge, debugging complexo, segurança ou performance. Não use como etapa obrigatória para tarefas triviais já validadas.
+- **deployment**: use `.agents/subagents/devops.md` para infra, CI/CD, deploy, rollback ou diagnóstico de ambiente. Não use em mudanças sem impacto operacional.
 
 ## Quick References
 - Skills disponíveis: `.agents/skills/`

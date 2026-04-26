@@ -1,6 +1,6 @@
 ---
 name: nextjs-app-router-patterns
-description: Best practices para Next.js 16 App Router incluindo Server Components, Client Components, Server Actions, Route Handlers, Streaming, Suspense boundaries, error handling, loading states e data fetching patterns.
+description: Use quando a tarefa alterar implementação Next.js App Router: Server/Client Components, Server Actions, Route Handlers, cache/revalidation, streaming/Suspense, loading/error boundaries ou data fetching.
 metadata:
   model: inherit
   version: 1.0.0
@@ -28,19 +28,18 @@ Fornecer:
 
 ## Use this skill when
 
-- Construindo aplicação Next.js
-- Decidindo Server vs Client Component
-- Implementing data fetching
-- Streaming UI progressivamente
-- Handling errors robustamente
-- Optimizing performance
-- Building API routes
+- Criar ou alterar rotas, layouts, pages ou components no App Router.
+- Decidir Server Component vs Client Component por causa de dados, estado ou browser APIs.
+- Implementar Server Actions, Route Handlers, cache/revalidation ou data fetching.
+- Adicionar streaming/Suspense, `loading.tsx`, `error.tsx` ou boundaries.
+- Corrigir bug específico de App Router, rendering, cache ou hydration.
 
 ## Do not use this skill when
 
-- Usando Next.js Pages Router (legacy)
-- SPA puro sem SSR
-- Framework diferente (Remix, etc.)
+- A tarefa só menciona React/frontend sem Next.js App Router.
+- Usando Next.js Pages Router (legacy), SPA puro sem SSR ou outro framework.
+- A mudança é puramente visual; use `frontend-design`.
+- A mudança é backend externo, banco, billing, auth ou infra sem Route Handler/Server Action.
 
 ## Instructions
 
@@ -52,7 +51,7 @@ Fornecer:
 6. **Server Actions**: for mutations
 7. **Route Handlers**: for APIs
 
-Consulte `resources/component-patterns.md` para Server/Client patterns e `resources/data-fetching.md` para strategies.
+Use os patterns e exemplos deste arquivo como referência principal.
 
 ## Safety
 
@@ -535,11 +534,6 @@ revalidatePath('/posts')
 // Revalidate by tag
 revalidateTag('posts')
 ```
-
-## 📖 Resources
-
-- [Component Patterns](./resources/component-patterns.md) - Server vs Client patterns
-- [Data Fetching](./resources/data-fetching.md) - Fetching strategies
 
 ## 🔗 Links Úteis
 
