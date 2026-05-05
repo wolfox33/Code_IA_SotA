@@ -1,14 +1,18 @@
 ---
 name: test-driven-development
-description: Use para implementar bugfixes reproduziveis, regras de negocio e logica nova com disciplina RED-GREEN-REFACTOR; nao substitui skills tecnicas de teste, apenas define a ordem segura de trabalho.
+description: "Use para implementar bugfixes reproduziveis, regras de negocio e logica nova com disciplina RED-GREEN-REFACTOR; nao substitui skills tecnicas de teste, apenas define a ordem segura de trabalho."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: testing
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "testing"
   complexity: 5
-  tags: [testing, tdd, bugfix, regression, quality]
-  compatible_with: [windsurf, opencode, antigravity]
+  tags:
+    - testing
+    - tdd
+    - bugfix
+    - regression
+    - quality
 ---
 
 # SKILL: Test-Driven Development
@@ -78,7 +82,6 @@ Garantir que mudancas de comportamento sejam guiadas por teste que falha primeir
 - Testes relacionados foram executados.
 - A skill tecnica de teste adequada foi usada quando o framework exigiu detalhe especifico.
 
----
 
 > **Skill log**
 > - [2026-04-25] Criada como disciplina contextual de TDD sem substituir skills tecnicas de teste existentes.

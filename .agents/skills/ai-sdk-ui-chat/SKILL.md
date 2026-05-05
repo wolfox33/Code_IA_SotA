@@ -1,14 +1,20 @@
 ---
 name: ai-sdk-ui-chat
-description: Use somente quando a tarefa envolver interface React de chat com Vercel AI SDK UI (`@ai-sdk/react`), especialmente `useChat`, streaming de mensagens, tool calling no client ou persistência de UIMessage em Next.js.
+description: "Use somente quando a tarefa envolver interface React de chat com Vercel AI SDK UI (`@ai-sdk/react`), especialmente `useChat`, streaming de mensagens, tool calling no client ou persistência de UIMessage em Next.js."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 6
-  tags: [ai-sdk, useChat, streaming, chat-ui, react, nextjs, vercel-ai]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - ai-sdk
+    - useChat
+    - streaming
+    - chat-ui
+    - react
+    - nextjs
+    - vercel-ai
 ---
 
 # AI SDK UI for Chat Applications
@@ -788,3 +794,4 @@ import { conversations, messages } from '@/core/db/schema'
 - "Exibir reasoning tokens do DeepSeek no chat"
 - "Otimizar chat enviando apenas última mensagem"
 - "Implementar retry e error handling no chat"
+

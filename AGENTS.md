@@ -46,7 +46,7 @@ Sempre:
    - primeiro: ler apenas `name` + `description` do frontmatter para avaliar relevância
    - depois: carregar conteúdo completo do `SKILL.md` apenas se a skill for realmente necessária
    - por fim: carregar arquivos de suporte (`resources/`, `scripts/`) somente se a tarefa exigir
-9. Ao concluir tarefa complexa (múltiplos arquivos ou decisões não triviais), avaliar se o que foi feito merece virar uma skill reutilizável em `.agents/skills/`. Se sim, criar `SKILL.md` com o padrão do harness.
+9. Ao concluir tarefa complexa (múltiplos arquivos ou decisões não triviais), avaliar se o que foi feito merece virar uma skill reutilizável em `.agents/skills/`. Se sim, criar `SKILL.md` seguindo o padrão parse-safe do harness.
 10. Se usou uma skill existente e descobriu pitfall, variação ou melhoria, atualizar o `SKILL.md` correspondente antes de concluir.
 11. Perguntar antes de assumir comportamento quando houver ambiguidade real ou risco alto.
 12. Ao concluir qualquer tarefa significativa, avaliar se algo vale persistir em `.agents/project/MEMORY.md`: workarounds descobertos, decisões tomadas, bugs conhecidos ou lições aprendidas. Registrar com data. Remover entradas obsoletas.
@@ -82,6 +82,7 @@ Carregar estas capacidades apenas quando o contexto justificar; não transformar
 - **Spec-first workflow**: usar `.agents/workflows/spec-first-development.md` para demandas significativas, vagas, multi-step ou com contratos. Se OpenSpec estiver ativo em `.agents/project/context.md`, OpenSpec é a fonte canônica e o workflow apenas roteia discovery/clarificação.
 - **TDD**: usar `.agents/skills/test-driven-development/SKILL.md` para bugfix reproduzível, regra de negócio, lógica nova ou regressão. Não substitui skills técnicas de teste, como `testing-patterns-chat`; define a ordem RED-GREEN-REFACTOR quando aplicável.
 - **Debugging sistemático**: usar `.agents/skills/systematic-debugging/SKILL.md` para bugs, testes falhando ou comportamento inesperado cuja causa não esteja comprovada.
+- **Backend resilience by design**: usar `.agents/skills/backend-resilience-by-design/SKILL.md` durante implementação e revisão de backend com APIs, banco, integrações externas, fluxos críticos, consistência, rate limit, paginação, observabilidade ou validação de resiliência antes de concluir.
 - **Verificação antes de concluir**: usar `.agents/skills/verification-before-completion/SKILL.md` antes de finalizar tarefas significativas, especialmente mudanças multi-arquivo, commits, workflows ou skills.
 
 ### Goal-Driven Execution

@@ -1,14 +1,20 @@
 ---
 name: credit-system-transaction-management
-description: Use quando a tarefa alterar ledger ou operações críticas de créditos/tokens: débito, crédito, reembolso, reserva, idempotência, locking, audit trail ou concorrência em PostgreSQL/Drizzle.
+description: "Use quando a tarefa alterar ledger ou operações críticas de créditos/tokens: débito, crédito, reembolso, reserva, idempotência, locking, audit trail ou concorrência em PostgreSQL/Drizzle."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 6
-  tags: [credits, transactions, drizzle, postgresql, acid, concurrency, audit]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - credits
+    - transactions
+    - drizzle
+    - postgresql
+    - acid
+    - concurrency
+    - audit
 ---
 
 # Credit System & Transaction Management
@@ -562,3 +568,4 @@ export async function debitCreditsMultiple(
 - [Drizzle Transactions](https://orm.drizzle.team/docs/transactions)
 - [ACID Properties](https://en.wikipedia.org/wiki/ACID)
 - [Optimistic vs Pessimistic Locking](https://stackoverflow.com/questions/129329/optimistic-vs-pessimistic-locking)
+

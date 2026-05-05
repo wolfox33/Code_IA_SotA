@@ -1,14 +1,19 @@
 ---
 name: tech-stack-decision
-description: Use quando a tarefa exigir decisão explícita de tecnologia, versão, framework, runtime, banco, ORM, ferramenta de teste ou migração de stack para SaaS/app com requisitos ainda em aberto.
+description: "Use quando a tarefa exigir decisão explícita de tecnologia, versão, framework, runtime, banco, ORM, ferramenta de teste ou migração de stack para SaaS/app com requisitos ainda em aberto."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 3
-  tags: [stack, technology, decision, saas, framework, library]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - stack
+    - technology
+    - decision
+    - saas
+    - framework
+    - library
 ---
 
 # Tech Stack Decision Guide
@@ -369,3 +374,4 @@ Revisar em [data] ou quando [condição]
 5. **Comunidade**: Considerar tamanho e atividade da comunidade
 6. **Manutenção**: Avaliar suporte de longo prazo
 7. **Performance**: Balancear performance com produtividade
+

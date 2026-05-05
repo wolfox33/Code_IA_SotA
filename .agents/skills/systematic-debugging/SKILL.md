@@ -1,14 +1,17 @@
 ---
 name: systematic-debugging
-description: Use para bugs, testes falhando, regressao ou comportamento inesperado; exige reproducao, rastreamento de causa raiz e validacao de hipotese antes de corrigir.
+description: "Use para bugs, testes falhando, regressao ou comportamento inesperado; exige reproducao, rastreamento de causa raiz e validacao de hipotese antes de corrigir."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: testing
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "testing"
   complexity: 5
-  tags: [debugging, root-cause, regression, tests]
-  compatible_with: [windsurf, opencode, antigravity]
+  tags:
+    - debugging
+    - root-cause
+    - regression
+    - tests
 ---
 
 # SKILL: Systematic Debugging
@@ -77,7 +80,6 @@ Evitar correcoes por chute. Antes de alterar codigo, reproduza o problema, enten
 - Hipotese foi validada antes do fix.
 - Teste/comando demonstra que o bug nao ocorre mais.
 
----
 
 > **Skill log**
 > - [2026-04-25] Criada para disciplinar investigacao de bugs e falhas sem impor overhead a mudancas simples.

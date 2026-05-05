@@ -1,14 +1,21 @@
 ---
 name: frontend-design
-description: Use quando a tarefa criar, alterar ou revisar UI visual concreta: layout, componentes, responsividade, acessibilidade, motion, tokens ou documentação de design system em `.agents/project/context-design.md`.
+description: "Use quando a tarefa criar, alterar ou revisar UI visual concreta: layout, componentes, responsividade, acessibilidade, motion, tokens ou documentação de design system em `.agents/project/context-design.md`."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 5
-  tags: [frontend, design, ui, ux, tailwind, shadcn, accessibility, responsive]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - frontend
+    - design
+    - ui
+    - ux
+    - tailwind
+    - shadcn
+    - accessibility
+    - responsive
 ---
 
 # Frontend Design — Generalista
@@ -59,7 +66,6 @@ Garantir que toda interface gerada:
 - **SEMPRE** manter contraste mínimo 4.5:1 para texto
 - **SEMPRE** usar `cursor-pointer` em elementos clicáveis
 
----
 
 ## 📋 Google Design.md — Formato Padrão
 
@@ -87,7 +93,6 @@ Formato estruturado que combina tokens legíveis por máquina (YAML frontmatter)
 ### Estrutura do DESIGN.md
 
 ```yaml
----
 version: alpha
 name: [Nome do Design System]
 description: [Descrição]
@@ -110,7 +115,6 @@ components:
   [component-name]:
     backgroundColor: "{colors.primary}"
     [outras propriedades]
----
 
 ## Overview
 [Rationale do design system]
@@ -141,7 +145,6 @@ npx @google/design.md export --format tailwind DESIGN.md > tailwind.theme.json
 npx @google/design.md spec
 ```
 
----
 
 ## 🎨 Padrões Generalistas
 
@@ -192,7 +195,6 @@ Usar escala de 4px (Tailwind default):
 --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08);
 ```
 
----
 
 ## 🧩 Componentes — Padrões shadcn/ui
 
@@ -269,7 +271,6 @@ Usar shadcn/ui como base e **customizar via CSS variables** do Tailwind v4. Nunc
 | `Command` | Paleta de comandos / search |
 | `Tooltip` | Informações adicionais on hover |
 
----
 
 ## 🎭 Design Thinking
 
@@ -290,7 +291,6 @@ Consulte context-design.md para direção estética específica do projeto. Padr
 - **Ícones**: Lucide React (consistente, clean) — nunca emojis como ícones
 - **Imagens**: Consistentes com tom e estilo do projeto
 
----
 
 ## 📐 Layout Patterns
 
@@ -369,7 +369,6 @@ Consulte context-design.md para direção estética específica do projeto. Padr
 </section>
 ```
 
----
 
 ## ✨ Motion & Interactions
 
@@ -444,7 +443,6 @@ Consulte context-design.md para direção estética específica do projeto. Padr
 }
 ```
 
----
 
 ## ♿ Acessibilidade
 
@@ -479,7 +477,6 @@ Consulte context-design.md para direção estética específica do projeto. Padr
 - [ ] Labels associados a todos os inputs (`htmlFor`)
 - [ ] Alt text descritivo em imagens (nunca vazio exceto decorativas)
 
----
 
 ## 📱 Responsividade
 
@@ -527,7 +524,6 @@ Consulte context-design.md para direção estética específica do projeto. Padr
 </Sheet>
 ```
 
----
 
 ## 🚫 Anti-Patterns — O que NUNCA fazer
 
@@ -558,7 +554,6 @@ Consulte context-design.md para direção estética específica do projeto. Padr
 - ❌ **Imagens sem dimensões** — sempre definir width/height ou aspect-ratio
 - ❌ **Fontes sem `display: swap`** — evitar FOIT
 
----
 
 ## ✅ Pre-Delivery Checklist
 
@@ -603,7 +598,6 @@ Antes de entregar qualquer componente ou página, verificar:
 - [ ] Sem inline styles
 - [ ] Componentes seguem padrão shadcn/ui
 
----
 
 ## 🗂️ Estrutura de Arquivos
 
@@ -634,7 +628,6 @@ src/
         └── components/          # Componentes específicos da feature
 ```
 
----
 
 ## 📖 Resources
 
@@ -669,3 +662,4 @@ src/
 - Valida acessibilidade em toda entrega
 - Sugere melhorias visuais quando identifica anti-patterns
 - Mantém consistência entre páginas e componentes
+

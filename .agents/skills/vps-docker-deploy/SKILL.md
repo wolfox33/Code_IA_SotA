@@ -1,14 +1,21 @@
 ---
 name: vps-docker-deploy
-description: Padroniza deploy em VPS única com Next.js (frontend), FastAPI+LangGraph (backend), PostgreSQL e Nginx, orquestrados via Docker Compose.
+description: "Padroniza deploy em VPS única com Next.js frontend, FastAPI com LangGraph backend, PostgreSQL e Nginx, orquestrados via Docker Compose."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: infrastructure
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "infrastructure"
   complexity: 4
-  tags: [vps, docker, compose, nextjs, fastapi, postgresql, nginx, deploy]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - vps
+    - docker
+    - compose
+    - nextjs
+    - fastapi
+    - postgresql
+    - nginx
+    - deploy
 ---
 
 # SKILL: VPS Docker Deploy (Next.js + FastAPI + PostgreSQL + Nginx)
@@ -25,7 +32,6 @@ Padronizar deploy em VPS única usando:
 
 Arquitetura simples, escalável e production-ready.
 
----
 
 # 🏗 Arquitetura
 
@@ -38,7 +44,6 @@ Docker Network (bridge)
     ├── backend (FastAPI + LangGraph)
     └── db (PostgreSQL)
 
----
 
 # 📂 Estrutura obrigatória
 
@@ -57,7 +62,6 @@ project/
 └── nginx/
     └── nginx.conf
 
----
 
 # 🐳 docker-compose.yml padrão
 
@@ -73,7 +77,6 @@ Serviços mínimos:
 - frontend
 - nginx
 
----
 
 # 🔐 Segurança obrigatória
 
@@ -84,7 +87,6 @@ Serviços mínimos:
 - Variáveis sensíveis via .env
 - Firewall (ufw) liberando apenas 22, 80, 443
 
----
 
 # 🚀 Backend (FastAPI + LangGraph)
 
@@ -98,7 +100,6 @@ Regras:
 Comando padrão:
 uvicorn main:app --host 0.0.0.0 --port 8000 --workers 2
 
----
 
 # ⚛ Frontend (Next.js)
 
@@ -108,7 +109,6 @@ Regras:
 - NODE_ENV=production
 - Proxy sempre via Nginx
 
----
 
 # 🌐 Nginx obrigatório
 
@@ -125,7 +125,6 @@ Regras:
 - Timeouts configurados
 - client_max_body_size ajustado
 
----
 
 # 📈 Escalabilidade futura
 
@@ -141,7 +140,6 @@ NÃO usar Kubernetes antes de:
 - Ter problema real de scaling
 - > 1 VPS ativa
 
----
 
 # 🧠 Para projetos com LangGraph
 
@@ -152,7 +150,6 @@ Regras adicionais:
 - Evitar operações bloqueantes
 - Usar async corretamente
 
----
 
 # 🔥 Processo padrão de deploy
 
@@ -164,7 +161,6 @@ Regras adicionais:
 6. Configurar SSL
 7. Ativar firewall
 
----
 
 # ❌ Proibido
 
@@ -174,7 +170,6 @@ Regras adicionais:
 - Misturar ambiente dev com prod
 - Commitar .env
 
----
 
 # 🧩 Padrão para múltiplos projetos
 
@@ -184,7 +179,6 @@ Cada projeto:
 - Subdomínio próprio
 - Banco separado
 
----
 
 # 🧠 Filosofia
 
@@ -194,7 +188,6 @@ Cada projeto:
 - Sem Kubernetes cedo demais
 - Infra deve ser previsível
 
----
 
 # 📌 Quando usar esse skill
 
@@ -204,6 +197,5 @@ Sempre que:
 - Criar sistema de trading backend + frontend
 - Criar MVP com banco relacional
 
----
 
 END SKILL

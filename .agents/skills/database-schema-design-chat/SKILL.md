@@ -1,14 +1,19 @@
 ---
 name: database-schema-design-chat
-description : Padrões de design de schema PostgreSQL/Drizzle para aplicações de chat incluindo conversations, messages, templates, users, optimistic locking, indexes estratégicos e migrations.
+description: "Padrões de design de schema PostgreSQL/Drizzle para aplicações de chat incluindo conversations, messages, templates, users, optimistic locking, indexes estratégicos e migrations."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 5
-  tags: [database, drizzle, postgresql, schema, migrations, chat]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - database
+    - drizzle
+    - postgresql
+    - schema
+    - migrations
+    - chat
 ---
 
 # Database Schema Design for Chat
@@ -95,3 +100,4 @@ index('messages_created_at_idx').on(messages.createdAt),
 
 - [Drizzle ORM](https://orm.drizzle.team)
 - [PostgreSQL Docs](https://www.postgresql.org/docs/)
+

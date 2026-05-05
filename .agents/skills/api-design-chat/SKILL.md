@@ -1,14 +1,19 @@
 ---
 name: api-design-chat
-description: Padrões de design de API REST para aplicações de chat incluindo route handlers, authentication, validation, error handling, rate limiting e streaming endpoints.
+description: "Padrões de design de API REST para aplicações de chat incluindo route handlers, authentication, validation, error handling, rate limiting e streaming endpoints."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 5
-  tags: [api, rest, nextjs, authentication, validation, chat]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - api
+    - rest
+    - nextjs
+    - authentication
+    - validation
+    - chat
 ---
 
 # API Design for Chat Applications
@@ -149,3 +154,4 @@ export async function POST(req: NextRequest) {
 
 - [Next.js Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers)
 - [Zod Documentation](https://zod.dev)
+

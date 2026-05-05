@@ -1,14 +1,19 @@
 ---
 name: performance-optimization-chat
-description: Padrões de otimização de performance para aplicações de chat incluindo caching strategies, database indexing, query optimization, streaming optimization, bundle size reduction e monitoring.
+description: "Padrões de otimização de performance para aplicações de chat incluindo caching strategies, database indexing, query optimization, streaming optimization, bundle size reduction e monitoring."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 6
-  tags: [performance, optimization, caching, monitoring, database, chat]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - performance
+    - optimization
+    - caching
+    - monitoring
+    - database
+    - chat
 ---
 
 # Performance Optimization for Chat
@@ -270,3 +275,4 @@ export async function GET(req: NextRequest) {
 - [Next.js Performance](https://nextjs.org/docs/app/building-your-application/optimizing)
 - [Web Vitals](https://web.dev/vitals/)
 - [React Query](https://tanstack.com/query/latest)
+

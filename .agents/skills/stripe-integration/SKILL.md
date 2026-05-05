@@ -1,14 +1,19 @@
 ---
 name: stripe-integration
-description: Use quando a tarefa tocar integração Stripe diretamente: checkout, prices/products, webhooks, customer portal, assinaturas, pagamentos, billing ou testes com Stripe CLI.
+description: "Use quando a tarefa tocar integração Stripe diretamente: checkout, prices/products, webhooks, customer portal, assinaturas, pagamentos, billing ou testes com Stripe CLI."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 5
-  tags: [stripe, payments, webhooks, saas, credits, billing]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - stripe
+    - payments
+    - webhooks
+    - saas
+    - credits
+    - billing
 ---
 
 # Stripe Integration Best Practices
@@ -679,3 +684,4 @@ await debitCredits(userId, 1) // Ao enviar mensagem
 - [Stripe CLI](https://stripe.com/docs/stripe-cli)
 - [Webhook Testing](https://stripe.com/docs/webhooks/test)
 - [Security Best Practices](https://stripe.com/docs/security/best-practices)
+

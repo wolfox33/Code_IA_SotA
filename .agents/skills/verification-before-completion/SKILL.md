@@ -1,14 +1,17 @@
 ---
 name: verification-before-completion
-description: Use antes de concluir tarefas significativas para revisar objetivo, diff, testes/checks executados e riscos residuais; nao exige validacao formal para tarefas triviais.
+description: "Use antes de concluir tarefas significativas para revisar objetivo, diff, testes/checks executados e riscos residuais; nao exige validacao formal para tarefas triviais."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: workflow
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "workflow"
   complexity: 3
-  tags: [verification, checklist, review, handoff]
-  compatible_with: [windsurf, opencode, antigravity]
+  tags:
+    - verification
+    - checklist
+    - review
+    - handoff
 ---
 
 # SKILL: Verification Before Completion
@@ -69,7 +72,6 @@ Fechar tarefas com evidencia, nao apenas declaracao de que algo foi feito. Esta 
 - Riscos residuais estao claros.
 - O usuario consegue saber o estado final sem ver logs do terminal.
 
----
 
 > **Skill log**
 > - [2026-04-25] Criada para fechamento verificavel de tarefas significativas sem impor overhead a consultas simples.

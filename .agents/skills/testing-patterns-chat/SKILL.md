@@ -1,14 +1,20 @@
 ---
 name: testing-patterns-chat
-description: Padrões de testes para aplicações de chat incluindo unit tests, integration tests, E2E tests com Playwright, mocking LLMs, testing streaming, concurrent scenarios e testing Server Components/Actions.
+description: "Padrões de testes para aplicações de chat incluindo unit tests, integration tests, E2E tests com Playwright, mocking LLMs, testing streaming, concurrent scenarios e testing Server Components/Actions."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 6
-  tags: [testing, jest, playwright, vitest, mocking, e2e, chat]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - testing
+    - jest
+    - playwright
+    - vitest
+    - mocking
+    - e2e
+    - chat
 ---
 
 # Testing Patterns for Chat Applications
@@ -242,3 +248,4 @@ describe('Concurrent Credits', () => {
 - [Vitest](https://vitest.dev)
 - [Playwright](https://playwright.dev)
 - [Testing Library](https://testing-library.com)
+

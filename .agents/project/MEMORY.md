@@ -10,6 +10,7 @@
 
 ## Decisões Tomadas
 
+- [2026-05-05] Criada a skill `backend-resilience-by-design` para aplicar resiliência backend durante implementação e validação antes de concluir.
 
 ## Bugs Conhecidos / Débitos Técnicos
 

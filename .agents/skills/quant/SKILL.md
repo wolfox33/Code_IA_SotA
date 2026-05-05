@@ -1,6 +1,6 @@
 ---
 name: quant
-description: Skill placeholder para workflows quantitativos, pesquisa, backtests e validações estatísticas.
+description: "Skill placeholder para workflows quantitativos, pesquisa, backtests e validações estatísticas."
 ---
 
 # SKILL: Quant
@@ -15,3 +15,4 @@ description: Skill placeholder para workflows quantitativos, pesquisa, backtests
 2. Evitar look-ahead/data leakage.
 3. Validar robustez out-of-sample.
 4. Reportar risco e limitações.
+

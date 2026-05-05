@@ -1,14 +1,20 @@
 ---
 name: realtime-chat-implementation
-description: Use quando a tarefa implementar comportamento realtime de chat ou mensagens: SSE, WebSockets, streaming, optimistic updates, ordenação, retry, loading states ou persistência de mensagens.
+description: "Use quando a tarefa implementar comportamento realtime de chat ou mensagens: SSE, WebSockets, streaming, optimistic updates, ordenação, retry, loading states ou persistência de mensagens."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 6
-  tags: [chat, realtime, streaming, sse, websockets, optimistic-updates, react]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - chat
+    - realtime
+    - streaming
+    - sse
+    - websockets
+    - optimistic-updates
+    - react
 ---
 
 # Real-time Chat Implementation
@@ -630,3 +636,4 @@ const sendMessageWithRetry = async (
 - [Vercel AI SDK](https://sdk.vercel.ai/docs)
 - [React Query](https://tanstack.com/query/latest)
 - [WebSockets API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
+

@@ -1,14 +1,19 @@
 ---
 name: nextjs-app-router-patterns
-description: Use quando a tarefa alterar implementação Next.js App Router: Server/Client Components, Server Actions, Route Handlers, cache/revalidation, streaming/Suspense, loading/error boundaries ou data fetching.
+description: "Use quando a tarefa alterar implementação Next.js App Router: Server/Client Components, Server Actions, Route Handlers, cache/revalidation, streaming/Suspense, loading/error boundaries ou data fetching."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 5
-  tags: [nextjs, react, server-components, app-router, streaming, suspense]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - nextjs
+    - react
+    - server-components
+    - app-router
+    - streaming
+    - suspense
 ---
 
 # Next.js App Router Patterns
@@ -540,3 +545,4 @@ revalidateTag('posts')
 - [Next.js Docs](https://nextjs.org/docs)
 - [React Server Components](https://react.dev/blog/2023/03/22/react-labs-what-we-have-been-working-on-march-2023#react-server-components)
 - [App Router Migration](https://nextjs.org/docs/app/building-your-application/upgrading)
+

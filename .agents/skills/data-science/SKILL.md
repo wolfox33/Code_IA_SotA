@@ -1,6 +1,6 @@
 ---
 name: data-science
-description: Skill placeholder para análise exploratória, qualidade de dados e experimentação reprodutível.
+description: "Skill placeholder para análise exploratória, qualidade de dados e experimentação reprodutível."
 ---
 
 # SKILL: Data Science
@@ -15,3 +15,4 @@ description: Skill placeholder para análise exploratória, qualidade de dados e
 2. Fazer EDA objetiva.
 3. Formular hipóteses testáveis.
 4. Documentar achados e incertezas.
+

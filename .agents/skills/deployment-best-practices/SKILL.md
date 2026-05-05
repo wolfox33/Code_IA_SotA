@@ -1,14 +1,19 @@
 ---
 name: deployment-best-practices
-description: Best practices para deployment de aplicações de chat incluindo Vercel deployment, environment variables, database migrations, monitoring, error tracking, CI/CD, secrets management e production checklist.
+description: "Best practices para deployment de aplicações de chat incluindo Vercel deployment, environment variables, database migrations, monitoring, error tracking, CI/CD, secrets management e production checklist."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 5
-  tags: [deployment, vercel, cicd, monitoring, production, devops]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - deployment
+    - vercel
+    - cicd
+    - monitoring
+    - production
+    - devops
 ---
 
 # Deployment Best Practices
@@ -259,3 +264,4 @@ export async function GET(req: NextRequest) {
 - [Vercel Docs](https://vercel.com/docs)
 - [Sentry Docs](https://docs.sentry.io)
 - [GitHub Actions](https://docs.github.com/en/actions)
+

@@ -1,14 +1,20 @@
 ---
 name: langgraph-agent-patterns
-description: Use quando a tarefa implementar runtime Python com LangGraph: StateGraph, especialistas, tool calling, middleware, checkpointing, streaming do grafo, memória ou boundary FastAPI do agente.
+description: "Use quando a tarefa implementar runtime Python com LangGraph: StateGraph, especialistas, tool calling, middleware, checkpointing, streaming do grafo, memória ou boundary FastAPI do agente."
 metadata:
   model: inherit
-  version: 2.0.0
-  author: Custom Stack
-  category: backend
+  version: "2.0.0"
+  author: "Custom Stack"
+  category: "backend"
   complexity: 7
-  tags: [langgraph, python, agents, orchestration, tools, middleware, checkpointing]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - langgraph
+    - python
+    - agents
+    - orchestration
+    - tools
+    - middleware
+    - checkpointing
 ---
 
 # LangGraph Agent Patterns
@@ -367,7 +373,7 @@ Consulte `resources/streaming-patterns.md` para streaming no nivel do runtime.
 - [Memory and checkpointing](https://docs.langchain.com/oss/python/langgraph/add-memory)
 - [LangChain agents and middleware](https://docs.langchain.com/oss/python/langchain/agents)
 
----
 
 > **Skill log**
 > - [2026-04-25] Reescrita para Python/LangGraph atual, com foco em orquestrador StateGraph, agentes especialistas, tools, middlewares, skills internas do agente e boundary FastAPI sem frontend.
+

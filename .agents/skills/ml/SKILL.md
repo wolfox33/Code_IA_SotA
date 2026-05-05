@@ -1,6 +1,6 @@
 ---
 name: ml
-description: Skill placeholder para modelagem de machine learning, treino, validação e deploy seguro.
+description: "Skill placeholder para modelagem de machine learning, treino, validação e deploy seguro."
 ---
 
 # SKILL: Machine Learning
@@ -15,3 +15,4 @@ description: Skill placeholder para modelagem de machine learning, treino, valid
 2. Preparar split temporal/estratificado correto.
 3. Treinar com rastreabilidade.
 4. Validar generalização e drift.
+

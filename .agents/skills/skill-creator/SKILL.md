@@ -1,14 +1,16 @@
 ---
 name: skill-creator
-description: Criar novas skills, modificar e melhorar skills existentes. Use quando o usuário quiser criar uma skill do zero, editar ou otimizar uma skill existente, ou quando precisar iterar em uma skill baseado em feedback.
+description: "Criar novas skills, modificar e melhorar skills existentes. Use quando o usuário quiser criar uma skill do zero, editar ou otimizar uma skill existente, ou quando precisar iterar em uma skill baseado em feedback."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: workflow
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "workflow"
   complexity: 5
-  tags: [skills, creation, iteration]
-  compatible_with: [windsurf, opencode, antigravity]
+  tags:
+    - skills
+    - creation
+    - iteration
 ---
 
 # Skill Creator
@@ -52,25 +54,26 @@ Se útil, use MCPs para pesquisa (documentação, skills similares, best practic
 Baseado na entrevista, preencha:
 
 - **name**: Identificador da skill (kebab-case)
-- **description**: Quando acionar + o que faz. Seja específico e inclua contextos de uso. Seja um pouco "pushy" para evitar under-triggering
-- **metadata**: Preencha conforme necessário
+- **description**: String entre aspas com quando acionar + o que faz. Seja específico e inclua contextos de uso. Seja um pouco "pushy" para evitar under-triggering
+- **metadata**: Preencha apenas metadados úteis para discovery e manutenção do harness
 - **Corpo da skill**: Instruções em markdown
 
 #### Estrutura recomendada do SKILL.md
 
 ```markdown
----
+<frontmatter-start: three hyphens>
 name: skill-name
-description: Uma linha descrevendo o que esta skill faz e quando usar. Seja específico.
+description: "Use quando a tarefa exigir X; esta skill orienta Y sem Z."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: # ex: infrastructure / backend / frontend / data / testing / workflow
-  complexity: # 1-10
-  tags: []
-  compatible_with: [windsurf, opencode, antigravity]
----
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "workflow"
+  complexity: 3
+  tags:
+    - example
+    - skill
+<frontmatter-end: three hyphens>
 
 # SKILL: [Título da Skill]
 
@@ -108,7 +111,6 @@ Passos para executar a skill com sucesso.
 
 Como confirmar que a skill foi aplicada corretamente.
 
----
 
 > **Skill log** — atualize esta seção sempre que descobrir algo novo durante o uso.
 > Não remova entradas antigas; adicione a data.
@@ -180,7 +182,7 @@ Repita até:
 - Instruções são claras e imperativas
 - Se aplicável, testes foram executados e passaram
 
----
 
 > **Skill log**
 > - [2026-04-24] Skill criada baseada em skill-creator original, simplificada para harness .agents/
+

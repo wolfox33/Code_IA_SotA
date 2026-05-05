@@ -1,14 +1,18 @@
 ---
 name: vertical-slice-modular-monolith
-description: Use quando a tarefa definir ou revisar arquitetura modular de SaaS/app web: boundaries de features, vertical slices, modular monolith, acoplamento entre módulos ou refactor estrutural.
+description: "Use quando a tarefa definir ou revisar arquitetura modular de SaaS/app web: boundaries de features, vertical slices, modular monolith, acoplamento entre módulos ou refactor estrutural."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: architecture
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "architecture"
   complexity: 4
-  tags: [architecture, vertical-slice, modular-monolith, saas, clean-code]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - architecture
+    - vertical-slice
+    - modular-monolith
+    - saas
+    - clean-code
 ---
 
 # Vertical Slice + Modular Monolith Architecture
@@ -522,3 +526,4 @@ utils/
 - "Estabelecer comunicação entre features auth e users"
 - "Migrar pasta utils/ para estrutura modular"
 - "Criar ADR para decisão de usar monólito vs microservices"
+

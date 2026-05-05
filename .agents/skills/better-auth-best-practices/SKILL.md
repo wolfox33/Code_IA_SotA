@@ -1,14 +1,19 @@
 ---
 name: better-auth-best-practices
-description: Use quando a tarefa implementar, configurar ou corrigir Better Auth diretamente: adapters, sessões, cookies, OAuth, email/password, plugins, hooks ou integração TypeScript com banco/framework.
+description: "Use quando a tarefa implementar, configurar ou corrigir Better Auth diretamente: adapters, sessões, cookies, OAuth, email/password, plugins, hooks ou integração TypeScript com banco/framework."
 metadata:
   model: inherit
-  version: 1.0.0
-  author: Custom Stack
-  category: development
+  version: "1.0.0"
+  author: "Custom Stack"
+  category: "development"
   complexity: 4
-  tags: [auth, better-auth, typescript, security, oauth, session]
-  compatible_with: [antigravity, windsurf, opencode]
+  tags:
+    - auth
+    - better-auth
+    - typescript
+    - security
+    - oauth
+    - session
 ---
 
 # Better Auth Best Practices
@@ -860,3 +865,4 @@ npx @better-auth/cli@latest migrate
 - "Configurar email verification flow"
 - "Migrar de NextAuth para Better Auth"
 - "Setup Better Auth em modo stateless"
+
