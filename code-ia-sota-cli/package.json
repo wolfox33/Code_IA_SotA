@@ -1,0 +1,27 @@
+{
+  "name": "code-ia-sota",
+  "version": "0.1.0",
+  "description": "Agent scaffold installer for AGENTS.md and .agents",
+  "type": "module",
+  "bin": {
+    "code-ia-sota": "bin/code-ia-sota.js"
+  },
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "keywords": [
+    "agents",
+    "codex",
+    "agents-md",
+    "ai",
+    "llm",
+    "scaffold"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "picocolors": "^1.1.1",
+    "simple-git": "^3.28.0"
+  }
+}
