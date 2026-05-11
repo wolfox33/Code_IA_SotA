@@ -1,12 +1,12 @@
-# TASK — Stage 8: CI Integration for Harness Validation
+# TASK — Stage 6 (Batch 2): Skill Audit and Incremental Refactor
 
 ## Goal
 
-Integrate the existing harness validation command into GitHub Actions CI to catch structural regressions automatically while allowing warnings for maturity gaps.
+Refactor `vps-docker-deploy` based on Stage 7 benchmark findings to either add minimal procedure or move to reference material.
 
 ## Execution Rule
 
-Work in stages. Do not change validation command rules or refactor skills for CI compliance in this stage.
+Work in stages. Do not refactor other skills in this batch.
 
 ---
 
@@ -14,52 +14,89 @@ Work in stages. Do not change validation command rules or refactor skills for CI
 
 ## 1. Preparation
 
-- [x] Confirm Stage 7 benchmark is committed
-- [x] Confirm working tree is clean before Stage 8
-- [x] Update `PRD.md` for Stage 8
+- [x] Confirm Stage 8 CI integration is committed
+- [x] Confirm working tree is clean before Stage 6 Batch 2
+- [x] Update `PRD.md` for Stage 6 Batch 2
 - [x] Update this `TASK.md`
 
-## 2. CI Configuration
+## 2. Analysis
 
-- [x] Create `.github/workflows/validate-harness.yml`
-- [x] Configure Node.js environment
-- [x] Configure triggers (pull_request to main, push to main)
-- [x] Add step to run `npm run validate:harness`
-- [x] Configure workflow to fail on validation failures
+- [x] Read `vps-docker-deploy/SKILL.md` completely
+- [x] Evaluate content structure
+- [x] Decide between operational skill vs reference material
+- [x] Document decision rationale
 
-## 3. Testing
+## 3. Implementation
 
-- [x] Verify workflow syntax
-- [x] Confirm workflow calls correct npm script
-- [x] Confirm workflow path points to repository root
-- [x] Test workflow locally if possible
+- [x] If skill: add minimal procedure section
+- [x] If reference: move content to `references/`
+- [x] Preserve infrastructure pattern knowledge
+- [x] Keep change minimal and reversible
 
-## 4. Documentation
+## 4. Validation
 
-- [x] Document CI behavior in README
-- [x] Document how to bypass CI if needed
-- [x] Avoid modifying skills or workflows
-- [x] Update project memory if a durable decision emerges
+- [x] Re-run validation command
+- [x] Confirm command exits `0`
+- [x] Verify density improvement if converted to skill
+- [x] Review diff before completion
 
 ## 5. Completion
 
-- [x] Summarize CI configuration
-- [x] Confirm Stage 8 acceptance checklist
+- [x] Update project memory if a durable decision emerges
+- [x] Confirm Stage 6 Batch 2 acceptance checklist
 - [x] Suggest commit only after this stage is complete
+
+---
+
+# Decision Rationale
+
+## Content Analysis
+
+Original `vps-docker-deploy/SKILL.md`:
+- Density: 0% (no procedure section)
+- Size: 3875 bytes, 201 lines
+- Content: Architecture diagrams, structure templates, security rules, deployment process, philosophy
+- Issue: Entire content was reference material without executable procedure
+
+## Decision
+
+**Convert to operational skill with reference separation**
+
+Rationale:
+- The skill has clear activation criteria (VPS deployment with specific stack)
+- The infrastructure pattern knowledge is valuable and reusable
+- Moving entirely to references would make discovery harder
+- Adding minimal procedure preserves operational nature while reducing bloat
+
+## Implementation
+
+1. Created `.agents/skills/vps-docker-deploy/references/` directory
+2. Moved reference content to `references/vps-docker-deploy-pattern.md`
+3. Rewrote SKILL.md with:
+   - Clear activation criteria (Use this skill when, Do not use this skill when)
+   - Minimal procedure with 3 steps (consult reference, apply pattern, validate)
+   - Procedure points to reference for detailed rules
+   - Added Verification checklist
+   - Added Pitfalls section
+   - Added Skill log entry
+
+## Result
+
+- Density improved from 0% to ~50% (procedure section present)
+- Validation passes (exit code 0)
+- Only warning: missing Output contracts (acceptable for this skill type)
+- Knowledge preserved in reference file
+- SKILL.md now operational and discoverable
 
 ---
 
 # Acceptance Checklist
 
-Stage 8 is done only when:
+Stage 6 (Batch 2) is done only when:
 
-- [x] GitHub Actions workflow exists
-- [x] workflow triggers on pull_request to main
-- [x] workflow triggers on push to main
-- [x] workflow calls `npm run validate:harness`
-- [x] workflow fails when validation fails
-- [x] workflow passes when validation succeeds (even with warnings)
-- [x] CI behavior is documented in README
-- [x] no skills or workflows are modified for CI compliance
-- [x] no subagents or global policy files are changed
+- [x] `vps-docker-deploy` has been refactored or moved
+- [x] validation command exits `0`
+- [x] density is >40% if converted to skill, or skill is removed if moved to reference
+- [x] no other skills or workflows are modified
+- [x] decision rationale is documented in TASK.md
 - [x] future stages remain deferred

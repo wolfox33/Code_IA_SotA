@@ -1,10 +1,10 @@
-# PRD — Stage 8: CI Integration for Harness Validation
+# PRD — Stage 6 (Batch 2): Skill Audit and Incremental Refactor
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through a focused eighth stage: integrate the harness validation command into CI to catch structural regressions automatically.
+Evolution of the `Code_IA_SotA` harness through a focused sixth stage (batch 2): refactor `vps-docker-deploy` based on Stage 7 benchmark findings.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (`skill audit and incremental refactor`) and Stage 7 (`benchmark context efficiency`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batch 1: `skill audit and incremental refactor`), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
 
 ---
 
@@ -12,50 +12,55 @@ This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 
 
 Separate specs are not required for this stage.
 
-This stage adds CI configuration, not application behavior. The validation command from Stage 5 already exists and has a deterministic contract. The work can be tracked directly in `TASK.md`.
+This stage refactors a single skill based on benchmark data. The work can be tracked directly in `TASK.md`.
 
 Create separate specs only if later work introduces:
 
-- multiple CI environments with different rules
-- automated fix behavior in CI
+- automated bulk migration
 - generated reports with fixed schema
+- CI enforcement of density thresholds
 - compatibility contracts for external platforms
 
 ---
 
 # 2. Vision
 
-Prevent harness structural regressions by running the validation command automatically in CI before merge.
+Refactor `vps-docker-deploy` from a reference-heavy artifact (0% procedure density) to either an operational skill with minimal procedure or a reference document in `references/`.
 
-Stage 8 should catch frontmatter parse errors, missing required fields, and placeholder descriptions early without blocking legitimate changes to mature content.
+Stage 6 (Batch 2) should reduce context bloat while preserving the infrastructure pattern knowledge.
 
 ---
 
 # 3. Problem Statement
 
-The harness has a deterministic validation command, but it must be run manually.
+The Stage 7 benchmark identified `vps-docker-deploy` as the primary bloat candidate:
 
-Current gaps:
+- Density: 0% (no procedure section)
+- Size: 3875 bytes, 201 lines
+- Issue: Entire content is structured as reference material without operational procedure
 
-- structural regressions can slip through without manual validation
-- placeholder descriptions can reappear unnoticed
-- frontmatter parse errors can break discovery
-- no automated feedback loop for harness quality
+Current state:
 
-Without CI integration, future maintenance may:
+- `vps-docker-deploy` functions as documentation rather than operational skill
+- Content includes architecture diagrams, structure templates, security rules, deployment process
+- No executable procedure for agents to follow
 
-- merge skills with broken frontmatter
-- reintroduce placeholder descriptions
-- allow workflow metadata to drift
-- rely on manual discipline for structural quality
+Without refactoring, this skill continues to:
+
+- Consume context without providing operational guidance
+- Blur the boundary between skill and reference material
+- Increase harness bloat without corresponding utility
 
 ---
 
 # 4. Objective
 
-Integrate the existing validation command into CI to fail builds on harness structural failures while allowing warnings for maturity gaps.
+Refactor `vps-docker-deploy` to either:
 
-The goal is not to enforce perfect canonical compliance. The goal is to prevent regressions in parse safety and required metadata.
+- Add a minimal procedure section to make it an operational skill, or
+- Move the content to `references/` as infrastructure pattern documentation
+
+The goal is not to lose the knowledge. The goal is to place it in the correct artifact type.
 
 ---
 
@@ -63,95 +68,97 @@ The goal is not to enforce perfect canonical compliance. The goal is to prevent 
 
 ## In Scope
 
-- Add GitHub Actions workflow to run validation command
-- Configure workflow to trigger on PR to main
-- Configure workflow to run on push to main
-- Fail the build on validation failures (non-zero exit)
-- Allow warnings to pass without failing the build
-- Document CI behavior in README
+- Read `vps-docker-deploy/SKILL.md` completely
+- Decide between operational skill vs reference material
+- If skill: add minimal procedure section with executable steps
+- If reference: create `references/` directory and move content
+- Re-run validation to confirm improvement
+- Update TASK.md with decision rationale
 
 ## Out of Scope
 
-- Refactoring skills to pass validation
+- Refactoring other skills from the benchmark
 - Changing validation command rules
-- Enforcing hard size limits or density thresholds
-- Validating subagents unless explicitly added later
-- Platform compatibility mirrors
-- Automated fix behavior
+- Modifying workflows or subagents
+- Creating platform compatibility mirrors
 
 ---
 
-# 6. CI Configuration Requirements
+# 6. Decision Criteria
 
-The GitHub Actions workflow must:
+Choose **operational skill** when:
 
-- Use the existing `npm run validate:harness` script
-- Run on Node.js compatible environment
-- Trigger on pull_request to main
-- Trigger on push to main
-- Fail the workflow if validation exits non-zero
-- Allow warnings without failing the workflow
-- Output validation results clearly in logs
+- The skill is frequently invoked for VPS deployment tasks
+- Agents need step-by-step guidance for Docker Compose setup
+- The content has clear activation criteria
+
+Choose **reference material** when:
+
+- The content is primarily documentation or templates
+- The skill is rarely invoked or acts as lookup material
+- Moving to `references/` preserves knowledge without bloat
 
 ---
 
-# 7. Validation Behavior in CI
+# 7. Required Refactor Standard
 
-The validation command behavior in CI should match Stage 5:
+If converted to operational skill:
 
-- **Failures**: missing frontmatter, missing `name` or `description`, placeholder descriptions, empty workflow body
-- **Warnings**: missing operational sections in skills
-- **Exit code**: non-zero on failures, zero on success (even with warnings)
+- Add `## Procedure` section with executable steps
+- Add `## Use this skill when` with concrete situations
+- Add `## Do not use this skill when` to avoid over-triggering
+- Keep reference-heavy sections if they support the procedure
+- Aim for >40% procedure density
 
-CI should fail the workflow only on validation failures, not on warnings.
+If moved to reference:
+
+- Create `.agents/skills/vps-docker-deploy/references/` directory
+- Move content to `references/vps-docker-deploy-pattern.md`
+- Keep minimal `SKILL.md` with activation criteria pointing to reference
+- Or remove the skill entirely if not operational
 
 ---
 
 # 8. Design Constraints
 
-- Keep CI configuration simple and readable.
-- Do not introduce external dependencies beyond Node.js.
-- Do not change the validation command itself.
-- Do not block legitimate changes to mature content.
-- Do not create competing CI workflows.
+- Preserve the infrastructure pattern knowledge.
+- Do not delete useful content without replacement.
+- Keep the change minimal and reversible.
+- Do not expand scope to other benchmark candidates.
 
 ---
 
 # 9. Acceptance Criteria
 
-Stage 8 is complete when:
+Stage 6 (Batch 2) is complete when:
 
-- GitHub Actions workflow exists
-- workflow runs on pull_request to main
-- workflow runs on push to main
-- workflow calls `npm run validate:harness`
-- workflow fails when validation fails
-- workflow passes when validation succeeds (even with warnings)
-- CI behavior is documented in README
-- no skills or workflows are modified for CI compliance
-- no subagents or global policy files are changed
+- `vps-docker-deploy` has been refactored or moved
+- Validation command exits `0`
+- Density is >40% if converted to skill, or skill is removed if moved to reference
+- No other skills or workflows are modified
+- Decision rationale is documented in TASK.md
 
 ---
 
 # 10. Risks
 
-## R1 — Overblocking
+## R1 — Knowledge Loss
 
-Risk: CI blocks legitimate changes to mature content.
+Risk: Moving to reference might make the knowledge harder to discover.
 
-Mitigation: validation treats missing operational sections as warnings, not failures.
+Mitigation: Keep clear activation criteria in minimal SKILL.md pointing to reference.
 
-## R2 — False Positives
+## R2 — Overrefactoring
 
-Risk: CI fails on valid changes due to environment differences.
+Risk: Adding procedure where none is needed creates fake operational skill.
 
-Mitigation: use the same npm script that works locally; CI runs in standard Node.js environment.
+Mitigation: If the content is truly reference material, move it rather than force a procedure.
 
-## R3 — Workflow Drift
+## R3 — Scope Creep
 
-Risk: CI configuration becomes outdated if validation command changes.
+Risk: Extending refactor to other benchmark candidates.
 
-Mitigation: CI calls the npm script directly; changes to the script are reflected automatically.
+Mitigation: This batch is scoped only to `vps-docker-deploy`.
 
 ---
 
@@ -161,12 +168,13 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Review existing validation command behavior
-2. Create GitHub Actions workflow file
-3. Configure triggers (pull_request, push)
-4. Test workflow locally or via dry run
-5. Document CI behavior in README
-6. Update project memory if a durable decision emerges
+1. Read `vps-docker-deploy/SKILL.md` completely
+2. Evaluate content structure and usage pattern
+3. Decide between skill vs reference
+4. Implement refactor (add procedure or move to references)
+5. Re-run validation and verify density improvement
+6. Document decision rationale in TASK.md
+7. Update project memory if a durable decision emerges
 
 ---
 

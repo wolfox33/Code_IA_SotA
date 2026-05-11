@@ -1,6 +1,6 @@
 ---
 name: vps-docker-deploy
-description: "Padroniza deploy em VPS única com Next.js frontend, FastAPI com LangGraph backend, PostgreSQL e Nginx, orquestrados via Docker Compose."
+description: "Use ao configurar deploy em VPS única com Next.js frontend, FastAPI com LangGraph backend, PostgreSQL e Nginx orquestrados via Docker Compose; consulta o padrão de referência para regras detalhadas de segurança, estrutura e processo."
 metadata:
   model: inherit
   version: "1.0.0"
@@ -18,184 +18,79 @@ metadata:
     - deploy
 ---
 
-# SKILL: VPS Docker Deploy (Next.js + FastAPI + PostgreSQL + Nginx)
+# SKILL: VPS Docker Deploy
 
-## 🎯 Objetivo
+## Objetivo
 
-Padronizar deploy em VPS única usando:
+Padronizar deploy em VPS única com Next.js, FastAPI (LangGraph), PostgreSQL e Nginx orquestrados via Docker Compose, seguindo o padrão de referência para regras detalhadas.
 
-- Frontend: Next.js
-- Backend: FastAPI (LangGraph)
-- Banco: PostgreSQL
-- Reverse Proxy: Nginx
-- Orquestração: Docker Compose
+## Use this skill when
 
-Arquitetura simples, escalável e production-ready.
-
-
-# 🏗 Arquitetura
-
-Internet
-    ↓
-Nginx (80/443)
-    ↓
-Docker Network (bridge)
-    ├── frontend (Next.js)
-    ├── backend (FastAPI + LangGraph)
-    └── db (PostgreSQL)
-
-
-# 📂 Estrutura obrigatória
-
-project/
-│
-├── docker-compose.yml
-├── .env
-│
-├── frontend/
-│   └── Dockerfile
-│
-├── backend/
-│   ├── Dockerfile
-│   └── requirements.txt
-│
-└── nginx/
-    └── nginx.conf
-
-
-# 🐳 docker-compose.yml padrão
-
-Regras:
-- Sempre usar network interna
-- Nunca expor PostgreSQL externamente
-- Variáveis via .env
-- Sempre usar volumes persistentes
-
-Serviços mínimos:
-- db
-- backend
-- frontend
-- nginx
-
-
-# 🔐 Segurança obrigatória
-
-- PostgreSQL NÃO exposto em porta pública
-- Backend NÃO exposto diretamente
-- Apenas Nginx expõe 80/443
-- Usar HTTPS (Certbot ou Caddy)
-- Variáveis sensíveis via .env
-- Firewall (ufw) liberando apenas 22, 80, 443
-
-
-# 🚀 Backend (FastAPI + LangGraph)
-
-Regras:
-- Rodar com uvicorn
-- Workers >= número de CPUs - 1
-- Timeout ajustado no Nginx
-- Nunca usar reload em produção
-- Logs estruturados
-
-Comando padrão:
-uvicorn main:app --host 0.0.0.0 --port 8000 --workers 2
-
-
-# ⚛ Frontend (Next.js)
-
-Regras:
-- Build de produção
-- Nunca usar dev server
-- NODE_ENV=production
-- Proxy sempre via Nginx
-
-
-# 🌐 Nginx obrigatório
-
-Responsável por:
-- Reverse proxy
-- HTTPS
-- Rate limiting (se necessário)
-- Compressão gzip
-- Cache estático
-
-Regras:
-- / → frontend
-- /api → backend
-- Timeouts configurados
-- client_max_body_size ajustado
-
-
-# 📈 Escalabilidade futura
-
-Quando crescer:
-
-1. Aumentar workers do FastAPI
-2. Adicionar Redis (cache ou fila)
-3. Separar banco para VPS dedicada
-4. Adicionar CDN no frontend
-5. Migrar para load balancer se necessário
-
-NÃO usar Kubernetes antes de:
-- Ter problema real de scaling
-- > 1 VPS ativa
-
-
-# 🧠 Para projetos com LangGraph
-
-Regras adicionais:
-- Separar lógica de agentes da camada HTTP
-- Evitar estado em memória
-- Usar banco ou Redis para estado persistente
-- Evitar operações bloqueantes
-- Usar async corretamente
-
-
-# 🔥 Processo padrão de deploy
-
-1. Criar VPS (Ubuntu LTS)
-2. Instalar Docker + Docker Compose
-3. Clonar projeto
-4. Configurar .env
-5. docker compose up -d --build
-6. Configurar SSL
-7. Ativar firewall
-
-
-# ❌ Proibido
-
-- Rodar tudo em uma única imagem
-- Expor banco publicamente
-- Usar docker run manual
-- Misturar ambiente dev com prod
-- Commitar .env
-
-
-# 🧩 Padrão para múltiplos projetos
-
-Cada projeto:
-- Container isolado
-- Network isolada
-- Subdomínio próprio
-- Banco separado
-
-
-# 🧠 Filosofia
-
-- Simples > Complexo
-- VPS única até doer
-- Escalar vertical antes de horizontal
-- Sem Kubernetes cedo demais
-- Infra deve ser previsível
-
-
-# 📌 Quando usar esse skill
-
-Sempre que:
-- Criar SaaS novo
+- Configurar deploy em VPS única com Next.js + FastAPI + PostgreSQL + Nginx
+- Criar SaaS novo com arquitetura padrão
 - Criar sistema com agentes LangGraph
 - Criar sistema de trading backend + frontend
 - Criar MVP com banco relacional
 
+## Do not use this skill when
 
-END SKILL
+- Usar Kubernetes ou orquestração complexa
+- Deploy em múltiplas VPS ou clusters
+- Configurar apenas infraestrutura sem aplicação específica
+- Usar runtime diferente de Docker Compose
+
+## Procedure
+
+### 1. Consultar o padrão de referência
+
+Leia `references/vps-docker-deploy-pattern.md` para obter:
+
+- Estrutura de arquivos obrigatória
+- Regras de docker-compose.yml
+- Configurações de segurança obrigatórias
+- Processo padrão de deploy
+- Padrões para backend (FastAPI/LangGraph), frontend (Next.js) e Nginx
+
+### 2. Aplicar o padrão ao projeto
+
+Siga o processo padrão de deploy descrito na referência:
+
+1. Criar VPS (Ubuntu LTS)
+2. Instalar Docker + Docker Compose
+3. Clonar projeto
+4. Configurar .env seguindo as regras de segurança
+5. docker compose up -d --build
+6. Configurar SSL (Certbot ou Caddy)
+7. Ativar firewall (ufw) liberando apenas 22, 80, 443
+
+### 3. Validar configurações
+
+Confirme que:
+
+- PostgreSQL NÃO está exposto em porta pública
+- Backend NÃO está exposto diretamente
+- Apenas Nginx expõe 80/443
+- Variáveis sensíveis estão via .env
+- Firewall está configurado corretamente
+
+## Pitfalls
+
+- Não expor banco publicamente
+- Não usar docker run manual
+- Não misturar ambiente dev com prod
+- Não commitar .env
+- Não usar Kubernetes antes de ter problema real de scaling
+
+## Verification
+
+- VPS está configurada com Docker + Docker Compose
+- Estrutura de arquivos segue o padrão obrigatório
+- docker-compose.yml usa network interna
+- Nginx faz reverse proxy para frontend e backend
+- PostgreSQL não está exposto publicamente
+- SSL está configurado
+- Firewall está ativo
+
+> **Skill log**
+> - [2026-05-11] Skill criada como padrão de infraestrutura para VPS única.
+> - [2026-05-11] Stage 6 (Batch 2) moveu conteúdo referencial para references/ e adicionou procedure executável para reduzir bloat.
