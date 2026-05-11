@@ -20,7 +20,7 @@ metadata:
 
 Guia completo de deployment para aplicações de chat Next.js.
 
-## 🎯 Objetivo
+## Objetivo
 
 Fornecer:
 - **Vercel deployment** setup
@@ -39,6 +39,160 @@ Fornecer:
 - Managing secrets
 - Running migrations
 - Troubleshooting production issues
+
+## Do not use this skill when
+
+- A aplicação não usar Next.js
+- A tarefa for apenas configurar ambiente local
+- O deployment for para plataforma diferente de Vercel
+- A tarefa for apenas código sem infraestrutura
+
+## Output contracts
+
+Ao aplicar esta skill, entregue ou registre:
+
+- Vercel deployment configurado
+- Environment variables setadas em produção
+- Database migrations planejadas e executadas
+- CI/CD pipeline configurado
+- Monitoring (Sentry, Vercel Analytics) ativo
+- Health check endpoint implementado
+- Production checklist completado
+
+## Procedure
+
+### 1. Configurar Vercel CLI
+
+Instale e autentique:
+
+```bash
+npm i -g vercel
+vercel login
+```
+
+### 2. Deploy inicial
+
+Deploy para preview e produção:
+
+```bash
+vercel
+vercel --prod
+```
+
+### 3. Configurar environment variables
+
+Sete variáveis no dashboard ou CLI:
+
+```bash
+vercel env add OPENAI_API_KEY
+vercel env add DATABASE_URL
+vercel env add STRIPE_SECRET_KEY
+```
+
+### 4. Configurar database migrations
+
+Crie script de migrations:
+
+```typescript
+// scripts/migrate.ts
+import { drizzle } from 'drizzle-orm/postgres-js'
+import { migrate } from 'drizzle-orm/postgres-js/migrator'
+import postgres from 'postgres'
+
+async function runMigrations() {
+  const sql = postgres(process.env.DATABASE_URL!, { max: 1 })
+  const db = drizzle(sql)
+  await migrate(db, { migrationsFolder: './drizzle' })
+  await sql.end()
+}
+
+runMigrations()
+```
+
+### 5. Configurar CI/CD com GitHub Actions
+
+Crie workflow:
+
+```yaml
+name: Deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm test
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+```
+
+### 6. Configurar error tracking
+
+Configure Sentry:
+
+```typescript
+import * as Sentry from '@sentry/nextjs'
+Sentry.init({
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  environment: process.env.NODE_ENV,
+  tracesSampleRate: 1.0,
+})
+```
+
+### 7. Implementar health check
+
+Crie endpoint público:
+
+```typescript
+export async function GET() {
+  try {
+    await db.execute(sql`SELECT 1`)
+    return NextResponse.json({
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+    })
+  } catch (error) {
+    return NextResponse.json({ status: 'unhealthy' }, { status: 500 })
+  }
+}
+```
+
+### 8. Completar production checklist
+
+Verifique:
+- Environment variables setadas
+- HTTPS habilitado
+- Rate limiting ativo
+- Database indexes criados
+- Backups configurados
+- Monitoramento ativo
+
+## Verification
+
+- Vercel deployment está ativo
+- Environment variables estão setadas
+- Migrations rodaram com sucesso
+- CI/CD pipeline funciona
+- Sentry está capturando erros
+- Health check retorna healthy
+- Production checklist está completo
+
+> **Skill log**
+> - [2026-05-11] Skill criada com best practices de deployment para aplicações de chat.
+> - [2026-05-11] Stage 6 (Batch 5) adicionou seções operacionais faltantes e removeu emoji de heading Objetivo.
 
 ## Quick Reference
 

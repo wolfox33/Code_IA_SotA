@@ -23,6 +23,7 @@
 - [2026-05-11] Stage 6 (Batch 2) refatorou `vps-docker-deploy` movendo conteúdo referencial para `references/` e adicionando procedure executável, melhorando densidade de 0% para ~50% sem perder conhecimento de padrão de infraestrutura.
 - [2026-05-11] Stage 6 (Batch 3) avaliou `harness-repair` e `skill-reviewer` baseado no benchmark; output contracts já são concisos e essenciais para o papel diagnóstico, não justificando refatoração; densidade moderada (44.9% e 41.9%) é aceitável para skills estruturais.
 - [2026-05-11] Stage 6 (Batch 4) adicionou seções operacionais faltantes em `api-design-chat` e `database-schema-design-chat` (Use/Do not use, Output contracts, Procedure, Verification), reduzindo warnings de validação de 60 para 58; removeu emojis de headings para validador reconhecer seções.
+- [2026-05-11] Stage 6 (Batch 5) adicionou seções operacionais faltantes em `ai-sdk-ui-chat`, `deployment-best-practices` e `performance-optimization-chat` (Do not use, Output contracts, Procedure, Verification, skill log), reduzindo warnings de validação de 58 para 42; removeu emojis de headings para validador reconhecer seções.
 
 ## Bugs Conhecidos / Débitos Técnicos
 

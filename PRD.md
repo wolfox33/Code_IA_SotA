@@ -1,10 +1,10 @@
-# PRD — Stage 6 (Batch 4): Skill Audit and Incremental Refactor
+# PRD — Stage 6 (Batch 5): Skill Audit and Incremental Refactor
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through a focused sixth stage (batch 4): refactor `api-design-chat` and `database-schema-design-chat` to add missing operational sections.
+Evolution of the `Code_IA_SotA` harness through a focused sixth stage (batch 5): refactor `ai-sdk-ui-chat`, `deployment-best-practices` and `performance-optimization-chat` to add missing operational sections.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batches 1-3: skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batches 1-4: skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
 
 ---
 
@@ -25,9 +25,9 @@ Create separate specs only if later work introduces:
 
 # 2. Vision
 
-Add missing operational sections to `api-design-chat` and `database-schema-design-chat` to reduce validation warnings while preserving their domain-specific scope.
+Add missing operational sections to `ai-sdk-ui-chat`, `deployment-best-practices` and `performance-optimization-chat` to reduce validation warnings while preserving their domain-specific scope.
 
-Stage 6 (Batch 4) should follow the same pattern as Batch 1: add missing sections (Objetivo, Use/Do not use, Output contracts, Procedure, Verification) without changing skill intent.
+Stage 6 (Batch 5) should follow the same pattern as previous batches: add missing sections (Objetivo, Use/Do not use, Output contracts, Procedure, Verification) without changing skill intent.
 
 ---
 
@@ -37,10 +37,13 @@ The validation command shows that many skills still have missing operational sec
 
 Current gaps for target skills:
 
-**api-design-chat** (7 warnings):
+**ai-sdk-ui-chat** (6 warnings):
 - Missing: Objetivo, Use this skill when, Do not use this skill when, Output contracts, Procedure, Verification
 
-**database-schema-design-chat** (5 warnings):
+**deployment-best-practices** (5 warnings):
+- Missing: Objetivo, Do not use this skill when, Output contracts, Procedure, Verification
+
+**performance-optimization-chat** (5 warnings):
 - Missing: Objetivo, Do not use this skill when, Output contracts, Procedure, Verification
 
 Without refactoring, these skills continue to:
@@ -54,7 +57,7 @@ Without refactoring, these skills continue to:
 
 # 4. Objective
 
-Add missing operational sections to `api-design-chat` and `database-schema-design-chat` to reduce validation warnings.
+Add missing operational sections to `ai-sdk-ui-chat`, `deployment-best-practices` and `performance-optimization-chat` to reduce validation warnings.
 
 The goal is not to rewrite the skills. The goal is to complete their operational structure following the canonical pattern.
 
@@ -83,7 +86,7 @@ The goal is not to rewrite the skills. The goal is to complete their operational
 
 For each skill:
 
-- Add `## Objetivo` section if missing
+- Add `## Objetivo` section if missing (without emojis to ensure validation recognition)
 - Ensure `## Use this skill when` is clear and concrete
 - Ensure `## Do not use this skill when` avoids over-triggering
 - Add `## Output contracts` when the skill produces deliverables
@@ -97,16 +100,17 @@ For each skill:
 
 - Preserve domain-specific knowledge.
 - Keep changes minimal and surgical.
-- Follow the same pattern as Stage 6 Batch 1.
+- Follow the same pattern as Stage 6 previous batches.
+- Do not use emojis in section headings (validation does not recognize them).
 - Do not expand scope to other skills.
 
 ---
 
 # 8. Acceptance Criteria
 
-Stage 6 (Batch 4) is complete when:
+Stage 6 (Batch 5) is complete when:
 
-- `api-design-chat` and `database-schema-design-chat` have been refactored
+- `ai-sdk-ui-chat`, `deployment-best-practices` and `performance-optimization-chat` have been refactored
 - Validation command exits `0`
 - Target skills no longer emit avoidable operational-section warnings
 - No other skills or workflows are modified
@@ -128,11 +132,11 @@ Risk: Added sections become too generic.
 
 Mitigation: Make sections domain-specific based on existing skill content.
 
-## R3 — Overrefactoring
+## R3 — Emoji Recognition
 
-Risk: Refactoring changes skill behavior inadvertently.
+Risk: Validation does not recognize section headings with emojis.
 
-Mitigation: Read skill completely before editing; preserve existing procedure and scope.
+Mitigation: Use plain headings without emojis (## Objetivo, not ## 🎯 Objetivo).
 
 ---
 
