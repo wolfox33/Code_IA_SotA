@@ -11,6 +11,7 @@
 ## Decisões Tomadas
 
 - [2026-05-05] Criada a skill `backend-resilience-by-design` para aplicar resiliência backend durante implementação e validação antes de concluir.
+- [2026-05-11] PRD de manutenção do harness foi reduzido para Stage 1 focado em `skill-creator`; specs separadas não são necessárias nesta fase, e etapas futuras ficam diferidas.
 
 ## Bugs Conhecidos / Débitos Técnicos
 
