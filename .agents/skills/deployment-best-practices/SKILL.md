@@ -63,122 +63,85 @@ Ao aplicar esta skill, entregue ou registre:
 
 ### 1. Configurar Vercel CLI
 
-Instale e autentique:
+Instale e autentique conforme `references/vercel.md`.
 
-```bash
-npm i -g vercel
-vercel login
-```
+- Instale Vercel CLI globalmente com `npm i -g vercel`
+- Execute `vercel login` para autenticar na conta Vercel
+- Verifique se o projeto está vinculado corretamente ao workspace
+- Confirme que as credenciais estão configuradas corretamente
 
 ### 2. Deploy inicial
 
-Deploy para preview e produção:
+Deploy para preview e produção conforme `references/vercel.md`.
 
-```bash
-vercel
-vercel --prod
-```
+- Execute `vercel` para deploy inicial em ambiente de preview
+- Verifique o URL de preview gerado
+- Execute `vercel --prod` para deploy em produção
+- Confirme que o deployment foi bem-sucedido verificando o URL de produção
+- Teste endpoints críticos em ambos os ambientes
 
 ### 3. Configurar environment variables
 
-Sete variáveis no dashboard ou CLI:
+Sete variáveis no dashboard ou CLI conforme `references/vercel.md`.
 
-```bash
-vercel env add OPENAI_API_KEY
-vercel env add DATABASE_URL
-vercel env add STRIPE_SECRET_KEY
-```
+- Liste todas as variáveis de ambiente necessárias (DATABASE_URL, API keys, secrets)
+- Use `vercel env add <VAR_NAME>` para adicionar variáveis via CLI
+- Ou configure via dashboard Vercel para cada ambiente (development, preview, production)
+- Use valores diferentes para cada ambiente quando necessário (ex: API keys de teste vs produção)
+- Valide que as variáveis estão acessíveis no runtime da aplicação
 
 ### 4. Configurar database migrations
 
-Crie script de migrations:
+Crie script de migrations conforme `references/migrations.md`.
 
-```typescript
-// scripts/migrate.ts
-import { drizzle } from 'drizzle-orm/postgres-js'
-import { migrate } from 'drizzle-orm/postgres-js/migrator'
-import postgres from 'postgres'
-
-async function runMigrations() {
-  const sql = postgres(process.env.DATABASE_URL!, { max: 1 })
-  const db = drizzle(sql)
-  await migrate(db, { migrationsFolder: './drizzle' })
-  await sql.end()
-}
-
-runMigrations()
-```
+- Crie arquivo `scripts/migrate.ts` com setup de Drizzle e postgres
+- Configure migrations folder em `./drizzle`
+- Adicione script no `package.json` para facilitar execução
+- Execute migrations localmente para validar antes de produção
+- Execute migrations em produção após deploy inicial
 
 ### 5. Configurar CI/CD com GitHub Actions
 
-Crie workflow:
+Crie workflow conforme `references/cicd.md`.
 
-```yaml
-name: Deploy
-on:
-  push:
-    branches: [main]
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-      - name: Install dependencies
-        run: npm ci
-      - name: Run tests
-        run: npm test
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-```
+- Crie arquivo `.github/workflows/deploy.yml` com workflow de deploy
+- Configure secrets no GitHub: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID
+- Configure trigger para push na branch main
+- Adicione steps: checkout, setup node, install deps, run tests, deploy
+- Valide que o pipeline executa corretamente ao fazer push
 
 ### 6. Configurar error tracking
 
-Configure Sentry:
+Configure Sentry conforme `references/monitoring.md`.
 
-```typescript
-import * as Sentry from '@sentry/nextjs'
-Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  environment: process.env.NODE_ENV,
-  tracesSampleRate: 1.0,
-})
-```
+- Crie projeto Sentry para a aplicação
+- Configure DSN como environment variable NEXT_PUBLIC_SENTRY_DSN
+- Instale `@sentry/nextjs` e configure no projeto
+- Adicione função `logError` para capturar exceções
+- Valide que erros estão sendo capturados no dashboard Sentry
 
 ### 7. Implementar health check
 
-Crie endpoint público:
+Crie endpoint público conforme `references/monitoring.md`.
 
-```typescript
-export async function GET() {
-  try {
-    await db.execute(sql`SELECT 1`)
-    return NextResponse.json({
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-    })
-  } catch (error) {
-    return NextResponse.json({ status: 'unhealthy' }, { status: 500 })
-  }
-}
-```
+- Crie endpoint `/api/health` com verificação de conexão com banco
+- Retorne apenas status sem detalhes sensíveis de infraestrutura
+- Crie endpoint `/api/health/detailed` protegido para admin com detalhes completos
+- Configure autenticação no endpoint detalhado usando auth
+- Valide que health check retorna healthy quando o sistema está operacional
 
 ### 8. Completar production checklist
 
-Verifique:
-- Environment variables setadas
-- HTTPS habilitado
-- Rate limiting ativo
-- Database indexes criados
-- Backups configurados
-- Monitoramento ativo
+Verifique itens conforme `references/production-checklist.md`.
+
+- Revise checklist completo item por item
+- Valide que todas as variáveis de ambiente estão configuradas
+- Confirme que HTTPS está habilitado (automático no Vercel)
+- Verifique que rate limiting está ativo em endpoints públicos
+- Confirme que database indexes foram criados
+- Valide que backups estão configurados
+- Confirme que monitoramento está ativo (Sentry, Vercel Analytics)
+- Execute testes finais de E2E em produção
 
 ## Verification
 
@@ -193,229 +156,13 @@ Verifique:
 > **Skill log**
 > - [2026-05-11] Skill criada com best practices de deployment para aplicações de chat.
 > - [2026-05-11] Stage 6 (Batch 5) adicionou seções operacionais faltantes e removeu emoji de heading Objetivo.
+> - [2026-05-11] Refatorada: conteúdo referencial movido para `references/` com arquivos divididos por especialidade.
 
-## Quick Reference
+## References
 
-### Vercel Deployment
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy to preview
-vercel
-
-# Deploy to production
-vercel --prod
-
-# Set environment variables
-vercel env add OPENAI_API_KEY
-vercel env add DATABASE_URL
-```
-
-### Environment Variables
-
-```bash
-# .env.local (development)
-DATABASE_URL=postgresql://localhost:5432/mydb
-OPENAI_API_KEY=sk-...
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-
-# .env.production (via Vercel dashboard)
-DATABASE_URL=postgresql://prod.example.com/mydb
-OPENAI_API_KEY=sk-...
-STRIPE_SECRET_KEY=sk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-```
-
-### Database Migrations
-
-```typescript
-// scripts/migrate.ts
-import { drizzle } from 'drizzle-orm/postgres-js'
-import { migrate } from 'drizzle-orm/postgres-js/migrator'
-import postgres from 'postgres'
-
-async function runMigrations() {
-  const sql = postgres(process.env.DATABASE_URL!, { max: 1 })
-  const db = drizzle(sql)
-
-  console.log('Running migrations...')
-  await migrate(db, { migrationsFolder: './drizzle' })
-  console.log('Migrations complete')
-
-  await sql.end()
-}
-
-runMigrations()
-```
-
-## 🚀 Deployment Patterns
-
-### Pattern 1: GitHub Actions CI/CD
-
-```yaml
-# .github/workflows/deploy.yml
-name: Deploy
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests
-        run: npm test
-
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-```
-
-### Pattern 2: Error Tracking (Sentry)
-
-```typescript
-// core/sentry.ts
-import * as Sentry from '@sentry/nextjs'
-
-Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  environment: process.env.NODE_ENV,
-  tracesSampleRate: 1.0,
-})
-
-// Use in error boundaries
-export function logError(error: Error, context?: Record<string, any>) {
-  Sentry.captureException(error, { extra: context })
-}
-```
-
-### Pattern 3: Health Check
-
-```typescript
-// app/api/health/route.ts
-// ⚠️ Público: retorna APENAS status (sem detalhes de infraestrutura)
-import { NextResponse } from 'next/server'
-import { db } from '@/core/db'
-
-export async function GET() {
-  try {
-    await db.execute(sql`SELECT 1`)
-    return NextResponse.json({
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-    })
-  } catch (error) {
-    // ❌ NUNCA expor error.message (pode conter connection strings, etc.)
-    return NextResponse.json({ status: 'unhealthy' }, { status: 500 })
-  }
-}
-
-// app/api/health/detailed/route.ts
-// 🔒 Protegido: detalhes apenas para admin autenticado
-import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/core/auth'
-import { db } from '@/core/db'
-
-export async function GET(req: NextRequest) {
-  const session = await auth.api.getSession({ headers: req.headers })
-  if (!session || session.user.role !== 'admin') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
-
-  try {
-    await db.execute(sql`SELECT 1`)
-    const stripeStatus = await checkStripe()
-    const openaiStatus = await checkOpenAI()
-
-    return NextResponse.json({
-      status: 'healthy',
-      database: 'ok',
-      stripe: stripeStatus,
-      openai: openaiStatus,
-      timestamp: new Date().toISOString(),
-    })
-  } catch (error) {
-    return NextResponse.json(
-      { status: 'unhealthy', error: (error as Error).message },
-      { status: 500 }
-    )
-  }
-}
-```
-
-## ✅ Production Checklist
-
-### Environment
-
-- [ ] All environment variables set in Vercel
-- [ ] Database connection string (production)
-- [ ] API keys (OpenAI, Anthropic, Stripe)
-- [ ] Webhook secrets configured
-- [ ] Error tracking (Sentry) configured
-- [ ] Analytics (Vercel, PostHog) enabled
-
-### Security
-
-- [ ] HTTPS enabled (automatic on Vercel)
-- [ ] CORS configured correctly
-- [ ] Rate limiting enabled
-- [ ] Input validation on all endpoints
-- [ ] SQL injection prevention (use Drizzle)
-- [ ] XSS protection (sanitize user input)
-- [ ] CSRF protection
-
-### Performance
-
-- [ ] Database indexes created
-- [ ] Caching strategy implemented
-- [ ] Image optimization enabled
-- [ ] Bundle size optimized (<500KB)
-- [ ] Lighthouse score >90
-
-### Monitoring
-
-- [ ] Error tracking (Sentry)
-- [ ] Performance monitoring (Vercel Analytics)
-- [ ] Uptime monitoring (UptimeRobot, Better Stack)
-- [ ] Log aggregation (Vercel Logs)
-- [ ] Alerts configured (errors, downtime)
-
-### Database
-
-- [ ] Migrations run successfully
-- [ ] Backups configured (automatic)
-- [ ] Connection pooling enabled
-- [ ] Indexes created
-- [ ] Constraints validated
-
-### Testing
-
-- [ ] All tests passing
-- [ ] E2E tests for critical flows
-- [ ] Load testing performed
-- [ ] Security audit completed
-
-## 🔗 Links Úteis
-
-- [Vercel Docs](https://vercel.com/docs)
-- [Sentry Docs](https://docs.sentry.io)
-- [GitHub Actions](https://docs.github.com/en/actions)
-
+Conteúdo referencial detalhado, Vercel deployment, migrations, CI/CD, monitoring e production checklist estão disponíveis em:
+- `references/vercel.md` - Vercel deployment e environment variables
+- `references/migrations.md` - Database migrations
+- `references/cicd.md` - CI/CD com GitHub Actions
+- `references/monitoring.md` - Error tracking (Sentry) e health check
+- `references/production-checklist.md` - Production checklist detalhado

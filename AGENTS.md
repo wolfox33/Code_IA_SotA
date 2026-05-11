@@ -41,15 +41,15 @@ Sempre:
 4. Implementar a menor mudança correta.
 5. Validar impacto e consistência.
 6. Usar `AGENTS.md` da raiz como política global sempre ativa.
-7. Carregar capacidades modulares de `.agents/` apenas quando forem relevantes para a tarefa.
-8. Carregar skills de `.agents/skills/` sob demanda e em níveis:
+8. Carregar capacidades modulares de `.agents/` apenas quando forem relevantes para a tarefa.
+9. Carregar skills de `.agents/skills/` sob demanda e em níveis:
    - primeiro: ler apenas `name` + `description` do frontmatter para avaliar relevância
    - depois: carregar conteúdo completo do `SKILL.md` apenas se a skill for realmente necessária
-   - por fim: carregar arquivos de suporte (`resources/`, `scripts/`) somente se a tarefa exigir
-9. Ao concluir tarefa complexa (múltiplos arquivos ou decisões não triviais), avaliar se o que foi feito merece virar uma skill reutilizável em `.agents/skills/`. Se sim, criar `SKILL.md` seguindo o padrão parse-safe do harness.
-10. Se usou uma skill existente e descobriu pitfall, variação ou melhoria, atualizar o `SKILL.md` correspondente antes de concluir.
-11. Perguntar antes de assumir comportamento quando houver ambiguidade real ou risco alto.
-12. Ao concluir qualquer tarefa significativa, avaliar se algo vale persistir em `.agents/project/MEMORY.md`: workarounds descobertos, decisões tomadas, bugs conhecidos ou lições aprendidas. Registrar com data. Remover entradas obsoletas.
+   - por fim: carregar arquivos de suporte (`references/`, `resources/`, `scripts/`) somente se a tarefa exigir
+10. Ao concluir tarefa complexa (múltiplos arquivos ou decisões não triviais), avaliar se o que foi feito merece virar uma skill reutilizável em `.agents/skills/`. Se sim, criar `SKILL.md` seguindo o padrão parse-safe do harness.
+11. Se usou uma skill existente e descobriu pitfall, variação ou melhoria, atualizar o `SKILL.md` correspondente antes de concluir.
+12. Perguntar antes de assumir comportamento quando houver ambiguidade real ou risco alto.
+13. Ao concluir qualquer tarefa significativa, avaliar se algo vale persistir em `.agents/project/MEMORY.md`: workarounds descobertos, decisões tomadas, bugs conhecidos ou lições aprendidas. Registrar com data. Remover entradas obsoletas.
 
 ### Surgical Changes
 Ao editar código existente:

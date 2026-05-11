@@ -68,12 +68,41 @@ Leia `references/vps-docker-deploy-pattern.md` para obter:
 Siga o processo padrão de deploy descrito na referência:
 
 1. Criar VPS (Ubuntu LTS)
+   - Escolha provider (DigitalOcean, Linode, Hetzner, etc.)
+   - Configure SSH keys para acesso seguro
+   - Atualize sistema: `apt update && apt upgrade -y`
+
 2. Instalar Docker + Docker Compose
+   - Instale Docker via script oficial
+   - Instale Docker Compose
+   - Adicione usuário ao grupo docker
+   - Valide instalação: `docker --version` e `docker compose version`
+
 3. Clonar projeto
+   - Clone repositório na VPS
+   - Configure git para deploy automático se necessário
+   - Configure hooks de deploy se necessário
+
 4. Configurar .env seguindo as regras de segurança
+   - Use .env para todas as variáveis sensíveis
+   - Nunca commitar .env no repositório
+   - Configure DATABASE_URL, API keys, secrets
+   - Use valores diferentes para dev e prod
+
 5. docker compose up -d --build
+   - Execute build inicial
+   - Verifique logs: `docker compose logs -f`
+   - Confirme que todos os serviços estão rodando
+
 6. Configurar SSL (Certbot ou Caddy)
+   - Use Certbot com Nginx para HTTPS automático
+   - Configure renovação automática de certificados
+   - Valide que HTTPS está funcionando
+
 7. Ativar firewall (ufw) liberando apenas 22, 80, 443
+   - Configure ufw: `ufw allow 22 && ufw allow 80 && ufw allow 443`
+   - Ative firewall: `ufw enable`
+   - Valide regras: `ufw status`
 
 ### 3. Validar configurações
 
@@ -84,14 +113,9 @@ Confirme que:
 - Apenas Nginx expõe 80/443
 - Variáveis sensíveis estão via .env
 - Firewall está configurado corretamente
-
-## Pitfalls
-
-- Não expor banco publicamente
-- Não usar docker run manual
-- Não misturar ambiente dev com prod
-- Não commitar .env
-- Não usar Kubernetes antes de ter problema real de scaling
+- SSL está funcionando em todas as rotas
+- Logs estão sendo gerados corretamente
+- Containers reiniciam automaticamente em caso de falha
 
 ## Verification
 
@@ -104,6 +128,13 @@ Confirme que:
 - Firewall está ativo
 
 > **Skill log**
-> - [2026-05-11] Skill criada como padrão de infraestrutura para VPS única.
-> - [2026-05-11] Stage 6 (Batch 2) moveu conteúdo referencial para references/ e adicionou procedure executável para reduzir bloat.
-> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante.
+> - [2026-05-11] Skill criada como padrão de infraestrutura para VPS única
+> - [2026-05-11] Stage 6 (Batch 2) moveu conteúdo referencial para references/ e adicionou procedure executável para reduzir bloat
+> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante
+> - [2026-05-11] Refatorada: conteúdo referencial movido para `references/` com arquivos divididos por especialidade.
+
+## References
+
+Conteúdo referencial detalhado, padrão de deploy e pitfalls estão disponíveis em:
+- `references/vps-docker-deploy-pattern.md` - Padrão de referência completo
+- `references/pitfalls.md` - Pitfalls

@@ -107,26 +107,36 @@ Entregue quando:
 
 ### 1. Definir escopo do diagnóstico
 
-- Identifique quais artefatos devem ser analisados.
-- Se o pedido for amplo, proponha um escopo inicial menor antes de ler tudo.
-- Evite carregar arquivos desnecessários.
-- Declare o que ficou fora da análise.
+- Identifique quais artefatos devem ser analisados
+- Se o pedido for amplo, proponha um escopo inicial menor antes de ler tudo
+- Evite carregar arquivos desnecessários
+- Declare o que ficou fora da análise
 
 ### 2. Ler apenas os artefatos necessários
 
-- Leia `AGENTS.md` apenas quando política global ou boundary global estiverem em questão.
-- Leia skills quando houver suspeita de overlap, bloat ou routing ambíguo.
-- Leia workflows quando houver orquestração multi-etapa em discussão.
-- Leia subagents quando houver delegação por papel em discussão.
-- Leia references/scripts apenas quando eles forem citados ou parecerem mal posicionados.
+- Leia `AGENTS.md` apenas quando política global ou boundary global estiverem em questão
+- Leia skills quando houver suspeita de overlap, bloat ou routing ambíguo
+- Leia workflows quando houver orquestração multi-etapa em discussão
+- Leia subagents quando houver delegação por papel em discussão
+- Leia references/scripts apenas quando eles forem citados ou parecerem mal posicionados
+
+### 2.1. Diretrizes específicas para AGENTS.md
+
+O `AGENTS.md` é o arquivo raiz de política global com impacto transversal. Ao analisá-lo:
+
+- **Apenas leia** quando houver suspeita de problema em política global, boundaries ou diretrizes de carregamento
+- **Não proponha mudanças** no `AGENTS.md` sem aprovação explícita do usuário
+- **Se detectar problema** (ex: política duplicada, boundary incorreto, diretriz obsoleta), documente no relatório com severidade apropriada
+- **Se o usuário aprovar mudança** no `AGENTS.md`, execute apenas a edição aprovada e rastreável
+- **Sempre valide** que mudanças no `AGENTS.md` não quebram discovery, parsing ou uso seguro do harness
 
 ### 3. Mapear responsabilidades
 
-- Liste cada artefato analisado e sua responsabilidade aparente.
-- Identifique responsabilidades duplicadas ou órfãs.
-- Separe problema local de skill de problema estrutural do harness.
-- Use `skill-reviewer` como baseline para problemas de uma skill isolada.
-- Use `skill-creator` quando o plano aprovado exigir criação ou modificação de skills.
+- Liste cada artefato analisado e sua responsabilidade aparente
+- Identifique responsabilidades duplicadas ou órfãs
+- Separe problema local de skill de problema estrutural do harness
+- Use `skill-reviewer` como baseline para problemas de uma skill isolada
+- Use `skill-creator` quando o plano aprovado exigir criação ou modificação de skills
 
 ### 4. Detectar problemas estruturais
 
@@ -143,92 +153,41 @@ Procure:
 
 ### 5. Priorizar reparos
 
-- Classifique severidade e prioridade.
-- Priorize reparos que reduzem risco ou desbloqueiam manutenção futura.
-- Evite recomendações cosméticas em P0/P1.
-- Agrupe mudanças relacionadas sem criar refactor grande demais.
+- Classifique severidade e prioridade
+- Priorize reparos que reduzem risco ou desbloqueiam manutenção futura
+- Evite recomendações cosméticas em P0/P1
+- Agrupe mudanças relacionadas sem criar refactor grande demais
 
 ### 6. Produzir relatório
 
-Use este formato:
-
-```markdown
-# Harness Repair Report
-
-## Scope reviewed
-
-- [artefatos analisados]
-
-## Summary verdict
-
-Healthy | Needs targeted repair | Needs staged repair | Blocked
-
-## Findings
-
-### Topology
-
-- **[severity/Px] [título]**: evidência + impacto + recomendação
-
-### Boundaries
-
-- **[severity/Px] [título]**: evidência + impacto + recomendação
-
-### Duplication
-
-- **[severity/Px] [título]**: evidência + impacto + recomendação
-
-### Context bloat
-
-- **[severity/Px] [título]**: evidência + impacto + recomendação
-
-### Validation readiness
-
-- **[severity/Px] [título]**: evidência + impacto + recomendação
-
-## Recommended repair plan
-
-1. [etapa pequena] → verificar: [critério]
-2. [etapa pequena] → verificar: [critério]
-3. [etapa pequena] → verificar: [critério]
-
-## Out of scope
-
-- [pontos percebidos mas não analisados]
-
-## Final readiness
-
-- [estado atual e condição para avançar]
-```
-
-Omitir categorias vazias quando isso melhorar a clareza.
+Produza relatório seguindo o template em `references/report-template.md`. Omitir categorias vazias quando isso melhorar a clareza.
 
 ### 7. Separar diagnóstico, plano e reparo
 
-- Não modifique arquivos durante o diagnóstico, a menos que o usuário peça explicitamente.
-- Se o usuário pedir reparo, execute apenas etapas aprovadas e rastreáveis.
-- Depois de cada reparo, valide o critério da etapa antes de avançar.
-- Não transforme a skill em workflow de manutenção completo.
-
-## Anti-patterns
-
-- **Auditoria sem escopo**: tentar ler e reparar tudo de uma vez.
-- **Diagnóstico que já edita**: mudar arquivos antes do plano ser aprovado.
-- **P0 cosmético**: tratar gosto de formatação como bloqueio.
-- **Skill que vira workflow**: incluir orquestração longa dentro de skill.
-- **Script prematuro**: automatizar regra que ainda não está estável.
-- **Policy scattering**: duplicar regra global em várias skills.
-- **Repair monolítico**: propor mudança grande sem etapas verificáveis.
+- Não modifique arquivos durante o diagnóstico, a menos que o usuário peça explicitamente
+- Se o usuário pedir reparo, execute apenas etapas aprovadas e rastreáveis
+- Depois de cada reparo, valide o critério da etapa antes de avançar
+- Não transforme a skill em workflow de manutenção completo
 
 ## Verification
 
-- Escopo analisado está explícito.
-- Artefatos lidos foram necessários para o diagnóstico.
-- Boundaries entre `AGENTS.md`, skills, workflows, subagents, references e scripts foram considerados.
-- Achados têm severidade, prioridade, evidência, impacto e recomendação.
-- Plano de reparo usa etapas pequenas com critérios de verificação.
-- Diagnóstico, planejamento e mutação estão separados.
-- Futuras etapas como scripts ou workflows foram diferidas quando não eram necessárias.
+- Escopo analisado está explícito
+- Artefatos lidos foram necessários para o diagnóstico
+- Boundaries entre `AGENTS.md`, skills, workflows, subagents, references e scripts foram considerados
+- Achados têm severidade, prioridade, evidência, impacto e recomendação
+- Plano de reparo usa etapas pequenas com critérios de verificação
+- Diagnóstico, planejamento e mutação estão separados
+- Futuras etapas como scripts ou workflows foram diferidas quando não eram necessárias
 
 > **Skill log**
 > - [2026-05-11] Skill criada como Stage 3 do PRD de manutenção do harness, após `skill-creator` e `skill-reviewer`.
 > - [2026-05-11] Stage 6 adicionou objetivo explícito para alinhar a validação estrutural do harness.
+> - [2026-05-11] Refatorada: conteúdo referencial movido para `references/` com arquivos divididos por especialidade.
+
+## References
+
+Conteúdo referencial detalhado, dimensions, output contracts e anti-patterns estão disponíveis em:
+- `references/dimensions.md` - Diagnostic dimensions e severity/priority
+- `references/output-contracts.md` - Output contracts (report, boundary diagnosis, migration plan, priority fix list)
+- `references/anti-patterns.md` - Anti-patterns
+- `references/report-template.md` - Template de relatório de reparo

@@ -37,41 +37,12 @@ Orientar workflows quantitativos com foco em hipótese clara, validação estat�
 
 ## Output contracts
 
-### Plano de pesquisa quantitativa
+Ao aplicar esta skill, entregue ou registre:
 
-Entregue quando:
-
-- hipótese, universo, período e frequência estiverem definidos
-- dados necessários e premissas estiverem listados
-- métrica de sucesso e baseline estiverem explícitos
-- riscos de viés estiverem identificados
-
-### Desenho de backtest
-
-Entregue quando:
-
-- regras de entrada, saída, rebalanceamento e sizing estiverem definidas
-- custos, slippage, liquidez e calendário estiverem considerados
-- prevenção de look-ahead e survivorship bias estiver descrita
-- split in-sample/out-of-sample estiver justificado
-
-### Validação de estratégia
-
-Entregue quando:
-
-- performance for comparada contra benchmark ou baseline
-- risco, drawdown, turnover e exposição forem reportados
-- robustez por período, ativo, regime ou parâmetro for avaliada
-- limitações e condições de falha estiverem documentadas
-
-### Relatório de risco
-
-Entregue quando:
-
-- principais fontes de risco estiverem listadas
-- sensibilidade a custos, liquidez e concentração for avaliada
-- cenários adversos ou stress tests forem considerados
-- recomendação for proporcional à evidência
+- Plano de pesquisa quantitativa com hipótese, universo, período e métrica
+- Desenho de backtest reproduzível com regras e premissas
+- Validação de estratégia com performance e risco
+- Relatório de risco com fontes de risco e recomendações
 
 ## Procedure
 
@@ -105,27 +76,26 @@ Entregue quando:
 
 ### 5. Decidir handoff ou próximos testes
 
-- Encaminhe para `ml` se a estratégia depender de treino/validação/deploy de modelo preditivo.
-- Encaminhe para `data-science` se a próxima etapa for apenas EDA ou qualidade de dados.
-- Proponha próximos testes apenas quando reduzirem incerteza material.
-
-## Pitfalls
-
-- **Look-ahead bias**: Usar dados futuros invalida o backtest.
-- **Survivorship bias**: Ignorar ativos removidos infla resultados.
-- **Overfitting de estratégia**: Ajustar parâmetros até funcionar no passado reduz generalização.
-- **Custos ignorados**: Estratégia lucrativa sem custos pode falhar na execução real.
-- **Métrica única**: Retorno isolado sem risco, drawdown e turnover é insuficiente.
+- Encaminhe para `ml` se a estratégia depender de treino/validação/deploy de modelo preditivo
+- Encaminhe para `data-science` se a próxima etapa for apenas EDA ou qualidade de dados
+- Proponha próximos testes apenas quando reduzirem incerteza material
 
 ## Verification
 
-- Hipótese, universo, período e benchmark estão explícitos.
-- Regras de backtest são reproduzíveis.
-- Look-ahead, survivorship bias, custos e liquidez foram considerados.
-- Performance foi comparada contra baseline ou benchmark.
-- Robustez fora da amostra e sensibilidade foram avaliadas.
-- Limitações, riscos e próximos passos estão documentados.
-- Handoff para `ml` ou `data-science` está claro quando aplicável.
+- Hipótese, universo, período e benchmark estão explícitos
+- Regras de backtest são reproduzíveis
+- Look-ahead, survivorship bias, custos e liquidez foram considerados
+- Performance foi comparada contra baseline ou benchmark
+- Robustez fora da amostra e sensibilidade foram avaliadas
+- Limitações, riscos e próximos passos estão documentados
+- Handoff para `ml` ou `data-science` está claro quando aplicável
 
 > **Skill log**
 > - [2026-05-11] Skill expandida de placeholder para orientação operacional de pesquisa quantitativa e delimitada contra `ml` e `data-science`.
+> - [2026-05-11] Refatorada: conteúdo referencial movido para `references/` com arquivos divididos por especialidade.
+
+## References
+
+Conteúdo referencial detalhado, output contracts e pitfalls estão disponíveis em:
+- `references/output-contracts.md` - Output contracts detalhados
+- `references/pitfalls.md` - Pitfalls

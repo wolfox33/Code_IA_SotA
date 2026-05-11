@@ -37,41 +37,12 @@ Orientar análise de dados com foco em qualidade, exploração objetiva, hipóte
 
 ## Output contracts
 
-### Plano de análise
+Ao aplicar esta skill, entregue ou registre:
 
-Entregue quando:
-
-- pergunta analítica estiver explícita
-- dados necessários e unidade de análise estiverem definidos
-- métricas ou cortes principais estiverem listados
-- limitações conhecidas dos dados estiverem registradas
-
-### Auditoria de qualidade de dados
-
-Entregue quando:
-
-- cobertura, missingness, duplicidade e consistência forem avaliadas
-- outliers ou anomalias relevantes forem identificados
-- impacto dos problemas de qualidade estiver descrito
-- ações recomendadas estiverem priorizadas
-
-### Relatório exploratório
-
-Entregue quando:
-
-- achados estiverem ligados à pergunta original
-- evidências forem separadas de hipóteses
-- incertezas e vieses estiverem documentados
-- próximos passos forem claros
-
-### Desenho experimental
-
-Entregue quando:
-
-- hipótese, métrica e população estiverem definidos
-- grupos, período e critérios de exclusão estiverem descritos
-- riscos de viés, sazonalidade ou confundimento forem avaliados
-- critério de decisão estiver explícito
+- Plano de análise com pergunta analítica e dados necessários
+- Auditoria de qualidade de dados com cobertura e missingness
+- Relatório exploratório com achados e limitações
+- Desenho experimental com hipótese e critério de decisão
 
 ## Procedure
 
@@ -105,26 +76,25 @@ Entregue quando:
 
 ### 5. Preparar handoff quando necessário
 
-- Encaminhe para `ml` se houver target, predição, validação e deploy.
-- Encaminhe para `quant` se houver estratégia, sinal, backtest ou risco financeiro.
-- Defina quais dados, métricas e hipóteses devem seguir para a próxima etapa.
-
-## Pitfalls
-
-- **EDA sem pergunta**: Explorar tudo aumenta ruído e não gera decisão.
-- **Conclusão causal indevida**: Correlação exploratória não prova efeito.
-- **Qualidade ignorada**: Missingness, duplicatas e cobertura podem invalidar achados.
-- **Segmentação oportunista**: Muitos cortes aumentam falso positivo.
-- **Visual bonito sem evidência**: Apresentação não substitui análise verificável.
+- Encaminhe para `ml` se houver target, predição, validação e deploy
+- Encaminhe para `quant` se houver estratégia, sinal, backtest ou risco financeiro
+- Defina quais dados, métricas e hipóteses devem seguir para a próxima etapa
 
 ## Verification
 
-- Pergunta analítica, unidade e período estão explícitos.
-- Qualidade e cobertura dos dados foram avaliadas antes das conclusões.
-- Achados estão ligados a evidências e limitações.
-- Hipóteses, métricas e cortes estão rastreáveis.
-- Próximos passos diferenciam análise, `ml` e `quant`.
-- Não houve treino/deploy de modelo dentro desta skill.
+- Pergunta analítica, unidade e período estão explícitos
+- Qualidade e cobertura dos dados foram avaliadas antes das conclusões
+- Achados estão ligados a evidências e limitações
+- Hipóteses, métricas e cortes estão rastreáveis
+- Próximos passos diferenciam análise, `ml` e `quant`
+- Não houve treino/deploy de modelo dentro desta skill
 
 > **Skill log**
 > - [2026-05-11] Skill expandida de placeholder para orientação operacional de análise de dados e delimitada contra `ml` e `quant`.
+> - [2026-05-11] Refatorada: conteúdo referencial movido para `references/` com arquivos divididos por especialidade.
+
+## References
+
+Conteúdo referencial detalhado, output contracts e pitfalls estão disponíveis em:
+- `references/output-contracts.md` - Output contracts detalhados
+- `references/pitfalls.md` - Pitfalls

@@ -37,41 +37,12 @@ Orientar workflows de machine learning com foco em definição correta do proble
 
 ## Output contracts
 
-### Plano de modelagem
+Ao aplicar esta skill, entregue ou registre:
 
-Entregue quando:
-
-- target, unidade de predição e horizonte estiverem definidos
-- métricas primária e secundárias estiverem justificadas
-- baseline estiver definido
-- riscos de leakage e viés estiverem listados
-
-### Experimento de treino
-
-Entregue quando:
-
-- split estiver justificado
-- features e transformações estiverem rastreáveis
-- hiperparâmetros e seed estiverem registrados
-- resultados forem comparados contra baseline
-
-### Validação de modelo
-
-Entregue quando:
-
-- performance for reportada em dados fora da amostra
-- erros relevantes forem analisados por segmento
-- sinais de overfitting, leakage e drift forem avaliados
-- limitações conhecidas forem documentadas
-
-### Plano de deploy seguro
-
-Entregue quando:
-
-- estratégia de rollout estiver definida
-- monitoramento de qualidade e drift estiver previsto
-- fallback ou rollback estiver definido
-- critérios de promoção ou bloqueio estiverem claros
+- Plano de modelagem com target, métricas e baseline
+- Experimento de treino com split rastreável
+- Validação de modelo com performance fora da amostra
+- Plano de deploy seguro com monitoramento e rollback
 
 ## Procedure
 
@@ -107,27 +78,26 @@ Entregue quando:
 
 - Defina rollout gradual quando houver risco operacional.
 - Monitore dados de entrada, distribuição de scores, qualidade, latência e drift.
-- Defina thresholds de alerta e critérios de rollback.
-- Planeje reavaliação ou retreino com cadência explícita.
-
-## Pitfalls
-
-- **Leakage temporal**: Usar informação que não existiria no momento da predição invalida a validação.
-- **Métrica desalinhada**: Otimizar métrica técnica que não reflete custo real gera modelo inútil.
-- **Baseline ausente**: Sem baseline, não há evidência de ganho.
-- **Split incorreto**: Split aleatório pode inflar resultado em séries temporais, usuários repetidos ou grupos correlacionados.
-- **Deploy sem monitoramento**: Modelo em produção degrada silenciosamente sem drift e qualidade monitorados.
+- Defina thresholds de alerta e critérios de rollback
+- Planeje reavaliação ou retreino com cadência explícita
 
 ## Verification
 
-- Target, unidade de predição e horizonte estão explícitos.
-- Métricas estão justificadas.
-- Baseline foi definido.
-- Split evita leakage e respeita a estrutura dos dados.
-- Experimentos são rastreáveis.
-- Resultados foram validados fora da amostra.
-- Erros e limitações foram analisados.
-- Plano de deploy inclui monitoramento, fallback e critérios de rollback.
+- Target, unidade de predição e horizonte estão explícitos
+- Métricas estão justificadas
+- Baseline foi definido
+- Split evita leakage e respeita a estrutura dos dados
+- Experimentos são rastreáveis
+- Resultados foram validados fora da amostra
+- Erros e limitações foram analisados
+- Plano de deploy inclui monitoramento, fallback e critérios de rollback
 
 > **Skill log**
 > - [2026-05-11] Skill expandida de placeholder para orientação operacional de machine learning e revisada com `skill-reviewer`.
+> - [2026-05-11] Refatorada: conteúdo referencial movido para `references/` com arquivos divididos por especialidade.
+
+## References
+
+Conteúdo referencial detalhado, output contracts e pitfalls estão disponíveis em:
+- `references/output-contracts.md` - Output contracts detalhados
+- `references/pitfalls.md` - Pitfalls

@@ -53,45 +53,54 @@ Ao aplicar esta skill, entregue ou registre:
 - Para bugfix, reproduza a falha antes de escrever o fix.
 - Para feature, defina o criterio observavel que comprova o comportamento.
 - Escolha o menor nivel de teste que captura o risco: unitario, integracao ou E2E.
+- Documente o comportamento esperado com exemplos concretos
+- Identifique edge cases relevantes que devem ser cobertos
 
 ### 2. RED
 
 - Escreva um teste que falhe pelo motivo esperado.
 - Rode o teste focado.
 - Verifique que a falha prova o comportamento ausente, nao erro de setup.
+- Confirme que o teste falha com a mensagem de erro correta
+- Se o teste não falhar, revise se o comportamento já existe ou se o teste está incorreto
 
 ### 3. GREEN
 
 - Implemente a menor mudanca correta.
 - Nao refatore codigo adjacente enquanto o teste esta vermelho.
 - Rode o teste focado ate passar.
+- Se o teste continuar falhando, investigue a causa raiz antes de prosseguir
+- Confirme que a implementacao é mínima e não inclui funcionalidades extras
 
 ### 4. REFACTOR
 
 - Refatore apenas se reduzir complexidade real ou duplicacao criada pela mudanca.
 - Rode novamente o teste focado e, quando aplicavel, a suite relacionada.
+- Mantenha a suite verde durante o refactoring
+- Se o refactoring quebrar o teste, reverta e refatore em passos menores
+- Valide que o refactoring não alterou o comportamento implementado
 
 ### 5. Handoff
 
 - Reporte o teste criado/alterado.
-- Reporte comandos executados.
-- Se TDD nao foi aplicavel, explique a excecao objetiva.
-
-## Pitfalls
-
-- Nao escrever teste depois e chamar de TDD.
-- Nao usar teste amplo quando um teste unitario captura o mesmo comportamento.
-- Nao manter teste fragil que depende de tempo, ordem externa ou rede sem mock/controlador.
-- Nao deixar o teste falhar por causa errada.
+- Reporte comandos executados
+- Se TDD não foi aplicável, explique a exceção objetiva
+- Liste testes relacionados que foram executados
+- Indique se há regressões conhecidas ou riscos residuais
 
 ## Verification
 
-- Existe um teste que falhou antes do fix ou uma excecao explicita.
-- A implementacao minima fez o teste passar.
-- Testes relacionados foram executados.
-- A skill tecnica de teste adequada foi usada quando o framework exigiu detalhe especifico.
-
+- Existe um teste que falhou antes do fix ou uma exceção explícita
+- A implementação mínima fez o teste passar
+- Testes relacionados foram executados
+- A skill técnica de teste adequada foi usada quando o framework exigiu detalhe específico
 
 > **Skill log**
-> - [2026-04-25] Criada como disciplina contextual de TDD sem substituir skills tecnicas de teste existentes.
-> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante.
+> - [2026-04-25] Criada como disciplina contextual de TDD sem substituir skills técnicas de teste existentes
+> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante
+> - [2026-05-11] Refatorada: conteúdo referencial movido para `references/` com arquivos divididos por especialidade.
+
+## References
+
+Conteúdo referencial detalhado e pitfalls estão disponíveis em:
+- `references/pitfalls.md` - Pitfalls

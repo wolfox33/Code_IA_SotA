@@ -47,43 +47,48 @@ Ao aplicar esta skill, entregue ou registre:
 
 ### 1. Compare com o pedido
 
-- Releia o objetivo do usuario.
-- Confirme se a mudanca ficou dentro do escopo.
-- Identifique qualquer pedido que nao foi atendido.
+- Releia o objetivo do usuário
+- Confirme se a mudança ficou dentro do escopo
+- Identifique qualquer pedido que não foi atendido
+- Liste itens pendentes se houver escopo não coberto
 
 ### 2. Revise o diff
 
-- Verifique arquivos alterados.
-- Procure alteracoes acidentais, escopo expandido e duplicacao.
-- Confirme que nao houve edicao em memoria/contexto quando o repo for boilerplate e o usuario pedir para evitar.
+- Verifique arquivos alterados
+- Procure alterações acidentais, escopo expandido e duplicação
+- Confirme que não houve edição em memória/contexto quando o repo for boilerplate e o usuário pedir para evitar
+- Revise imports removidos que ficaram unused após suas mudanças
+- Verifique se suas mudanças criaram órfãos (variáveis, funções, imports)
 
-### 3. Execute validacoes
+### 3. Execute validações
 
-- Rode testes/checks relacionados quando existirem.
-- Para docs/skills, rode buscas mecanicas por termos proibidos, links obsoletos ou duplicacoes.
-- Se uma validacao nao puder rodar, diga por que.
+- Rode testes/checks relacionados quando existirem
+- Para docs/skills, rode buscas mecânicas por termos proibidos, links obsoletos ou duplicações
+- Se uma validação não puder rodar, diga por que
+- Execute comandos de build/lint quando aplicável
+- Verifique se há erros de sintaxe ou runtime
 
 ### 4. Prepare o fechamento
 
-- Informe arquivos principais alterados.
-- Informe comandos executados.
-- Declare riscos residuais.
-- Se houver commit/stage/push, confirme hash ou status.
-
-## Pitfalls
-
-- Nao listar comandos que nao foram executados.
-- Nao esconder teste que falhou.
-- Nao finalizar com working tree sujo sem avisar, quando a tarefa pedia commit.
-- Nao transformar checklist em texto longo quando a tarefa e simples.
+- Informe arquivos principais alterados
+- Informe comandos executados
+- Declare riscos residuais
+- Se houver commit/stage/push, confirme hash ou status
+- Liste próximos passos se houver trabalho pendente
+- Indique se a tarefa está completa ou requer ação adicional
 
 ## Verification
 
-- Objetivo, diff e validacoes foram conferidos.
-- Riscos residuais estao claros.
-- O usuario consegue saber o estado final sem ver logs do terminal.
-
+- Objetivo, diff e validações foram conferidos
+- Riscos residuais estão claros
+- O usuário consegue saber o estado final sem ver logs do terminal
 
 > **Skill log**
-> - [2026-04-25] Criada para fechamento verificavel de tarefas significativas sem impor overhead a consultas simples.
-> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante.
+> - [2026-04-25] Criada para fechamento verificável de tarefas significativas sem impor overhead a consultas simples
+> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante
+> - [2026-05-11] Refatorada: conteúdo referencial movido para `references/` com arquivos divididos por especialidade.
+
+## References
+
+Conteúdo referencial detalhado e pitfalls estão disponíveis em:
+- `references/pitfalls.md` - Pitfalls
