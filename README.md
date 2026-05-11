@@ -156,6 +156,27 @@ Ao alterar skills, valide pelo menos:
 - Não há separadores `---` no corpo.
 - Não há caracteres de controle no frontmatter.
 
+## CI Integration
+
+O repositório usa GitHub Actions para validar automaticamente a estrutura do harness em PRs e pushes para main.
+
+### Workflow
+
+O workflow `.github/workflows/validate-harness.yml`:
+
+- Roda em pull_request para main
+- Roda em push para main
+- Executa `npm run validate:harness` em `code-ia-sota-cli/`
+- Falha o build se houver erros de validação (frontmatter, metadata, placeholders)
+- Permite warnings (seções operacionais faltantes em skills antigas)
+
+### Bypassar CI
+
+Para bypassar CI em emergências:
+
+- Use `[skip ci]` ou `[ci skip]` no commit message
+- Force push com `--no-verify` (não recomendado para mudanças estruturais)
+
 ## Fora do escopo atual
 
 - Mirrors obrigatórios para plataformas específicas.
