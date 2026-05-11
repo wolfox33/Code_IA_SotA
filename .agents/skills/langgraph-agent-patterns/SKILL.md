@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "backend"
   complexity: 7
+  status: active
   tags:
     - langgraph
     - python

@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "technical"
   complexity: 3
+  status: active
   tags:
     - data-science
     - eda

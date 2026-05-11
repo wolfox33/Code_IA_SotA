@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "architecture"
   complexity: 4
+  status: active
   tags:
     - architecture
     - vertical-slice

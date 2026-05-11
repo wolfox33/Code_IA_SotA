@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "development"
   complexity: 4
+  status: active
   tags:
     - auth
     - better-auth

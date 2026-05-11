@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "development"
   complexity: 5
+  status: active
   tags:
     - stripe
     - payments

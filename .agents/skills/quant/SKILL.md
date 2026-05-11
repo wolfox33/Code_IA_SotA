@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "technical"
   complexity: 4
+  status: active
   tags:
     - quant
     - backtesting

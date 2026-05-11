@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "development"
   complexity: 3
+  status: active
   tags:
     - stack
     - technology

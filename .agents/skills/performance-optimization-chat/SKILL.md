@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "development"
   complexity: 6
+  status: active
   tags:
     - performance
     - optimization
