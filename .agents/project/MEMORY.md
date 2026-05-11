@@ -18,6 +18,7 @@
 - [2026-05-11] Stage 4 criou `.agents/workflows/harness-maintenance.md` para orquestrar manutenção do harness, roteando `skill-creator`, `skill-reviewer` e `harness-repair` sem duplicar seus procedimentos.
 - [2026-05-11] Stage 5 adicionou validação no CLI: erros de frontmatter/metadata bloqueiam; lacunas operacionais em skills antigas viram warnings.
 - [2026-05-11] Stage 6 primeiro lote refatorou `harness-repair`, `skill-reviewer` e `backend-resilience-by-design` para remover warnings evitáveis sem alterar escopo.
+- [2026-05-11] Stage 7 benchmark de contexto identificou `vps-docker-deploy` como candidato primário a bloat (0% densidade, conteúdo como referência); skills estruturais têm densidade moderada justificada por contratos detalhados.
 
 ## Bugs Conhecidos / Débitos Técnicos
 
