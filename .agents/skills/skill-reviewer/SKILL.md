@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "workflow"
   complexity: 4
+  status: active
   tags:
     - skills
     - review

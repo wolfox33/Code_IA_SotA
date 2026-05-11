@@ -191,3 +191,4 @@ Conteúdo referencial detalhado, dimensions, output contracts e anti-patterns es
 - `references/output-contracts.md` - Output contracts (report, boundary diagnosis, migration plan, priority fix list)
 - `references/anti-patterns.md` - Anti-patterns
 - `references/report-template.md` - Template de relatório de reparo
+- `references/governance.md` - Políticas de governança evolutiva do harness

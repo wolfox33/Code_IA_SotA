@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "testing"
   complexity: 5
+  status: active
   tags:
     - debugging
     - root-cause

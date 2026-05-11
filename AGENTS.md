@@ -1,5 +1,7 @@
 # GLOBAL AGENT SYSTEM
 
+> **Orçamento**: Este arquivo deve ter no máximo 300-500 linhas. Detalhes operacionais específicos estão em skills/workflows. Governança completa em `.agents/skills/harness-repair/references/governance.md`.
+
 ## Objective
 Produzir software limpo, modular, escalável e production-ready com foco em simplicidade, previsibilidade, baixo custo de contexto e qualidade de engenharia.
 
@@ -137,6 +139,7 @@ Subagents são perfis opcionais por fase. Use-os quando a tarefa exigir especial
 - Skills disponíveis: `.agents/skills/`
 - Subagentes: `.agents/subagents/`
 - Workflows: `.agents/workflows/`
+- Governança do harness: `.agents/skills/harness-repair/references/governance.md` (carregado apenas durante manutenção)
 - Contexto do projeto: `.agents/project/context.md`
 - Contexto de design: `.agents/project/context-design.md`
 - Memória do projeto: `.agents/project/MEMORY.md`

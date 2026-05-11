@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "infrastructure"
   complexity: 4
+  status: active
   tags:
     - vps
     - docker

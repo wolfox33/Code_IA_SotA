@@ -67,6 +67,7 @@ Uma skill vive em `.agents/skills/<skill-name>/SKILL.md`.
 Skills podem ter estados de lifecycle para rastrear manutenção e depreciação:
 
 - **active**: skill em uso e manutenção ativa (padrão)
+- **experimental**: skill em desenvolvimento, pode mudar, não recomendado para uso crítico
 - **deprecated**: skill obsoleta, não deve ser usada em novos projetos
 - **archived**: skill descontinuada, mantida apenas para referência
 
@@ -74,7 +75,7 @@ Metadata opcional em frontmatter:
 
 ```yaml
 metadata:
-  status: active  # ou deprecated, archived
+  status: active  # ou experimental, deprecated, archived
   owner: "author-name"
   created: "2026-05-11"
   updated: "2026-05-11"
@@ -196,10 +197,35 @@ Workflows vivem em `.agents/workflows/` e descrevem sequência operacional. Eles
 - Conhecimento técnico fica em `skills/`.
 - Processo passo a passo fica em `workflows/`.
 
+## Governança do Harness
+
+Políticas de governança evolutiva para manter saúde estrutural do harness ao longo do tempo.
+
+### Localização
+
+Governança completa em `.agents/skills/harness-repair/references/governance.md` - carregado apenas durante manutenção/revisão do harness.
+
+### Políticas principais
+
+- **Orçamento do AGENTS.md**: máximo 300-500 linhas para manter política global concisa
+- **Granularidade de referência**: 1 tópico por arquivo, máximo 50-100 linhas
+- **Hierarquia de override**: AGENTS.md > skill > workflow > subagent
+- **Ciclo de vida**: active, experimental, deprecated, archived
+- **Workflow de manutenção**: harness-maintenance.md coordenada skill-creator, skill-reviewer, harness-repair
+
+### Quando usar governança
+
+A governança é carregada automaticamente quando:
+- Skill `harness-repair` é acionada para diagnóstico estrutural
+- Workflow `harness-maintenance` é usado para manutenção do harness
+- Usuário pede revisão de arquitetura do harness
+
+Usuários comuns não carregam governança no contexto padrão.
+
 ## Princípios de manutenção
 
 - Simplicidade vence complexidade.
-- `AGENTS.md` na raiz é a fonte global canônica.
+- `AGENTS.md` na raiz é a fonte global canônica (orçamento: 300-500 linhas).
 - `.agents/` é a fonte modular canônica.
 - O harness deve ser generalista, não acoplado a um projeto específico.
 - Informações específicas de projeto ficam em `.agents/project/`.

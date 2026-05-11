@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "engineering"
   complexity: 4
+  status: active
   tags:
     - backend
     - resilience

@@ -1,170 +1,176 @@
-# PRD — Stage 24: Harness Evolutionary Governance
+# PRD — Stage 24: Governança Evolutiva do Harness
 
-## Project
+## Projeto
 
-Evolution of the `Code_IA_SotA` harness through Stage 24: add evolutionary governance mechanisms to prevent AGENTS.md bloat, reference monoliths, and enable systematic harness maintenance through skill-reviewer and harness-repair operationalization.
+Evolução do harness `Code_IA_SotA` através da Stage 24: adicionar mecanismos de governança evolutiva para evitar inchaço do AGENTS.md, monolitos de referência e habilitar manutenção sistemática do harness através da operacionalização do skill-reviewer e harness-repair.
 
-This PRD assumes Stages 1-23 are complete.
-
----
-
-# 1. Decision on Specs
-
-Separate specs are not required for this stage.
-
-This stage adds evolutionary governance mechanisms. The work can be tracked directly in `TASK-v2.md`.
+Este PRD assume que as Stages 1-23 estão completas.
 
 ---
 
-# 2. Vision
+# 1. Decisão sobre Specs
 
-Add evolutionary governance mechanisms to prevent AGENTS.md bloat, reference monoliths, and enable systematic harness maintenance through operationalized skill-reviewer and harness-repair.
+Specs separadas não são necessárias para esta stage.
 
-Stage 24 should establish:
-- AGENTS.md budget and split guidelines
-- Reference granularity rules
-- Override hierarchy semantics
-- Expanded lifecycle with experimental state
-- Operational harness maintenance workflow
+Esta stage adiciona mecanismos de governança evolutiva. O trabalho pode ser rastreado diretamente em `TASK-v2.md`.
 
 ---
 
-# 3. Problem Statement
+# 2. Visão
 
-Current harness lacks evolutionary governance mechanisms:
+Adicionar mecanismos de governança evolutiva para evitar inchaço do AGENTS.md, monolitos de referência e habilitar manutenção sistemática do harness através de skill-reviewer e harness-repair operacionalizados.
 
-- AGENTS.md can grow without bounds, becoming obfuscated
-- references/ folders can become hidden monoliths
-- skill-reviewer and harness-repair exist but are not operationalized
-- No clear override hierarchy between AGENTS.md, skills, workflows
-- Lifecycle lacks experimental state for new skills
-- No observability metrics for activation, overlap, context efficiency
-
-Without evolutionary governance:
-- Harness degrades over time through context bloat
-- No systematic way to detect drift and overlap
-- Unclear conflict resolution between policy layers
-- Difficult to track skill health and usage patterns
+A Stage 24 deve estabelecer:
+- Governança em `.agents/skills/harness-repair/references/governance.md` (carregado apenas pela skill)
+- Orçamento e diretrizes de divisão do AGENTS.md
+- Regras de granularidade de referência
+- Semântica de hierarquia de override
+- Ciclo de vida expandido com estado experimental
+- Workflow operacional de manutenção do harness
 
 ---
 
-# 4. Objective
+# 3. Declaração do Problema
 
-Add evolutionary governance mechanisms to maintain harness health over time.
+O harness atual carece de mecanismos de governança evolutiva:
 
-The goal is to provide systematic tools for:
-- Preventing AGENTS.md bloat
-- Preventing reference monoliths
-- Operationalizing harness maintenance
-- Defining clear override hierarchy
-- Expanding lifecycle management
-- Adding basic observability metrics
+- AGENTS.md pode crescer sem limites, tornando-se obfuscado
+- Pastas references/ podem se tornar monolitos ocultos
+- skill-reviewer e harness-repair existem mas não estão operacionalizados
+- Não há hierarquia clara de override entre AGENTS.md, skills, workflows
+- Ciclo de vida carece de estado experimental para novas skills
+- Não há métricas de observabilidade para ativação, sobreposição, eficiência de contexto
 
----
-
-# 5. Scope
-
-## In Scope
-
-- AGENTS.md budget (300-500 lines max) and split guidelines
-- Reference granularity rules (1 topic per file, max size)
-- Override hierarchy definition (AGENTS.md > skill > workflow > subagent)
-- Expanded lifecycle with experimental state
-- Operational harness maintenance workflow
-- Basic observability metrics (activation frequency, skill overlap)
-
-## Out of Scope
-
-- Automated skill deletion
-- Complex usage analytics dashboards
-- Automated archiving workflows
-- Advanced observability (token usage, context efficiency)
-- Dependency tracking between skills
+Sem governança evolutiva:
+- Harness degrada ao longo do tempo através de inchaço de contexto
+- Não há forma sistemática de detectar drift e sobreposição
+- Resolução de conflitos entre camadas de política é obscura
+- Difícil rastrear saúde de skills e padrões de uso
 
 ---
 
-# 6. Required Implementation Standard
+# 4. Objetivo
 
-- AGENTS.md budget: 300-500 lines maximum
-- Reference granularity: 1 topic per file, max 50-100 lines
-- Override hierarchy documented in AGENTS.md and README
-- Lifecycle states: active, experimental, deprecated, archived
-- Harness maintenance workflow operationalized
-- CLI commands for governance checks
+Adicionar mecanismos de governança evolutiva para manter a saúde do harness ao longo do tempo.
 
----
-
-# 7. Design Constraints
-
-- Manual governance decisions (no automated deletion)
-- Preserve existing skills and structure
-- Backward compatible with current harness
-- CLI-based validation and checks
-- Workflow-driven maintenance process
+O objetivo é fornecer ferramentas sistemáticas para:
+- Prevenir inchaço do AGENTS.md
+- Prevenir monolitos de referência
+- Operacionalizar manutenção do harness
+- Definir hierarquia clara de override
+- Expandir gerenciamento de ciclo de vida
+- Adicionar métricas básicas de observabilidade
 
 ---
 
-# 8. Acceptance Criteria
+# 5. Escopo
 
-Stage 24 is complete when:
+## Dentro do Escopo
 
-- AGENTS.md budget defined and documented
-- Reference granularity rules defined and enforced
-- Override hierarchy documented in AGENTS.md and README
-- Lifecycle expanded with experimental state
-- Harness maintenance workflow operationalized
-- CLI commands for governance checks exist
-- Documentation updated
+- Governança em `.agents/skills/harness-repair/references/governance.md` (carregado apenas pela skill)
+- Orçamento do AGENTS.md (300-500 linhas máx) e diretrizes de divisão
+- Regras de granularidade de referência (1 tópico por arquivo, tamanho máx)
+- Definição de hierarquia de override (AGENTS.md > skill > workflow > subagent)
+- Ciclo de vida expandido com estado experimental
+- Workflow operacional de manutenção do harness
+- Métricas básicas de observabilidade (frequência de ativação, sobreposição de skills)
 
----
+## Fora do Escopo
 
-# 9. Risks
-
-## R1 — AGENTS.md Split Complexity
-
-Risk: Splitting AGENTS.md may create fragmentation or unclear boundaries.
-
-Mitigation: Clear split guidelines; preserve core policy in AGENTS.md; move operational details to skills/workflows.
-
-## R2 — Reference Granularity Overhead
-
-Risk: Too many small reference files may increase complexity.
-
-Mitigation: Balance granularity with usability; define clear topic boundaries; allow exceptions with justification.
-
-## R3 — Override Hierarchy Confusion
-
-Risk: Override hierarchy may be misunderstood or misapplied.
-
-Mitigation: Clear documentation with examples; validation checks; training materials.
+- Deleção automatizada de skills
+- Dashboards complexos de analytics de uso
+- Workflows automatizados de arquivamento
+- Observabilidade avançada (uso de tokens, eficiência de contexto)
+- Rastreamento de dependências entre skills
 
 ---
 
-# 10. Execution Plan
+# 6. Padrão de Implementação Requerido
 
-Execution is tracked in `TASK-v2.md`.
-
-High-level sequence:
-
-1. Define AGENTS.md budget and split guidelines
-2. Define reference granularity rules
-3. Document override hierarchy in AGENTS.md and README
-4. Expand lifecycle with experimental state
-5. Operationalize harness maintenance workflow
-6. Add CLI commands for governance checks
-7. Update documentation
-8. Validate governance mechanisms
+- Governança em `.agents/skills/harness-repair/references/governance.md` (carregado apenas pela skill)
+- Orçamento do AGENTS.md: 300-500 linhas máximo
+- Granularidade de referência: 1 tópico por arquivo, máx 50-100 linhas
+- Hierarquia de override documentada em governance.md e referenciada no AGENTS.md
+- Estados de ciclo de vida: active, experimental, deprecated, archived
+- Workflow de manutenção do harness operacionalizado
+- Comandos CLI para verificações de governança
 
 ---
 
-# 11. Future Roadmap
+# 7. Restrições de Design
 
-Future stages may build on this foundation:
+- Governança em `.agents/skills/harness-repair/references/governance.md` (carregado apenas quando skill for acionada)
+- Decisões manuais de governança (sem deleção automatizada)
+- Preservar skills e estrutura existentes
+- Compatível com harness atual
+- Validação e verificações baseadas em CLI
+- Processo de manutenção orientado por workflows
 
-- Advanced observability (token usage, context efficiency)
-- Automated drift detection
-- Skill dependency tracking
-- Automated archiving workflows
-- Usage analytics dashboards
+---
 
-Each future stage should receive its own PRD update or separate task plan before implementation.
+# 8. Critérios de Aceite
+
+A Stage 24 está completa quando:
+
+- Governança criada em `.agents/skills/harness-repair/references/governance.md`
+- Orçamento do AGENTS.md definido e documentado
+- Regras de granularidade de referência definidas e aplicadas
+- Hierarquia de override documentada em governance.md e referenciada no AGENTS.md
+- Ciclo de vida expandido com estado experimental
+- Workflow de manutenção do harness operacionalizado
+- Comandos CLI para verificações de governança existem
+- Documentação atualizada
+
+---
+
+# 9. Riscos
+
+## R1 — Complexidade de Divisão do AGENTS.md
+
+Risco: Dividir o AGENTS.md pode criar fragmentação ou limites obscuros.
+
+Mitigação: Diretrizes claras de divisão; preservar política central no AGENTS.md; mover detalhes operacionais para skills/workflows.
+
+## R2 — Overhead de Granularidade de Referência
+
+Risco: Muitos arquivos de referência pequenos podem aumentar complexidade.
+
+Mitigação: Balancear granularidade com usabilidade; definir limites claros de tópicos; permitir exceções com justificativa.
+
+## R3 — Confusão de Hierarquia de Override
+
+Risco: Hierarquia de override pode ser mal entendida ou mal aplicada.
+
+Mitigação: Documentação clara com exemplos; verificações de validação; materiais de treinamento.
+
+---
+
+# 10. Plano de Execução
+
+A execução é rastreada em `TASK-v2.md`.
+
+Sequência de alto nível:
+
+1. Criar governança em `.agents/skills/harness-repair/references/governance.md`
+2. Definir orçamento e diretrizes de divisão do AGENTS.md
+3. Definir regras de granularidade de referência
+4. Documentar hierarquia de override em governance.md e referenciar no AGENTS.md
+5. Expandir ciclo de vida com estado experimental
+6. Operacionalizar workflow de manutenção do harness
+7. Adicionar comandos CLI para verificações de governança
+8. Atualizar documentação
+9. Validar mecanismos de governança
+
+---
+
+# 11. Roadmap Futuro
+
+Futuras stages podem construir sobre esta fundação:
+
+- Observabilidade avançada (uso de tokens, eficiência de contexto)
+- Detecção automatizada de drift
+- Rastreamento de dependências entre skills
+- Workflows automatizados de arquivamento
+- Dashboards de analytics de uso
+
+Cada stage futura deve receber sua própria atualização de PRD ou plano de tarefa separado antes da implementação.

@@ -7,6 +7,7 @@ metadata:
   author: "Custom Stack"
   category: "workflow"
   complexity: 3
+  status: active
   tags:
     - verification
     - checklist
