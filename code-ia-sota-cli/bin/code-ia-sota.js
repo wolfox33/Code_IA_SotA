@@ -469,6 +469,121 @@ async function benchmarkDensity(rootDir) {
   }
 }
 
+async function densitySnapshot(rootDir) {
+  const agentsDir = path.join(rootDir, ".agents");
+  const skillsDir = path.join(agentsDir, "skills");
+  const dataDir = path.join(agentsDir, "data");
+  const historyFile = path.join(dataDir, "density-history.json");
+  const skillFiles = await listSkillFiles(skillsDir);
+  const snapshot = {
+    timestamp: new Date().toISOString(),
+    skills: []
+  };
+
+  console.log(pc.bold(pc.green("Code IA Sota")));
+  console.log(pc.cyan("Creating density snapshot..."));
+  console.log("");
+
+  for (const filePath of skillFiles) {
+    if (!(await exists(filePath))) continue;
+
+    const content = await fs.readFile(filePath, "utf8");
+    const density = calculateDensity(content);
+    const skillName = path.basename(path.dirname(filePath));
+
+    snapshot.skills.push({
+      skill: skillName,
+      density: density,
+      filePath: path.relative(rootDir, filePath)
+    });
+  }
+
+  snapshot.skills.sort((a, b) => a.density - b.density);
+
+  if (!(await exists(dataDir))) {
+    await fs.mkdir(dataDir, { recursive: true });
+  }
+
+  let history = [];
+  if (await exists(historyFile)) {
+    const historyContent = await fs.readFile(historyFile, "utf8");
+    history = JSON.parse(historyContent);
+  }
+
+  history.push(snapshot);
+
+  await fs.writeFile(historyFile, JSON.stringify(history, null, 2));
+
+  console.log(`Snapshot created at ${snapshot.timestamp}`);
+  console.log(`Total skills: ${snapshot.skills.length}`);
+  console.log(`History file: ${historyFile}`);
+  console.log(`Total snapshots: ${history.length}`);
+}
+
+async function densityTrends(rootDir) {
+  const agentsDir = path.join(rootDir, ".agents");
+  const historyFile = path.join(agentsDir, "data", "density-history.json");
+
+  console.log(pc.bold(pc.green("Code IA Sota")));
+  console.log(pc.cyan("Generating density trends report..."));
+  console.log("");
+
+  if (!(await exists(historyFile))) {
+    console.log(pc.yellow("No density history found. Run `npm run density:snapshot` first."));
+    return;
+  }
+
+  const historyContent = await fs.readFile(historyFile, "utf8");
+  const history = JSON.parse(historyContent);
+
+  if (history.length === 0) {
+    console.log(pc.yellow("No snapshots found in history."));
+    return;
+  }
+
+  console.log(`Total snapshots: ${history.length}`);
+  console.log("");
+
+  const skillTrends = {};
+
+  for (const snapshot of history) {
+    console.log(pc.bold(`Snapshot: ${snapshot.timestamp}`));
+
+    for (const skill of snapshot.skills) {
+      if (!skillTrends[skill.skill]) {
+        skillTrends[skill.skill] = [];
+      }
+      skillTrends[skill.skill].push({
+        timestamp: snapshot.timestamp,
+        density: skill.density
+      });
+    }
+
+    const densities = snapshot.skills.map(s => s.density);
+    const average = Math.round(densities.reduce((a, b) => a + b, 0) / densities.length);
+    console.log(`  Average density: ${average}%`);
+    console.log(`  Total skills: ${snapshot.skills.length}`);
+    console.log("");
+  }
+
+  console.log(pc.cyan("Density trends by skill:"));
+  console.log("");
+
+  for (const [skillName, trends] of Object.entries(skillTrends)) {
+    const first = trends[0];
+    const last = trends[trends.length - 1];
+    const change = last.density - first.density;
+    const changeColor = change > 0 ? pc.green : change < 0 ? pc.red : pc.white;
+    const changeSign = change > 0 ? "+" : "";
+
+    console.log(`${skillName}:`);
+    console.log(`  First: ${first.density}% (${first.timestamp})`);
+    console.log(`  Last: ${last.density}% (${last.timestamp})`);
+    console.log(`  Change: ${changeColor(changeSign + change + "%")}`);
+    console.log("");
+  }
+}
+
 async function main() {
   if (process.argv[2] === "validate") {
     await validateHarness(path.resolve(TARGET_DIR, process.argv[3] || "."));
@@ -482,6 +597,16 @@ async function main() {
 
   if (process.argv[2] === "benchmark:density") {
     await benchmarkDensity(path.resolve(TARGET_DIR, process.argv[3] || "."));
+    return;
+  }
+
+  if (process.argv[2] === "density:snapshot") {
+    await densitySnapshot(path.resolve(TARGET_DIR, process.argv[3] || "."));
+    return;
+  }
+
+  if (process.argv[2] === "density:trends") {
+    await densityTrends(path.resolve(TARGET_DIR, process.argv[3] || "."));
     return;
   }
 

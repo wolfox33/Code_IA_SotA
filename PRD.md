@@ -1,10 +1,10 @@
-# PRD — Stage 12: Bulk Density Benchmarking and Reporting
+# PRD — Stage 13: Density Trends Over Time
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through Stage 12: add bulk density benchmarking and reporting to track density across all skills over time.
+Evolution of the `Code_IA_SotA` harness through Stage 13: add density trends tracking over time to monitor density changes and identify bloat accumulation.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`), Stage 8 (`CI integration for harness validation`), Stage 9 (`automated bloat detection rules`), Stage 10 (`CI enforcement of density thresholds`) and Stage 11 (`automated refactoring suggestions`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`), Stage 8 (`CI integration for harness validation`), Stage 9 (`automated bloat detection rules`), Stage 10 (`CI enforcement of density thresholds`), Stage 11 (`automated refactoring suggestions`) and Stage 12 (`bulk density benchmarking and reporting`) are complete.
 
 ---
 
@@ -12,42 +12,42 @@ This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 
 
 Separate specs are not required for this stage.
 
-This stage adds bulk density benchmarking and reporting to the CLI. The work can be tracked directly in `TASK.md`.
+This stage adds density trends tracking over time. The work can be tracked directly in `TASK.md`.
 
 Create separate specs only if later work introduces:
 
 - automated bulk migration
 - generated reports with fixed schema
-- CI enforcement of benchmarking
+- CI enforcement of trend tracking
 - compatibility contracts for external platforms
 
 ---
 
 # 2. Vision
 
-Add bulk density benchmarking and reporting to track density across all skills, enabling trend analysis and identification of skills that need refactoring.
+Add density trends tracking over time to monitor density changes and identify bloat accumulation, enabling proactive refactoring before density degrades significantly.
 
-Stage 12 should add a CLI command that generates a density report for all skills, with optional JSON output for programmatic consumption.
+Stage 13 should add a simple mechanism to store historical density data and generate trend reports.
 
 ---
 
 # 3. Problem Statement
 
-Stage 9 and Stage 11 identified low-density skills, but provided no way to track density trends over time or generate comprehensive reports.
+Stage 12 provides snapshot density reports, but no way to track density changes over time or identify gradual bloat accumulation.
 
-Without benchmarking and reporting:
-- No way to track density changes over time
-- No comprehensive view of all skills density
-- Difficult to prioritize refactoring efforts
-- No programmatic access to density data
+Without trend tracking:
+- No visibility into density changes over time
+- Difficult to identify gradual bloat accumulation
+- No way to measure impact of refactoring efforts
+- No early warning system for density degradation
 
 ---
 
 # 4. Objective
 
-Add bulk density benchmarking and reporting to track density across all skills, enabling trend analysis and identification of skills that need refactoring.
+Add density trends tracking over time to monitor density changes and identify bloat accumulation.
 
-The goal is to provide a comprehensive density report with optional JSON output for automation.
+The goal is to provide a simple mechanism to store historical density data and generate trend reports.
 
 ---
 
@@ -55,65 +55,65 @@ The goal is to provide a comprehensive density report with optional JSON output 
 
 ## In Scope
 
-- Add CLI command `benchmark:density` to generate density report
-- Generate human-readable report with density for all skills
-- Add optional JSON output flag for programmatic consumption
-- Sort skills by density (ascending/descending)
-- Add statistics (average, min, max density)
+- Add simple file-based storage for historical density data
+- Add CLI command to store density snapshot
+- Add CLI command to generate trend report
+- Store data in JSON format in `.agents/data/density-history.json`
+- Generate trend report showing density changes over time
 
 ## Out of Scope
 
-- Storing historical density data
-- Trend analysis over time
-- CI integration of benchmarking
-- Automated refactoring based on benchmark
+- Database storage
+- Complex trend analysis algorithms
+- CI integration of trend tracking
+- Automated alerts based on trends
 
 ---
 
 # 6. Required Implementation Standard
 
-- New CLI command: `npm run benchmark:density`
-- Optional JSON output: `npm run benchmark:density -- --json`
-- Report format: table with skill name, density, file path
-- Statistics: average, min, max density
-- Sorting: by density (ascending by default)
+- Storage: JSON file at `.agents/data/density-history.json`
+- Snapshot format: timestamp, skill name, density
+- CLI command `npm run density:snapshot` to store snapshot
+- CLI command `npm run density:trends` to generate trend report
+- Trend report: show density changes for each skill over time
 
 ---
 
 # 7. Design Constraints
 
+- Simple file-based storage (no database)
+- JSON format for easy parsing
+- Manual snapshot creation (no automation)
 - Preserve existing CLI behavior
-- JSON output should be machine-readable
-- Human-readable output should be clear and concise
-- No breaking changes to existing commands
 
 ---
 
 # 8. Acceptance Criteria
 
-Stage 12 is complete when:
+Stage 13 is complete when:
 
-- CLI command `benchmark:density` exists
-- Command generates density report for all skills
-- JSON output flag works correctly
-- Statistics are accurate
+- CLI command `density:snapshot` exists
+- CLI command `density:trends` exists
+- Historical data stored in JSON format
+- Trend report shows density changes over time
 - Documentation is updated
 
 ---
 
 # 9. Risks
 
-## R1 — Performance Impact
+## R1 — File Growth
 
-Risk: Benchmarking may be slow for large codebases.
+Risk: Density history file may grow large over time.
 
-Mitigation: Simple density calculation is fast; no complex parsing.
+Mitigation: Simple JSON format; manual cleanup if needed.
 
-## R2 — Output Format Changes
+## R2 — Manual Process
 
-Risk: JSON format may change in future, breaking automation.
+Risk: Snapshots must be created manually; may be forgotten.
 
-Mitigation: Document JSON schema; version the format if needed.
+Mitigation: Document process; can be automated in future stages.
 
 ---
 
@@ -123,13 +123,12 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Add CLI command `benchmark:density`
-2. Implement density calculation for all skills
-3. Generate human-readable report
-4. Add JSON output flag
-5. Calculate statistics (average, min, max)
-6. Test with all skills
-7. Update documentation
+1. Add CLI command `density:snapshot`
+2. Implement JSON file storage
+3. Add CLI command `density:trends`
+4. Generate trend report
+5. Test snapshot and trend commands
+6. Update documentation
 
 ---
 
@@ -137,8 +136,8 @@ High-level sequence:
 
 Future stages may include:
 
-- Stage 13: Density trends over time
 - Stage 14: Automated refactoring with user approval
-- Stage 15: CI integration of benchmarking
+- Stage 15: CI integration of density tracking
+- Stage 16: Automated alerts based on trends
 
 Each future stage should receive its own PRD update or separate task plan before implementation.

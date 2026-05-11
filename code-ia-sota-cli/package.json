@@ -9,7 +9,9 @@
   "scripts": {
     "validate:harness": "node bin/code-ia-sota.js validate ..",
     "suggest:refactor": "node bin/code-ia-sota.js suggest:refactor ..",
-    "benchmark:density": "node bin/code-ia-sota.js benchmark:density .."
+    "benchmark:density": "node bin/code-ia-sota.js benchmark:density ..",
+    "density:snapshot": "node bin/code-ia-sota.js density:snapshot ..",
+    "density:trends": "node bin/code-ia-sota.js density:trends .."
   },
   "files": [
     "bin",
