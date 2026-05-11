@@ -24,6 +24,7 @@ const REQUIRED_OPERATIONAL_SKILL_SECTIONS = [
 ];
 
 const DENSITY_THRESHOLD = parseInt(process.env.HARNESS_DENSITY_THRESHOLD || "30", 10);
+const FAIL_ON_WARNINGS = process.env.HARNESS_FAIL_ON_WARNINGS === "true";
 
 async function exists(filePath) {
   try {
@@ -281,6 +282,13 @@ async function validateHarness(rootDir) {
 
     for (const warning of warnings) {
       console.warn(`  ${warning.filePath}: ${warning.reason}`);
+    }
+
+    if (FAIL_ON_WARNINGS) {
+      console.log("");
+      console.error(pc.red(`Validation failed due to warnings (FAIL_ON_WARNINGS=true).`));
+      process.exitCode = 1;
+      return;
     }
   }
 

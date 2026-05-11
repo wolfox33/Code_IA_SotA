@@ -1,12 +1,12 @@
-# TASK — Stage 9: Automated Bloat Detection Rules
+# TASK — Stage 10: CI Enforcement of Density Thresholds
 
 ## Goal
 
-Add automated bloat detection to CLI validation to warn about low-density skills.
+Add CI enforcement of density thresholds to GitHub Actions workflow to fail when skills have density below threshold.
 
 ## Execution Rule
 
-Work in stages. Do not change existing validation behavior beyond adding density warnings.
+Work in stages. Do not break existing local validation behavior (warnings only).
 
 ---
 
@@ -14,41 +14,40 @@ Work in stages. Do not change existing validation behavior beyond adding density
 
 ## 1. Preparation
 
-- [x] Confirm Stage 8 is committed
-- [x] Confirm working tree is clean before Stage 9
-- [x] Update `PRD.md` for Stage 9
+- [x] Confirm Stage 9 is committed
+- [x] Confirm working tree is clean before Stage 10
+- [x] Update `PRD.md` for Stage 10
 - [x] Update this `TASK.md`
 
 ## 2. Implementation
 
-- [x] Read CLI validation code
-- [x] Add density calculation function
-- [x] Add density threshold check with environment variable
-- [x] Add warning output for low-density skills
-- [x] Test validation with low-density skill
+- [x] Add flag to CLI validation to fail on warnings
+- [x] Modify GitHub Actions workflow to use flag
+- [x] Add HARNESS_DENSITY_THRESHOLD environment variable to workflow
+- [x] Test workflow with low-density skill
 
 ## 3. Validation
 
-- [x] Re-run validation command
-- [x] Confirm command exits `0` (warnings allowed)
-- [x] Confirm low-density skills trigger warnings
-- [x] Confirm high-density skills do not trigger warnings
+- [x] Confirm workflow fails on density warnings when FAIL_ON_WARNINGS=true
+- [x] Confirm local validation still exits 0 with warnings when FAIL_ON_WARNINGS=false
+- [x] Confirm threshold is configurable in workflow
+- [x] Test with high-density skill passes CI
 
 ## 4. Completion
 
 - [x] Update project memory if a durable decision emerges
-- [x] Confirm Stage 9 acceptance checklist
+- [x] Confirm Stage 10 acceptance checklist
 - [x] Suggest commit only after this stage is complete
 
 ---
 
 # Acceptance Checklist
 
-Stage 9 is done only when:
+Stage 10 is done only when:
 
-- [x] CLI validation calculates density for each skill
-- [x] Skills with <30% density trigger warnings
-- [x] Validation still exits `0` with warnings
-- [x] Density threshold is configurable via environment variable
-- [x] Documentation is updated
+- [x] GitHub Actions workflow has HARNESS_FAIL_ON_WARNINGS flag (set to false for weak enforcement)
+- [x] HARNESS_DENSITY_THRESHOLD is configurable in workflow
+- [x] Local validation still exits 0 with warnings
+- [x] Workflow documentation is updated
+- [x] Test confirms FAIL_ON_WARNINGS=true fails, FAIL_ON_WARNINGS=false passes
 - [x] future stages remain deferred
