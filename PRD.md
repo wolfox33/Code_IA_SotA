@@ -1,10 +1,10 @@
-# PRD — Stage 21: Automated PR Merging with Approval
+# PRD — Stage 22: Density Enforcement with Automated Fixes
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through Stage 21: add automated PR merging with approval to automatically merge refactoring PRs after review approval.
+Evolution of the `Code_IA_SotA` harness through Stage 22: add density enforcement with automated fixes to automatically apply density fixes when threshold is violated.
 
-This PRD assumes Stages 1-20 are complete.
+This PRD assumes Stages 1-21 are complete.
 
 ---
 
@@ -12,35 +12,35 @@ This PRD assumes Stages 1-20 are complete.
 
 Separate specs are not required for this stage.
 
-This stage adds automated PR merging with approval. The work can be tracked directly in `TASK.md`.
+This stage adds density enforcement with automated fixes. The work can be tracked directly in `TASK.md`.
 
 ---
 
 # 2. Vision
 
-Add automated PR merging with approval to automatically merge refactoring PRs after review approval, reducing manual merge effort while maintaining quality.
+Add density enforcement with automated fixes to automatically apply density fixes when threshold is violated, preventing bloat in new skills.
 
-Stage 21 should add a GitHub Actions workflow step that merges approved PRs automatically.
+Stage 22 should add a CLI command and CI enforcement that automatically applies density fixes when threshold is violated.
 
 ---
 
 # 3. Problem Statement
 
-Stage 20 creates PRs for refactoring suggestions, but requires manual merging even after approval.
+Stage 10 enforces density thresholds in CI but only fails validation without applying fixes. Manual fixes are required for low-density skills.
 
-Without automated PR merging:
-- Manual merge effort after approval
-- Delayed merge due to manual intervention
-- Risk of forgotten PRs
-- Inconsistent merge timing
+Without automated fixes:
+- Manual fixes required for low-density skills
+- Time-consuming to fix density violations
+- Risk of incomplete fixes
+- Inconsistent fix quality
 
 ---
 
 # 4. Objective
 
-Add automated PR merging with approval to automatically merge refactoring PRs after review approval.
+Add density enforcement with automated fixes to automatically apply density fixes when threshold is violated.
 
-The goal is to provide automated merging after approval while maintaining quality.
+The goal is to provide automated density fixes while maintaining quality.
 
 ---
 
@@ -48,65 +48,65 @@ The goal is to provide automated merging after approval while maintaining qualit
 
 ## In Scope
 
-- Add GitHub Actions workflow step for automated PR merging
-- Merge PRs after approval (approval required)
-- Check for merge conflicts before merging
-- Add merge confirmation message
-- Configure workflow to run on approval
+- Add CLI command `density:fix` for automated density fixes
+- Implement automated fix logic (move reference content)
+- Apply fixes to low-density skills
+- Add CI enforcement with automated fixes
+- Configure fix behavior (dry-run vs apply)
 
 ## Out of Scope
 
-- Automated merging without approval
-- Forced merging with conflicts
-- Complex merge conflict resolution
-- Merging of non-refactoring PRs
+- Complex refactoring beyond moving content
+- Automated fixes without review
+- Forced fixes in CI
+- Breaking changes to existing skills
 
 ---
 
 # 6. Required Implementation Standard
 
-- GitHub Actions workflow step for automated merging
-- Approval required before merge
-- Check for merge conflicts
-- Add merge confirmation comment
-- Only merge refactoring PRs
+- CLI command: `npm run density:fix`
+- Automated fix logic based on `suggest:refactor`
+- Dry-run mode: `npm run density:fix -- --dry-run`
+- CI enforcement with automated fixes optional
+- Preserve original content
 
 ---
 
 # 7. Design Constraints
 
-- Approval required before merge
-- No forced merging with conflicts
-- Only merge refactoring PRs
-- Preserve existing PR behavior
+- Dry-run mode for preview
+- Preserve original content
+- No forced fixes in CI
+- Manual review recommended
 
 ---
 
 # 8. Acceptance Criteria
 
-Stage 21 is complete when:
+Stage 22 is complete when:
 
-- GitHub Actions workflow merges approved PRs
-- Approval required before merge
-- Merge conflicts checked before merging
-- Merge confirmation message added
+- CLI command `density:fix` exists
+- Command applies automated density fixes
+- Dry-run mode works correctly
+- CI enforcement with automated fixes optional
 - Documentation is updated
 
 ---
 
 # 9. Risks
 
-## R1 — Incorrect Merge
+## R1 — Incorrect Automated Fixes
 
-Risk: Automated merging may merge incorrect changes.
+Risk: Automated fixes may make incorrect changes.
 
-Mitigation: Approval required; only merge refactoring PRs; check for conflicts.
+Mitigation: Dry-run mode for preview; manual review recommended; use existing refactoring logic.
 
-## R2 — Merge Conflicts
+## R2 — Data Loss
 
-Risk: Automated merging may fail with conflicts.
+Risk: Original content may be lost during fixes.
 
-Mitigation: Check for conflicts before merging; fail gracefully if conflicts exist.
+Mitigation: Preserve original content; dry-run mode for preview; manual review required.
 
 ---
 
@@ -116,12 +116,13 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Add GitHub Actions workflow step for automated merging
-2. Implement approval check
-3. Implement merge conflict check
-4. Add merge confirmation message
-5. Test with approved PR
-6. Update documentation
+1. Add CLI command `density:fix`
+2. Implement automated fix logic
+3. Apply fixes to low-density skills
+4. Add dry-run mode
+5. Add CI enforcement option
+6. Test with low-density skills
+7. Update documentation
 
 ---
 
@@ -129,7 +130,6 @@ High-level sequence:
 
 Future stages may include:
 
-- Stage 22: Density enforcement with automated fixes
 - Stage 23: Skill lifecycle management
 
 Each future stage should receive its own PRD update or separate task plan before implementation.

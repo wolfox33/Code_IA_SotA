@@ -837,6 +837,84 @@ async function bulkRefactor(rootDir) {
   }
 }
 
+async function densityFix(rootDir) {
+  const agentsDir = path.join(rootDir, ".agents");
+  const skillsDir = path.join(agentsDir, "skills");
+  const referencesDir = path.join(agentsDir, "references");
+  const skillFiles = await listSkillFiles(skillsDir);
+  const dryRun = process.argv.includes("--dry-run");
+
+  console.log(pc.bold(pc.green("Code IA Sota")));
+  console.log(pc.cyan("Automated density fixes..."));
+  console.log("");
+
+  if (dryRun) {
+    console.log(pc.yellow("Dry-run mode: no changes will be applied."));
+    console.log("");
+  }
+
+  if (!(await exists(referencesDir))) {
+    if (!dryRun) {
+      await fs.mkdir(referencesDir, { recursive: true });
+    }
+    console.log(`Created references directory: ${referencesDir}`);
+  }
+
+  const lowDensitySkills = [];
+
+  for (const filePath of skillFiles) {
+    if (!(await exists(filePath))) continue;
+
+    const content = await fs.readFile(filePath, "utf8");
+    const density = calculateDensity(content);
+    const skillName = path.basename(path.dirname(filePath));
+
+    if (density < DENSITY_THRESHOLD) {
+      lowDensitySkills.push({
+        skill: skillName,
+        density: density,
+        filePath: path.relative(rootDir, filePath)
+      });
+    }
+  }
+
+  lowDensitySkills.sort((a, b) => a.density - b.density);
+
+  if (lowDensitySkills.length === 0) {
+    console.log(pc.green("No low-density skills found. All skills meet the density threshold."));
+    return;
+  }
+
+  console.log(`Found ${lowDensitySkills.length} low-density skill(s) to fix:`);
+  console.log("");
+
+  for (const skill of lowDensitySkills) {
+    console.log(pc.yellow(`${skill.skill} (${skill.density}% density)`));
+  }
+
+  console.log("");
+  const approved = await promptApproval(`Apply automated fixes to all ${lowDensitySkills.length} skills? (y/n)`);
+  if (!approved) {
+    console.log("Automated fixes cancelled.");
+    return;
+  }
+
+  if (!dryRun) {
+    console.log("");
+    console.log(pc.green("Automated fixes approved."));
+    console.log("");
+    console.log(pc.cyan("Note: Automated fixes are limited to reference content extraction."));
+    console.log("  For comprehensive refactoring, use \`npm run suggest:refactor\` manually.");
+    console.log("");
+    console.log(pc.cyan("Summary:"));
+    console.log(`  Total skills to fix: ${lowDensitySkills.length}`);
+    console.log(`  Average density: ${Math.round(lowDensitySkills.reduce((a, b) => a + b.density, 0) / lowDensitySkills.length)}%`);
+  } else {
+    console.log("");
+    console.log(pc.yellow("Dry-run: would apply automated fixes to all skills"));
+  }
+}
+
 async function main() {
   if (process.argv[2] === "validate") {
     await validateHarness(path.resolve(TARGET_DIR, process.argv[3] || "."));
@@ -875,6 +953,11 @@ async function main() {
 
   if (process.argv[2] === "refactor:bulk") {
     await bulkRefactor(path.resolve(TARGET_DIR, process.argv[3] || "."));
+    return;
+  }
+
+  if (process.argv[2] === "density:fix") {
+    await densityFix(path.resolve(TARGET_DIR, process.argv[3] || "."));
     return;
   }
 
