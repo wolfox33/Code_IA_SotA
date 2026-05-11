@@ -15,7 +15,8 @@
     "density:alerts": "node bin/code-ia-sota.js density:alerts ..",
     "density:fix": "node bin/code-ia-sota.js density:fix ..",
     "refactor:auto": "node bin/code-ia-sota.js refactor:auto ..",
-    "refactor:bulk": "node bin/code-ia-sota.js refactor:bulk .."
+    "refactor:bulk": "node bin/code-ia-sota.js refactor:bulk ..",
+    "skill:lifecycle": "node bin/code-ia-sota.js skill:lifecycle .."
   },
   "files": [
     "bin",

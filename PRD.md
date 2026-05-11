@@ -1,10 +1,10 @@
-# PRD — Stage 22: Density Enforcement with Automated Fixes
+# PRD — Stage 23: Skill Lifecycle Management
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through Stage 22: add density enforcement with automated fixes to automatically apply density fixes when threshold is violated.
+Evolution of the `Code_IA_SotA` harness through Stage 23: add skill lifecycle management to track skill status, usage, and deprecation.
 
-This PRD assumes Stages 1-21 are complete.
+This PRD assumes Stages 1-22 are complete.
 
 ---
 
@@ -12,35 +12,35 @@ This PRD assumes Stages 1-21 are complete.
 
 Separate specs are not required for this stage.
 
-This stage adds density enforcement with automated fixes. The work can be tracked directly in `TASK.md`.
+This stage adds skill lifecycle management. The work can be tracked directly in `TASK.md`.
 
 ---
 
 # 2. Vision
 
-Add density enforcement with automated fixes to automatically apply density fixes when threshold is violated, preventing bloat in new skills.
+Add skill lifecycle management to track skill status, usage, and deprecation, enabling systematic skill maintenance and cleanup.
 
-Stage 22 should add a CLI command and CI enforcement that automatically applies density fixes when threshold is violated.
+Stage 23 should add a CLI command to manage skill lifecycle (active, deprecated, archived) and track skill metadata.
 
 ---
 
 # 3. Problem Statement
 
-Stage 10 enforces density thresholds in CI but only fails validation without applying fixes. Manual fixes are required for low-density skills.
+No systematic way to track skill lifecycle, usage patterns, or deprecation status. Skills may become obsolete without clear deprecation process.
 
-Without automated fixes:
-- Manual fixes required for low-density skills
-- Time-consuming to fix density violations
-- Risk of incomplete fixes
-- Inconsistent fix quality
+Without lifecycle management:
+- No clear skill status tracking
+- Difficult to identify obsolete skills
+- No deprecation process
+- Unclear skill ownership
 
 ---
 
 # 4. Objective
 
-Add density enforcement with automated fixes to automatically apply density fixes when threshold is violated.
+Add skill lifecycle management to track skill status, usage, and deprecation.
 
-The goal is to provide automated density fixes while maintaining quality.
+The goal is to provide systematic skill lifecycle tracking and management.
 
 ---
 
@@ -48,65 +48,66 @@ The goal is to provide automated density fixes while maintaining quality.
 
 ## In Scope
 
-- Add CLI command `density:fix` for automated density fixes
-- Implement automated fix logic (move reference content)
-- Apply fixes to low-density skills
-- Add CI enforcement with automated fixes
-- Configure fix behavior (dry-run vs apply)
+- Add CLI command `skill:lifecycle` to manage skill status
+- Track skill status (active, deprecated, archived)
+- Add skill metadata (owner, created date, last updated)
+- Add deprecation process
+- Generate lifecycle report
 
 ## Out of Scope
 
-- Complex refactoring beyond moving content
-- Automated fixes without review
-- Forced fixes in CI
-- Breaking changes to existing skills
+- Automated skill deletion
+- Complex usage analytics
+- Skill dependency tracking
+- Automated archiving
 
 ---
 
 # 6. Required Implementation Standard
 
-- CLI command: `npm run density:fix`
-- Automated fix logic based on `suggest:refactor`
-- Dry-run mode: `npm run density:fix -- --dry-run`
-- CI enforcement with automated fixes optional
-- Preserve original content
+- CLI command: `npm run skill:lifecycle`
+- Status tracking in frontmatter
+- Metadata fields in frontmatter
+- Deprecation notice in skill content
+- Lifecycle report generation
 
 ---
 
 # 7. Design Constraints
 
-- Dry-run mode for preview
-- Preserve original content
-- No forced fixes in CI
-- Manual review recommended
+- Frontmatter-based status tracking
+- Manual status changes
+- No automated deletion
+- Preserve existing skills
 
 ---
 
 # 8. Acceptance Criteria
 
-Stage 22 is complete when:
+Stage 23 is complete when:
 
-- CLI command `density:fix` exists
-- Command applies automated density fixes
-- Dry-run mode works correctly
-- CI enforcement with automated fixes optional
+- CLI command `skill:lifecycle` exists
+- Status tracking in frontmatter
+- Metadata fields added
+- Deprecation process defined
+- Lifecycle report generated
 - Documentation is updated
 
 ---
 
 # 9. Risks
 
-## R1 — Incorrect Automated Fixes
+## R1 — Incorrect Status Changes
 
-Risk: Automated fixes may make incorrect changes.
+Risk: Incorrect status changes may affect skill availability.
 
-Mitigation: Dry-run mode for preview; manual review recommended; use existing refactoring logic.
+Mitigation: Manual status changes; confirmation required; clear status definitions.
 
-## R2 — Data Loss
+## R2 — Metadata Inconsistency
 
-Risk: Original content may be lost during fixes.
+Risk: Metadata may become inconsistent across skills.
 
-Mitigation: Preserve original content; dry-run mode for preview; manual review required.
+Mitigation: Standardized metadata fields; validation; manual review.
 
 ---
 
@@ -116,20 +117,18 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Add CLI command `density:fix`
-2. Implement automated fix logic
-3. Apply fixes to low-density skills
-4. Add dry-run mode
-5. Add CI enforcement option
-6. Test with low-density skills
+1. Add CLI command `skill:lifecycle`
+2. Implement status tracking in frontmatter
+3. Add metadata fields
+4. Implement deprecation process
+5. Generate lifecycle report
+6. Test with skill status changes
 7. Update documentation
 
 ---
 
 # 11. Future Roadmap
 
-Future stages may include:
-
-- Stage 23: Skill lifecycle management
+No future stages defined. This concludes the density enforcement and refactoring roadmap.
 
 Each future stage should receive its own PRD update or separate task plan before implementation.

@@ -1,12 +1,12 @@
-# TASK — Stage 22: Density Enforcement with Automated Fixes
+# TASK — Stage 23: Skill Lifecycle Management
 
 ## Goal
 
-Add density enforcement with automated fixes to automatically apply density fixes when threshold is violated.
+Add skill lifecycle management to track skill status, usage, and deprecation.
 
 ## Execution Rule
 
-Work in stages. Dry-run mode for preview; manual review recommended.
+Work in stages. Manual status changes; no automated deletion.
 
 ---
 
@@ -14,42 +14,43 @@ Work in stages. Dry-run mode for preview; manual review recommended.
 
 ## 1. Preparation
 
-- [x] Confirm Stage 21 is committed
-- [x] Confirm working tree is clean before Stage 22
-- [x] Update `PRD.md` for Stage 22
+- [x] Confirm Stage 22 is committed
+- [x] Confirm working tree is clean before Stage 23
+- [x] Update `PRD.md` for Stage 23
 - [x] Update this `TASK.md`
 
 ## 2. Implementation
 
-- [x] Add CLI command `density:fix`
-- [x] Implement automated fix logic
-- [x] Apply fixes to low-density skills
-- [x] Add dry-run mode
-- [x] Add CI enforcement option
-- [x] Test with low-density skills
+- [x] Add CLI command `skill:lifecycle`
+- [x] Implement status tracking in frontmatter
+- [x] Add metadata fields
+- [x] Implement deprecation process
+- [x] Generate lifecycle report
+- [x] Test with skill status changes
 
 ## 3. Validation
 
-- [x] Confirm command applies automated fixes
-- [x] Confirm dry-run mode works correctly
-- [x] Test with low-density skill
-- [x] Verify fixes improve density
+- [x] Confirm command manages skill status
+- [x] Confirm status tracking in frontmatter
+- [x] Test deprecation process
+- [x] Verify lifecycle report generation
 
 ## 4. Completion
 
 - [x] Update project memory if a durable decision emerges
-- [x] Confirm Stage 22 acceptance checklist
+- [x] Confirm Stage 23 acceptance checklist
 - [x] Suggest commit only after this stage is complete
 
 ---
 
 # Acceptance Checklist
 
-Stage 22 is done only when:
+Stage 23 is done only when:
 
-- [x] CLI command `density:fix` exists
-- [x] Command applies automated density fixes
-- [x] Dry-run mode works correctly
-- [x] CI enforcement with automated fixes optional
+- [x] CLI command `skill:lifecycle` exists
+- [x] Status tracking in frontmatter
+- [x] Metadata fields added
+- [x] Deprecation process defined
+- [x] Lifecycle report generated
 - [x] Documentation is updated
 - [x] future stages remain deferred

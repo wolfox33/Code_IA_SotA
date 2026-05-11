@@ -915,6 +915,61 @@ async function densityFix(rootDir) {
   }
 }
 
+async function skillLifecycle(rootDir) {
+  const agentsDir = path.join(rootDir, ".agents");
+  const skillsDir = path.join(agentsDir, "skills");
+  const skillFiles = await listSkillFiles(skillsDir);
+
+  console.log(pc.bold(pc.green("Code IA Sota")));
+  console.log(pc.cyan("Skill Lifecycle Management"));
+  console.log("");
+
+  const skills = [];
+
+  for (const filePath of skillFiles) {
+    if (!(await exists(filePath))) continue;
+
+    const content = await fs.readFile(filePath, "utf8");
+    const frontmatter = parseFrontmatter(content);
+    const skillName = path.basename(path.dirname(filePath));
+    const density = calculateDensity(content);
+
+    skills.push({
+      skill: skillName,
+      status: frontmatter?.status || "active",
+      density: density,
+      filePath: path.relative(rootDir, filePath)
+    });
+  }
+
+  console.log(`Total skills: ${skills.length}`);
+  console.log("");
+
+  const statusCount = {
+    active: skills.filter(s => s.status === "active").length,
+    deprecated: skills.filter(s => s.status === "deprecated").length,
+    archived: skills.filter(s => s.status === "archived").length
+  };
+
+  console.log(pc.cyan("Status Distribution:"));
+  console.log(`  Active: ${statusCount.active}`);
+  console.log(`  Deprecated: ${statusCount.deprecated}`);
+  console.log(`  Archived: ${statusCount.archived}`);
+  console.log("");
+
+  console.log(pc.cyan("Skills by Status:"));
+  console.log("");
+
+  for (const skill of skills.sort((a, b) => a.skill.localeCompare(b.skill))) {
+    const statusColor = skill.status === "active" ? pc.green : skill.status === "deprecated" ? pc.yellow : pc.gray;
+    console.log(`${statusColor(skill.status.toUpperCase())}: ${skill.skill} (${skill.density}% density)`);
+  }
+
+  console.log("");
+  console.log(pc.cyan("To update skill status, add \`status: [active|deprecated|archived]\` to frontmatter."));
+  console.log(pc.cyan("To add metadata, add \`owner\`, \`created\`, \`updated\` fields to frontmatter."));
+}
+
 async function main() {
   if (process.argv[2] === "validate") {
     await validateHarness(path.resolve(TARGET_DIR, process.argv[3] || "."));
@@ -958,6 +1013,11 @@ async function main() {
 
   if (process.argv[2] === "density:fix") {
     await densityFix(path.resolve(TARGET_DIR, process.argv[3] || "."));
+    return;
+  }
+
+  if (process.argv[2] === "skill:lifecycle") {
+    await skillLifecycle(path.resolve(TARGET_DIR, process.argv[3] || "."));
     return;
   }
 
