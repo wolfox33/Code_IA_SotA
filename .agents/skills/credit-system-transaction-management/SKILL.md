@@ -21,7 +21,7 @@ metadata:
 
 Guia completo para implementar sistema de créditos confiável com transactions, idempotency e audit trail.
 
-## 🎯 Objetivo
+## Objetivo
 
 Fornecer:
 - **Database transactions** (ACID)
@@ -47,6 +47,109 @@ Fornecer:
 - Não há saldo, transação, concorrência, auditoria ou garantia de consistência.
 - Sistema é single-user ou protótipo sem risco de double spend.
 - Accuracy não é crítica para o comportamento solicitado.
+
+## Output contracts
+
+Ao aplicar esta skill, entregue ou registre:
+
+- Schema de database para créditos e audit log
+- Funções de débito e crédito com transactions
+- Idempotency keys implementados
+- Locking strategies (pessimistic ou optimistic)
+- Audit trail completo
+- Funções de reconciliação de saldo
+- Tests de cenários concorrentes
+
+## Procedure
+
+### 1. Criar schema de database
+
+```typescript
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  credits: integer('credits').default(0).notNull(),
+  version: integer('version').default(0).notNull(),
+})
+
+export const creditLog = pgTable('credit_log', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id).notNull(),
+  amount: integer('amount').notNull(),
+  balanceBefore: integer('balance_before').notNull(),
+  balanceAfter: integer('balance_after').notNull(),
+  operation: text('operation', { enum: ['credit', 'debit'] }).notNull(),
+  reason: text('reason').notNull(),
+  idempotencyKey: text('idempotency_key').unique(),
+})
+```
+
+### 2. Implementar débito com locking
+
+```typescript
+export async function debitCredits(userId, amount, reason, idempotencyKey) {
+  return await db.transaction(async (tx) => {
+    const user = await tx.select().from(users)
+      .where(eq(users.id, userId))
+      .for('update')
+      .limit(1)
+
+    if (user[0].credits < amount) throw new InsufficientCreditsError()
+
+    await tx.update(users)
+      .set({ credits: user[0].credits - amount })
+      .where(eq(users.id, userId))
+
+    await tx.insert(creditLog).values({
+      userId, amount: -amount, balanceBefore: user[0].credits,
+      balanceAfter: user[0].credits - amount, operation: 'debit', reason, idempotencyKey
+    })
+  })
+}
+```
+
+### 3. Implementar idempotency
+
+```typescript
+if (idempotencyKey) {
+  const existing = await tx.select().from(creditLog)
+    .where(eq(creditLog.idempotencyKey, idempotencyKey))
+    .limit(1)
+  if (existing.length > 0) return existing[0]
+}
+```
+
+### 4. Implementar audit trail
+
+```typescript
+await tx.insert(creditLog).values({
+  userId, amount, balanceBefore, balanceAfter, operation, reason, metadata
+})
+```
+
+### 5. Implementar reconciliação
+
+```typescript
+export async function reconcileBalance(userId) {
+  const logs = await db.select().from(creditLog).where(eq(creditLog.userId, userId))
+  const expectedBalance = logs.reduce((sum, log) => sum + log.amount, 0)
+  const actualBalance = await getBalance(userId)
+  return { reconciled: expectedBalance === actualBalance, expected: expectedBalance, actual: actualBalance }
+}
+```
+
+## Verification
+
+- Schema de database está definido
+- Funções de débito e crédito usam transactions
+- Idempotency keys são verificados antes de executar
+- Locking (pessimistic ou optimistic) está implementado
+- Audit trail loga todas as operações
+- Funções de reconciliação existem
+- Tests de cenários concorrentes estão implementados
+
+> **Skill log**
+> - [2026-05-11] Skill criada com padrões de sistema de créditos.
+> - [2026-05-11] Stage 6 (Batch 7) adicionou seções operacionais faltantes e removeu emoji de heading Objetivo.
 
 ## Instructions
 

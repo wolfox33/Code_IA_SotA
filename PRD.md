@@ -1,10 +1,10 @@
-# PRD — Stage 6 (Batch 6): Skill Audit and Incremental Refactor
+# PRD — Stage 6 (Batch 7): Skill Audit and Incremental Refactor
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through a focused sixth stage (batch 6): refactor `testing-patterns-chat`, `frontend-design`, `realtime-chat-implementation`, `stripe-integration`, `tech-stack-decision` and `vertical-slice-modular-monolith` to add missing operational sections.
+Evolution of the `Code_IA_SotA` harness through a focused seventh stage (batch 7): refactor `better-auth-best-practices`, `credit-system-transaction-management` and `nextjs-app-router-patterns` to add missing operational sections.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batches 1-5: skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batches 1-6: skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
 
 ---
 
@@ -25,9 +25,9 @@ Create separate specs only if later work introduces:
 
 # 2. Vision
 
-Add missing operational sections to 6 skills to reduce validation warnings while preserving their domain-specific scope.
+Add missing operational sections to 3 skills to reduce validation warnings while preserving their domain-specific scope.
 
-Stage 6 (Batch 6) should follow the same pattern as previous batches: add missing sections (Objetivo, Use/Do not use, Output contracts, Procedure, Verification) without changing skill intent.
+Stage 6 (Batch 7) should follow the same pattern as previous batches: add missing sections (Objetivo, Use/Do not use, Output contracts, Procedure, Verification) without changing skill intent.
 
 ---
 
@@ -37,22 +37,13 @@ The validation command shows that many skills still have missing operational sec
 
 Current gaps for target skills:
 
-**testing-patterns-chat** (5 warnings):
-- Missing: Objetivo, Do not use this skill when, Output contracts, Procedure, Verification
-
-**frontend-design** (4 warnings):
+**better-auth-best-practices** (4 warnings):
 - Missing: Objetivo, Output contracts, Procedure, Verification
 
-**realtime-chat-implementation** (4 warnings):
+**credit-system-transaction-management** (4 warnings):
 - Missing: Objetivo, Output contracts, Procedure, Verification
 
-**stripe-integration** (4 warnings):
-- Missing: Objetivo, Output contracts, Procedure, Verification
-
-**tech-stack-decision** (4 warnings):
-- Missing: Objetivo, Output contracts, Procedure, Verification
-
-**vertical-slice-modular-monolith** (4 warnings):
+**nextjs-app-router-patterns** (4 warnings):
 - Missing: Objetivo, Output contracts, Procedure, Verification
 
 Without refactoring, these skills continue to:
@@ -66,7 +57,7 @@ Without refactoring, these skills continue to:
 
 # 4. Objective
 
-Add missing operational sections to 6 skills to reduce validation warnings.
+Add missing operational sections to 3 skills to reduce validation warnings.
 
 The goal is not to rewrite the skills. The goal is to complete their operational structure following the canonical pattern.
 
@@ -117,9 +108,9 @@ For each skill:
 
 # 8. Acceptance Criteria
 
-Stage 6 (Batch 6) is complete when:
+Stage 6 (Batch 7) is complete when:
 
-- All 6 target skills have been refactored
+- All 3 target skills have been refactored
 - Validation command exits `0`
 - Target skills no longer emit avoidable operational-section warnings
 - No other skills or workflows are modified

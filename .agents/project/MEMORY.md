@@ -25,6 +25,7 @@
 - [2026-05-11] Stage 6 (Batch 4) adicionou seções operacionais faltantes em `api-design-chat` e `database-schema-design-chat` (Use/Do not use, Output contracts, Procedure, Verification), reduzindo warnings de validação de 60 para 58; removeu emojis de headings para validador reconhecer seções.
 - [2026-05-11] Stage 6 (Batch 5) adicionou seções operacionais faltantes em `ai-sdk-ui-chat`, `deployment-best-practices` e `performance-optimization-chat` (Do not use, Output contracts, Procedure, Verification, skill log), reduzindo warnings de validação de 58 para 42; removeu emojis de headings para validador reconhecer seções.
 - [2026-05-11] Stage 6 (Batch 6) adicionou seções operacionais faltantes em `testing-patterns-chat`, `frontend-design`, `realtime-chat-implementation`, `stripe-integration`, `tech-stack-decision` e `vertical-slice-modular-monolith` (Do not use, Output contracts, Procedure, Verification, skill log), reduzindo warnings de validação de 42 para 17; removeu emojis de headings para validador reconhecer seções.
+- [2026-05-11] Stage 6 (Batch 7) adicionou seções operacionais faltantes em `better-auth-best-practices`, `credit-system-transaction-management` e `nextjs-app-router-patterns` (Output contracts, Procedure, Verification, skill log), reduzindo warnings de validação de 17 para 5; removeu emojis de headings para validador reconhecer seções.
 
 ## Bugs Conhecidos / Débitos Técnicos
 
