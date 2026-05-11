@@ -20,7 +20,7 @@ metadata:
 
 Guia definitivo para decisões de stack tecnológica em projetos SaaS. Use esta skill quando estiver em dúvida sobre quais tecnologias, frameworks ou versões utilizar.
 
-## 🎯 Objetivo
+## Objetivo
 
 Fornecer decisões claras e fundamentadas sobre:
 - **Frameworks e bibliotecas** para frontend e backend
@@ -45,6 +45,79 @@ Fornecer decisões claras e fundamentadas sobre:
 - Projeto tem requisitos de nicho não cobertos por este guia.
 - Time já tem expertise consolidada e o usuário não pediu comparação.
 - A decisão é apenas arquitetura de módulos; use `vertical-slice-modular-monolith`.
+
+## Output contracts
+
+Ao aplicar esta skill, entregue ou registre:
+
+- Decisão clara de tecnologia, framework ou versão
+- Justificativa baseada em requisitos do projeto
+- Análise de trade-offs entre alternativas
+- Matriz de compatibilidade entre tecnologias
+- Documentação da decisão (ADR se apropriado)
+
+## Procedure
+
+### 1. Identificar tipo de projeto
+
+Classifique o projeto: SaaS Full-Stack, API Backend, Agent-Based Application, Landing Page.
+
+### 2. Avaliar requisitos
+
+Considere: Performance, escalabilidade, DX, time expertise, tipo de projeto.
+
+### 3. Consultar stack padrão
+
+Use a stack padrão recomendada (Fevereiro 2026):
+
+**Frontend**: Next.js 16, Tailwind v4, shadcn/ui, Better Auth, AI SDK UI
+**Backend**: FastAPI 0.129+, Python 3.12+, LangGraph 1.0
+**Database**: PostgreSQL 16, Drizzle (TS) ou SQLAlchemy 2.0 (Python)
+
+### 4. Validar compatibilidade
+
+Verifique matriz de compatibilidade entre tecnologias:
+
+```typescript
+| Next.js 16 | Bun 1.3+ | Tailwind 4+ | Better Auth 1.4+ | Drizzle 0.45+ | AI SDK UI 1.0+ |
+| ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+```
+
+### 5. Considerar alternativas
+
+Avalie quando usar alternativas:
+
+- Trocar Next.js por: Remix (nested routing), SvelteKit (Svelte), Astro (menos JS)
+- Trocar FastAPI por: NestJS (TypeScript), Go + Gin (performance), Rust + Axum (segurança)
+- Trocar PostgreSQL por: MySQL (expertise), MongoDB (não-estruturado), SQLite (pequeno)
+
+### 6. Documentar decisão
+
+Use template de ADR:
+
+```markdown
+## Decisão: [Tecnologia]
+
+**Contexto:** Tipo de projeto, requisitos, time expertise
+**Opções Consideradas:** Opção 1, Opção 2, Opção 3
+**Decisão:** Tecnologia X versão Y
+**Justificativa:** Motivo 1, Motivo 2, Motivo 3
+**Trade-offs Aceitos:** Trade-off 1, Trade-off 2
+**Revisão:** Revisar em [data] ou quando [condição]
+```
+
+## Verification
+
+- Tecnologia escolhida é estável e production-ready
+- Versão é compatível com outras tecnologias da stack
+- Justificativa é baseada em requisitos do projeto
+- Trade-offs são documentados
+- Decisão é registrada em ADR ou documentação
+- Alternativas foram consideradas e rejeitadas com motivo
+
+> **Skill log**
+> - [2026-05-11] Skill criada com guia de decisões de stack tecnológica.
+> - [2026-05-11] Stage 6 (Batch 6) adicionou seções operacionais faltantes e removeu emoji de heading Objetivo.
 
 ## Instructions
 
