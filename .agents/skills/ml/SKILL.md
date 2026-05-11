@@ -1,6 +1,6 @@
 ---
 name: ml
-description: "Orientar tarefas de machine learning como definição de target, preparação de dados, treino, validação, análise de drift e deploy seguro de modelos."
+description: "Use quando a tarefa envolver modelagem de machine learning: definição de target, preparação de dados, treino, validação, análise de drift ou deploy seguro de modelos."
 metadata:
   model: inherit
   version: "1.0.0"
@@ -33,6 +33,7 @@ Orientar workflows de machine learning com foco em definição correta do proble
 - A tarefa for engenharia de dados sem treino, validação ou consumo de modelo.
 - A tarefa for estatística/quant/backtest financeiro sem componente explícito de ML.
 - A tarefa for integração de LLM, agentes ou prompt engineering sem modelo preditivo supervisionado ou não supervisionado.
+- A tarefa híbrida puder ser resolvida por `data-science` ou `quant` sem treino, validação ou deploy de modelo preditivo.
 
 ## Output contracts
 
@@ -127,3 +128,6 @@ Entregue quando:
 - Resultados foram validados fora da amostra.
 - Erros e limitações foram analisados.
 - Plano de deploy inclui monitoramento, fallback e critérios de rollback.
+
+> **Skill log**
+> - [2026-05-11] Skill expandida de placeholder para orientação operacional de machine learning e revisada com `skill-reviewer`.
