@@ -942,7 +942,10 @@ async function skillLifecycle(rootDir) {
 
     skills.push({
       skill: skillName,
-      status: frontmatter?.status || "active",
+      status: frontmatter?.data?.status || "active",
+      owner: frontmatter?.data?.owner || "unknown",
+      created: frontmatter?.data?.created || "unknown",
+      updated: frontmatter?.data?.updated || "unknown",
       density: density,
       filePath: path.relative(rootDir, filePath)
     });

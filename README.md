@@ -62,6 +62,32 @@ Não há requisito de gerar `.windsurf/`, `.claude/`, `.opencode/` ou outros mir
 
 Uma skill vive em `.agents/skills/<skill-name>/SKILL.md`.
 
+### Lifecycle management
+
+Skills podem ter estados de lifecycle para rastrear manutenção e depreciação:
+
+- **active**: skill em uso e manutenção ativa (padrão)
+- **deprecated**: skill obsoleta, não deve ser usada em novos projetos
+- **archived**: skill descontinuada, mantida apenas para referência
+
+Metadata opcional em frontmatter:
+
+```yaml
+metadata:
+  status: active  # ou deprecated, archived
+  owner: "author-name"
+  created: "2026-05-11"
+  updated: "2026-05-11"
+```
+
+Para gerar relatório de lifecycle:
+
+```bash
+npm run skill:lifecycle
+```
+
+O relatório mostra distribuição de status e lista skills por estado.
+
 ### Densidade procedural
 
 O CLI de validação calcula a densidade procedural como a proporção de linhas da seção Procedure em relação ao total do arquivo. O threshold padrão é 30%.
