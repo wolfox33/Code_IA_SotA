@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '0 0 * * 0'  # Weekly on Sunday at 00:00 UTC
   workflow_dispatch:  # Manual trigger
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
 
 jobs:
   auto-refactor:
@@ -30,6 +33,7 @@ jobs:
         run: npm run refactor:bulk -- --dry-run
         env:
           HARNESS_DENSITY_THRESHOLD: "30"
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
 
       - name: Create PR with refactoring suggestions
         run: |
@@ -59,3 +63,65 @@ jobs:
             --head $BRANCH_NAME
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+  auto-merge:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Auto-merge approved PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            
+            // Only merge auto-refactor PRs
+            if (!pr.title.includes('Automated Bulk Refactoring')) {
+              console.log('Not an auto-refactor PR, skipping');
+              return;
+            }
+            
+            // Check for approval
+            const reviews = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number
+            });
+            
+            const approved = reviews.data.some(review => review.state === 'APPROVED');
+            
+            if (!approved) {
+              console.log('PR not approved, skipping merge');
+              return;
+            }
+            
+            // Check for merge conflicts
+            const prDetails = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number
+            });
+            
+            if (prDetails.data.mergeable === false) {
+              console.log('PR has merge conflicts, skipping merge');
+              return;
+            }
+            
+            // Merge PR
+            await github.rest.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              commit_title: `Auto-merge: ${pr.title}`,
+              commit_message: 'Automatically merged approved refactoring PR',
+              merge_method: 'squash'
+            });
+            
+            console.log('PR merged successfully');
+        if: github.event_name == 'pull_request'

@@ -1,10 +1,10 @@
-# PRD — Stage 20: Automated Bulk Refactoring with CI
+# PRD — Stage 21: Automated PR Merging with Approval
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through Stage 20: add automated bulk refactoring with CI to automatically apply refactoring suggestions to low-density skills in CI.
+Evolution of the `Code_IA_SotA` harness through Stage 21: add automated PR merging with approval to automatically merge refactoring PRs after review approval.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`), Stage 8 (`CI integration for harness validation`), Stage 9 (`automated bloat detection rules`), Stage 10 (`CI enforcement of density thresholds`), Stage 11 (`automated refactoring suggestions`), Stage 12 (`bulk density benchmarking and reporting`), Stage 13 (`density trends over time`), Stage 14 (`automated refactoring with user approval`), Stage 15 (`CI integration of density tracking`), Stage 16 (`automated alerts based on trends`) and Stage 17 (`bulk refactoring with batch approval`) are complete.
+This PRD assumes Stages 1-20 are complete.
 
 ---
 
@@ -12,41 +12,35 @@ This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 
 
 Separate specs are not required for this stage.
 
-This stage adds automated bulk refactoring with CI. The work can be tracked directly in `TASK.md`.
-
-Create separate specs only if later work introduces:
-
-- generated reports with fixed schema
-- CI enforcement of automated refactoring
-- compatibility contracts for external platforms
+This stage adds automated PR merging with approval. The work can be tracked directly in `TASK.md`.
 
 ---
 
 # 2. Vision
 
-Add automated bulk refactoring with CI to automatically apply refactoring suggestions to low-density skills, reducing manual effort while maintaining quality.
+Add automated PR merging with approval to automatically merge refactoring PRs after review approval, reducing manual merge effort while maintaining quality.
 
-Stage 20 should add a GitHub Actions workflow step that applies automated refactoring to low-density skills with PR creation for review.
+Stage 21 should add a GitHub Actions workflow step that merges approved PRs automatically.
 
 ---
 
 # 3. Problem Statement
 
-Stage 17 provides bulk refactoring with batch approval, but still requires manual implementation of refactoring suggestions.
+Stage 20 creates PRs for refactoring suggestions, but requires manual merging even after approval.
 
-Without automated bulk refactoring in CI:
-- Manual implementation is time-consuming for 20 skills
-- Difficult to ensure consistent refactoring across skills
-- Risk of manual errors during refactoring
-- High effort for systematic refactoring
+Without automated PR merging:
+- Manual merge effort after approval
+- Delayed merge due to manual intervention
+- Risk of forgotten PRs
+- Inconsistent merge timing
 
 ---
 
 # 4. Objective
 
-Add automated bulk refactoring with CI to automatically apply refactoring suggestions to low-density skills.
+Add automated PR merging with approval to automatically merge refactoring PRs after review approval.
 
-The goal is to provide automated refactoring with PR creation for review, reducing manual effort while maintaining quality.
+The goal is to provide automated merging after approval while maintaining quality.
 
 ---
 
@@ -54,65 +48,65 @@ The goal is to provide automated refactoring with PR creation for review, reduci
 
 ## In Scope
 
-- Add GitHub Actions workflow step for automated refactoring
-- Apply automated refactoring to low-density skills
-- Create PR for review with refactoring changes
-- Use existing `suggest:refactor` logic
-- Configure workflow to run on schedule or manual trigger
+- Add GitHub Actions workflow step for automated PR merging
+- Merge PRs after approval (approval required)
+- Check for merge conflicts before merging
+- Add merge confirmation message
+- Configure workflow to run on approval
 
 ## Out of Scope
 
-- Automated merging without review
-- Complex refactoring beyond moving content
-- Real-time monitoring dashboards
-- Email/SMS notifications
+- Automated merging without approval
+- Forced merging with conflicts
+- Complex merge conflict resolution
+- Merging of non-refactoring PRs
 
 ---
 
 # 6. Required Implementation Standard
 
-- GitHub Actions workflow step for automated refactoring
-- Apply refactoring using existing logic
-- Create PR with descriptive title and description
-- Configure workflow to run on schedule (weekly)
-- Manual trigger available
+- GitHub Actions workflow step for automated merging
+- Approval required before merge
+- Check for merge conflicts
+- Add merge confirmation comment
+- Only merge refactoring PRs
 
 ---
 
 # 7. Design Constraints
 
-- PR creation for review required
-- No automated merging without review
-- Use existing refactoring logic
-- Preserve existing CI behavior
+- Approval required before merge
+- No forced merging with conflicts
+- Only merge refactoring PRs
+- Preserve existing PR behavior
 
 ---
 
 # 8. Acceptance Criteria
 
-Stage 20 is complete when:
+Stage 21 is complete when:
 
-- GitHub Actions workflow applies automated refactoring
-- PR created with refactoring changes
-- PR description includes density improvements
-- Workflow runs on schedule or manual trigger
+- GitHub Actions workflow merges approved PRs
+- Approval required before merge
+- Merge conflicts checked before merging
+- Merge confirmation message added
 - Documentation is updated
 
 ---
 
 # 9. Risks
 
-## R1 — Incorrect Automated Refactoring
+## R1 — Incorrect Merge
 
-Risk: Automated refactoring may make incorrect changes.
+Risk: Automated merging may merge incorrect changes.
 
-Mitigation: PR creation for review; manual approval required; use existing refactoring logic.
+Mitigation: Approval required; only merge refactoring PRs; check for conflicts.
 
-## R2 — PR Spam
+## R2 — Merge Conflicts
 
-Risk: Too many PRs may be created by automated refactoring.
+Risk: Automated merging may fail with conflicts.
 
-Mitigation: Weekly schedule; manual trigger available; can be disabled if needed.
+Mitigation: Check for conflicts before merging; fail gracefully if conflicts exist.
 
 ---
 
@@ -122,11 +116,11 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Add GitHub Actions workflow step for automated refactoring
-2. Implement automated refactoring logic
-3. Add PR creation logic
-4. Configure workflow schedule (weekly)
-5. Test workflow with manual trigger
+1. Add GitHub Actions workflow step for automated merging
+2. Implement approval check
+3. Implement merge conflict check
+4. Add merge confirmation message
+5. Test with approved PR
 6. Update documentation
 
 ---
@@ -135,7 +129,6 @@ High-level sequence:
 
 Future stages may include:
 
-- Stage 21: Automated PR merging with approval
 - Stage 22: Density enforcement with automated fixes
 - Stage 23: Skill lifecycle management
 

@@ -1,12 +1,12 @@
-# TASK — Stage 20: Automated Bulk Refactoring with CI
+# TASK — Stage 21: Automated PR Merging with Approval
 
 ## Goal
 
-Add automated bulk refactoring with CI to automatically apply refactoring suggestions to low-density skills.
+Add automated PR merging with approval to automatically merge refactoring PRs after review approval.
 
 ## Execution Rule
 
-Work in stages. PR creation for review required; no automated merging without review.
+Work in stages. Approval required before merge; no forced merging with conflicts.
 
 ---
 
@@ -14,41 +14,41 @@ Work in stages. PR creation for review required; no automated merging without re
 
 ## 1. Preparation
 
-- [x] Confirm Stage 17 is committed
-- [x] Confirm working tree is clean before Stage 20
-- [x] Update `PRD.md` for Stage 20
+- [x] Confirm Stage 20 is committed
+- [x] Confirm working tree is clean before Stage 21
+- [x] Update `PRD.md` for Stage 21
 - [x] Update this `TASK.md`
 
 ## 2. Implementation
 
-- [x] Add GitHub Actions workflow step for automated refactoring
-- [x] Implement automated refactoring logic
-- [x] Add PR creation logic
-- [x] Configure workflow schedule (weekly)
-- [x] Test workflow with manual trigger
+- [x] Add GitHub Actions workflow step for automated merging
+- [x] Implement approval check
+- [x] Implement merge conflict check
+- [x] Add merge confirmation message
+- [x] Test with approved PR
 
 ## 3. Validation
 
-- [x] Confirm workflow applies automated refactoring
-- [x] Confirm PR created with refactoring changes
-- [x] Test manual trigger
-- [x] Verify PR description includes density improvements
+- [x] Confirm workflow merges approved PRs
+- [x] Confirm approval required before merge
+- [x] Test merge conflict scenario
+- [x] Verify merge confirmation message
 
 ## 4. Completion
 
 - [x] Update project memory if a durable decision emerges
-- [x] Confirm Stage 20 acceptance checklist
+- [x] Confirm Stage 21 acceptance checklist
 - [x] Suggest commit only after this stage is complete
 
 ---
 
 # Acceptance Checklist
 
-Stage 20 is done only when:
+Stage 21 is done only when:
 
-- [x] GitHub Actions workflow applies automated refactoring
-- [x] PR created with refactoring changes
-- [x] PR description includes density improvements
-- [x] Workflow runs on schedule or manual trigger
+- [x] GitHub Actions workflow merges approved PRs
+- [x] Approval required before merge
+- [x] Merge conflicts checked before merging
+- [x] Merge confirmation message added
 - [x] Documentation is updated
 - [x] future stages remain deferred
