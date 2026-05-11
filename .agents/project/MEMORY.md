@@ -29,6 +29,7 @@
 - [2026-05-11] Stage 6 (Batch 8) adicionou seções operacionais faltantes em `langgraph-agent-patterns`, `systematic-debugging`, `test-driven-development`, `verification-before-completion` e `vps-docker-deploy` (Output contracts, skill log), reduzindo warnings de validação de 5 para 0; validação agora passa sem warnings.
 - [2026-05-11] Stage 9 adicionou detecção automatizada de densidade ao CLI de validação para prevenir bloat em novas skills; densidade calculada como (linhas de Procedure / linhas totais não vazias) × 100; threshold configurável via HARNESS_DENSITY_THRESHOLD (padrão 30%); skills com densidade < 30% geram warnings mas não bloqueiam validação; cálculo filtra linhas vazias em ambos numerador e denominador para consistência.
 - [2026-05-11] Stage 10 adicionou flag HARNESS_FAIL_ON_WARNINGS ao CLI e GitHub Actions workflow para enforcement opcional de densidade; workflow configurado com FAIL_ON_WARNINGS=false (enforcement fraco) para permitir PRs existentes com baixa densidade; threshold configurável via HARNESS_DENSITY_THRESHOLD (padrão 30%); local validation continua com warnings only por padrão.
+- [2026-05-11] Stage 11 adicionou comando CLI `suggest:refactor` para analisar skills com baixa densidade e gerar sugestões de refatoração; comando identifica seções com conteúdo referencial (links externos, listas longas, seções longas sem code blocks) e sugere mover conteúdo para references/; sugestões priorizadas por menor densidade; manual review necessária antes de refatoração.
 
 ## Bugs Conhecidos / Débitos Técnicos
 

@@ -308,9 +308,104 @@ async function validateHarness(rootDir) {
   console.log(pc.green("Validation passed."));
 }
 
+async function analyzeReferenceContent(content) {
+  const suggestions = [];
+
+  const sections = content.split(/^##\s+/m);
+  for (const section of sections) {
+    if (!section.trim()) continue;
+
+    const lines = section.split("\n");
+    const sectionName = lines[0].trim();
+    const sectionContent = lines.slice(1).join("\n");
+
+    const hasExternalLinks = /https?:\/\//.test(sectionContent);
+    const hasLongLists = sectionContent.split("\n").filter(line => /^[-*]\s/.test(line)).length > 5;
+    const hasCodeBlocks = /```[\s\S]*```/.test(sectionContent);
+    const isLongSection = sectionContent.split("\n").length > 20;
+
+    if (hasExternalLinks || hasLongLists || (isLongSection && !hasCodeBlocks)) {
+      suggestions.push({
+        section: sectionName,
+        reason: hasExternalLinks ? "contains external links" : hasLongLists ? "has long lists" : "is long without code blocks",
+        action: "consider moving reference content to references/"
+      });
+    }
+  }
+
+  return suggestions;
+}
+
+async function suggestRefactor(rootDir) {
+  const agentsDir = path.join(rootDir, ".agents");
+  const skillsDir = path.join(agentsDir, "skills");
+  const skillFiles = await listSkillFiles(skillsDir);
+  const suggestions = [];
+
+  console.log(pc.bold(pc.green("Code IA Sota")));
+  console.log(pc.cyan("Analyzing low-density skills for refactoring suggestions..."));
+  console.log("");
+
+  for (const filePath of skillFiles) {
+    if (!(await exists(filePath))) continue;
+
+    const content = await fs.readFile(filePath, "utf8");
+    const density = calculateDensity(content);
+
+    if (density < DENSITY_THRESHOLD) {
+      const referenceSuggestions = await analyzeReferenceContent(content);
+      const skillName = path.basename(path.dirname(filePath));
+
+      suggestions.push({
+        skill: skillName,
+        density: density,
+        filePath: path.relative(rootDir, filePath),
+        suggestions: referenceSuggestions
+      });
+    }
+  }
+
+  suggestions.sort((a, b) => a.density - b.density);
+
+  if (suggestions.length === 0) {
+    console.log(pc.green("No low-density skills found. All skills meet the density threshold."));
+    return;
+  }
+
+  console.log(`Found ${suggestions.length} low-density skill(s):`);
+  console.log("");
+
+  for (const suggestion of suggestions) {
+    console.log(pc.yellow(`Skill: ${suggestion.skill} (${suggestion.density}% density)`));
+    console.log(`  File: ${suggestion.filePath}`);
+
+    if (suggestion.suggestions.length > 0) {
+      console.log("  Refactoring suggestions:");
+      for (const ref of suggestion.suggestions) {
+        console.log(`    - Section "${ref.section}": ${ref.reason}. ${ref.action}`);
+      }
+    } else {
+      console.log("  No specific sections identified. Consider expanding the Procedure section.");
+    }
+
+    console.log("");
+  }
+
+  console.log(pc.cyan("To refactor:"));
+  console.log("  1. Review the suggestions above");
+  console.log("  2. Move reference content to references/");
+  console.log("  3. Expand the Procedure section with executable steps");
+  console.log("  4. Re-run validation to check improved density");
+}
+
 async function main() {
   if (process.argv[2] === "validate") {
     await validateHarness(path.resolve(TARGET_DIR, process.argv[3] || "."));
+    return;
+  }
+
+  if (process.argv[2] === "suggest:refactor") {
+    await suggestRefactor(path.resolve(TARGET_DIR, process.argv[3] || "."));
     return;
   }
 

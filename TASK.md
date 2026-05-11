@@ -1,12 +1,12 @@
-# TASK — Stage 10: CI Enforcement of Density Thresholds
+# TASK — Stage 11: Automated Refactoring Suggestions for Low-Density Skills
 
 ## Goal
 
-Add CI enforcement of density thresholds to GitHub Actions workflow to fail when skills have density below threshold.
+Add automated refactoring suggestions to CLI to guide manual refactoring of low-density skills.
 
 ## Execution Rule
 
-Work in stages. Do not break existing local validation behavior (warnings only).
+Work in stages. Do not automate refactoring; provide suggestions only, manual review required.
 
 ---
 
@@ -14,40 +14,41 @@ Work in stages. Do not break existing local validation behavior (warnings only).
 
 ## 1. Preparation
 
-- [x] Confirm Stage 9 is committed
-- [x] Confirm working tree is clean before Stage 10
-- [x] Update `PRD.md` for Stage 10
+- [x] Confirm Stage 10 is committed
+- [x] Confirm working tree is clean before Stage 11
+- [x] Update `PRD.md` for Stage 11
 - [x] Update this `TASK.md`
 
 ## 2. Implementation
 
-- [x] Add flag to CLI validation to fail on warnings
-- [x] Modify GitHub Actions workflow to use flag
-- [x] Add HARNESS_DENSITY_THRESHOLD environment variable to workflow
-- [x] Test workflow with low-density skill
+- [x] Add CLI command `suggest:refactor`
+- [x] Implement density analysis per skill
+- [x] Implement section analysis to identify reference content
+- [x] Generate specific refactoring suggestions
+- [x] Test with known low-density skills
 
 ## 3. Validation
 
-- [x] Confirm workflow fails on density warnings when FAIL_ON_WARNINGS=true
-- [x] Confirm local validation still exits 0 with warnings when FAIL_ON_WARNINGS=false
-- [x] Confirm threshold is configurable in workflow
-- [x] Test with high-density skill passes CI
+- [x] Confirm command analyzes low-density skills
+- [x] Confirm suggestions are actionable and accurate
+- [x] Test with high-density skill (no suggestions)
+- [x] Test with low-density skill (suggestions generated)
 
 ## 4. Completion
 
 - [x] Update project memory if a durable decision emerges
-- [x] Confirm Stage 10 acceptance checklist
+- [x] Confirm Stage 11 acceptance checklist
 - [x] Suggest commit only after this stage is complete
 
 ---
 
 # Acceptance Checklist
 
-Stage 10 is done only when:
+Stage 11 is done only when:
 
-- [x] GitHub Actions workflow has HARNESS_FAIL_ON_WARNINGS flag (set to false for weak enforcement)
-- [x] HARNESS_DENSITY_THRESHOLD is configurable in workflow
-- [x] Local validation still exits 0 with warnings
-- [x] Workflow documentation is updated
-- [x] Test confirms FAIL_ON_WARNINGS=true fails, FAIL_ON_WARNINGS=false passes
+- [x] CLI command `suggest:refactor` exists
+- [x] Command analyzes low-density skills
+- [x] Command generates specific refactoring suggestions
+- [x] Suggestions are actionable and accurate
+- [x] Documentation is updated
 - [x] future stages remain deferred

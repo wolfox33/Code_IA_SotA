@@ -7,7 +7,8 @@
     "code-ia-sota": "bin/code-ia-sota.js"
   },
   "scripts": {
-    "validate:harness": "node bin/code-ia-sota.js validate .."
+    "validate:harness": "node bin/code-ia-sota.js validate ..",
+    "suggest:refactor": "node bin/code-ia-sota.js suggest:refactor .."
   },
   "files": [
     "bin",
