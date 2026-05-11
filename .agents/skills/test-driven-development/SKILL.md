@@ -37,6 +37,15 @@ Garantir que mudancas de comportamento sejam guiadas por teste que falha primeir
 - A alteracao for refactor mecanico sem mudanca de comportamento.
 - O ajuste visual for trivial e melhor validado por screenshot/manual QA.
 
+## Output contracts
+
+Ao aplicar esta skill, entregue ou registre:
+
+- Teste que falhou antes do fix ou excecao explicita
+- Implementacao minima que fez o teste passar
+- Testes relacionados executados
+- Skill tecnica de teste adequada usada quando o framework exigiu detalhe especifico
+
 ## Procedure
 
 ### 1. Reproduza ou especifique o comportamento
@@ -85,3 +94,4 @@ Garantir que mudancas de comportamento sejam guiadas por teste que falha primeir
 
 > **Skill log**
 > - [2026-04-25] Criada como disciplina contextual de TDD sem substituir skills tecnicas de teste existentes.
+> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante.

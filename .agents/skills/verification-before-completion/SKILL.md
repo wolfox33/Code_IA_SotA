@@ -32,6 +32,17 @@ Fechar tarefas com evidencia, nao apenas declaracao de que algo foi feito. Esta 
 - A tarefa for consulta simples sem alteracao.
 - A mudanca for trivial e ja tiver verificacao obvia no proprio output.
 
+## Output contracts
+
+Ao aplicar esta skill, entregue ou registre:
+
+- Objetivo comparado com o pedido
+- Diff revisado
+- Validacoes executadas
+- Arquivos principais alterados informados
+- Comandos executados informados
+- Riscos residuais declarados
+
 ## Procedure
 
 ### 1. Compare com o pedido
@@ -75,3 +86,4 @@ Fechar tarefas com evidencia, nao apenas declaracao de que algo foi feito. Esta 
 
 > **Skill log**
 > - [2026-04-25] Criada para fechamento verificavel de tarefas significativas sem impor overhead a consultas simples.
+> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante.

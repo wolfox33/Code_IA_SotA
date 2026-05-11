@@ -39,6 +39,18 @@ Padronizar deploy em VPS única com Next.js, FastAPI (LangGraph), PostgreSQL e N
 - Configurar apenas infraestrutura sem aplicação específica
 - Usar runtime diferente de Docker Compose
 
+## Output contracts
+
+Ao aplicar esta skill, entregue ou registre:
+
+- VPS configurada com Docker + Docker Compose
+- Estrutura de arquivos seguindo o padrão obrigatório
+- docker-compose.yml usando network interna
+- Nginx fazendo reverse proxy para frontend e backend
+- PostgreSQL não exposto publicamente
+- SSL configurado
+- Firewall ativo
+
 ## Procedure
 
 ### 1. Consultar o padrão de referência
@@ -94,3 +106,4 @@ Confirme que:
 > **Skill log**
 > - [2026-05-11] Skill criada como padrão de infraestrutura para VPS única.
 > - [2026-05-11] Stage 6 (Batch 2) moveu conteúdo referencial para references/ e adicionou procedure executável para reduzir bloat.
+> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante.

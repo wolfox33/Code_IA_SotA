@@ -51,6 +51,18 @@ Produzir agentes production-ready com:
 - A necessidade principal for cobranca, creditos ou produto SaaS.
 - A tarefa for integração com AI SDK, Next.js ou React sem runtime LangGraph Python.
 
+## Output contracts
+
+Ao aplicar esta skill, entregue ou registre:
+
+- Runtime Python com StateGraph como orquestrador principal
+- Agentes especialistas implementados com create_agent ou StateGraph
+- Tools com schemas, docstrings e tratamento de erro
+- Middlewares para comportamento transversal
+- Skills internas do agente como modulos Python
+- Checkpointing PostgreSQL configurado
+- Boundary FastAPI fino expondo o runtime
+
 ## Procedure
 
 ### 1. Defina o limite do runtime
@@ -376,4 +388,5 @@ Consulte `resources/streaming-patterns.md` para streaming no nivel do runtime.
 
 > **Skill log**
 > - [2026-04-25] Reescrita para Python/LangGraph atual, com foco em orquestrador StateGraph, agentes especialistas, tools, middlewares, skills internas do agente e boundary FastAPI sem frontend.
+> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante.
 

@@ -34,6 +34,15 @@ Evitar correcoes por chute. Antes de alterar codigo, reproduza o problema, enten
 - A tarefa for mudanca planejada, nao debugging.
 - A correcao for mecanica e a causa ja estiver demonstrada.
 
+## Output contracts
+
+Ao aplicar esta skill, entregue ou registre:
+
+- Problema reproduzido ou impossibilidade documentada
+- Causa raiz declarada
+- Hipotese validada antes do fix
+- Correcao implementada e teste/comando demonstrando que o bug nao ocorre mais
+
 ## Procedure
 
 ### 1. Capture o sintoma
@@ -83,3 +92,4 @@ Evitar correcoes por chute. Antes de alterar codigo, reproduza o problema, enten
 
 > **Skill log**
 > - [2026-04-25] Criada para disciplinar investigacao de bugs e falhas sem impor overhead a mudancas simples.
+> - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante.

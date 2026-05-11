@@ -1,10 +1,10 @@
-# PRD — Stage 6 (Batch 7): Skill Audit and Incremental Refactor
+# PRD — Stage 6 (Batch 8): Skill Audit and Incremental Refactor
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through a focused seventh stage (batch 7): refactor `better-auth-best-practices`, `credit-system-transaction-management` and `nextjs-app-router-patterns` to add missing operational sections.
+Evolution of the `Code_IA_SotA` harness through a focused eighth stage (batch 8): refactor `langgraph-agent-patterns`, `systematic-debugging`, `test-driven-development`, `verification-before-completion` and `vps-docker-deploy` to add missing operational sections.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batches 1-6: skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batches 1-7: skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
 
 ---
 
@@ -25,26 +25,32 @@ Create separate specs only if later work introduces:
 
 # 2. Vision
 
-Add missing operational sections to 3 skills to reduce validation warnings while preserving their domain-specific scope.
+Add missing operational sections to 5 skills to reduce validation warnings while preserving their domain-specific scope.
 
-Stage 6 (Batch 7) should follow the same pattern as previous batches: add missing sections (Objetivo, Use/Do not use, Output contracts, Procedure, Verification) without changing skill intent.
+Stage 6 (Batch 8) should follow the same pattern as previous batches: add missing sections (Objetivo, Use/Do not use, Output contracts, Procedure, Verification) without changing skill intent.
 
 ---
 
 # 3. Problem Statement
 
-The validation command shows that many skills still have missing operational sections.
+The validation command shows that 5 skills still have missing operational sections.
 
 Current gaps for target skills:
 
-**better-auth-best-practices** (4 warnings):
-- Missing: Objetivo, Output contracts, Procedure, Verification
+**langgraph-agent-patterns** (1 warning):
+- Missing: Output contracts
 
-**credit-system-transaction-management** (4 warnings):
-- Missing: Objetivo, Output contracts, Procedure, Verification
+**systematic-debugging** (1 warning):
+- Missing: Output contracts
 
-**nextjs-app-router-patterns** (4 warnings):
-- Missing: Objetivo, Output contracts, Procedure, Verification
+**test-driven-development** (1 warning):
+- Missing: Output contracts
+
+**verification-before-completion** (1 warning):
+- Missing: Output contracts
+
+**vps-docker-deploy** (1 warning):
+- Missing: Output contracts
 
 Without refactoring, these skills continue to:
 
@@ -57,7 +63,7 @@ Without refactoring, these skills continue to:
 
 # 4. Objective
 
-Add missing operational sections to 3 skills to reduce validation warnings.
+Add missing operational sections to 5 skills to reduce validation warnings.
 
 The goal is not to rewrite the skills. The goal is to complete their operational structure following the canonical pattern.
 
@@ -68,7 +74,7 @@ The goal is not to rewrite the skills. The goal is to complete their operational
 ## In Scope
 
 - Read target skills completely
-- Add missing sections: Objetivo, Use this skill when, Do not use this skill when, Output contracts, Procedure, Verification
+- Add missing sections: Output contracts (all 5 skills)
 - Preserve existing domain knowledge and scope
 - Add skill log entries for changed skills
 - Re-run validation to confirm warnings reduced
@@ -86,12 +92,7 @@ The goal is not to rewrite the skills. The goal is to complete their operational
 
 For each skill:
 
-- Add `## Objetivo` section if missing (without emojis to ensure validation recognition)
-- Ensure `## Use this skill when` is clear and concrete
-- Ensure `## Do not use this skill when` avoids over-triggering
 - Add `## Output contracts` when the skill produces deliverables
-- Add or complete `## Procedure` with executable steps
-- Add `## Verification` checklist
 - Add skill log entry documenting the change
 
 ---
@@ -108,9 +109,9 @@ For each skill:
 
 # 8. Acceptance Criteria
 
-Stage 6 (Batch 7) is complete when:
+Stage 6 (Batch 8) is complete when:
 
-- All 3 target skills have been refactored
+- All 5 target skills have been refactored
 - Validation command exits `0`
 - Target skills no longer emit avoidable operational-section warnings
 - No other skills or workflows are modified
@@ -131,12 +132,6 @@ Mitigation: Preserve existing content; only add missing sections, don't change e
 Risk: Added sections become too generic.
 
 Mitigation: Make sections domain-specific based on existing skill content.
-
-## R3 — Emoji Recognition
-
-Risk: Validation does not recognize section headings with emojis.
-
-Mitigation: Use plain headings without emojis (## Objetivo, not ## 🎯 Objetivo).
 
 ---
 
