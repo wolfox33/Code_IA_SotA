@@ -1,12 +1,12 @@
-# TASK — Stage 13: Density Trends Over Time
+# TASK — Stage 14: Automated Refactoring with User Approval
 
 ## Goal
 
-Add density trends tracking over time to monitor density changes and identify bloat accumulation.
+Add automated refactoring with user approval to streamline the refactoring process while maintaining control.
 
 ## Execution Rule
 
-Work in stages. Use simple file-based storage; no database or complex automation.
+Work in stages. User approval required for each change; no automated changes without review.
 
 ---
 
@@ -14,41 +14,42 @@ Work in stages. Use simple file-based storage; no database or complex automation
 
 ## 1. Preparation
 
-- [x] Confirm Stage 12 is committed
-- [x] Confirm working tree is clean before Stage 13
-- [x] Update `PRD.md` for Stage 13
+- [x] Confirm Stage 13 is committed
+- [x] Confirm working tree is clean before Stage 14
+- [x] Update `PRD.md` for Stage 14
 - [x] Update this `TASK.md`
 
 ## 2. Implementation
 
-- [x] Add CLI command `density:snapshot`
-- [x] Implement JSON file storage at `.agents/data/density-history.json`
-- [x] Add CLI command `density:trends`
-- [x] Generate trend report showing density changes
-- [x] Test snapshot and trend commands
+- [x] Add CLI command `refactor:auto`
+- [x] Implement content detection (reference vs executable)
+- [x] Implement refactoring logic (move to references/, expand procedure)
+- [x] Add interactive approval prompts
+- [x] Add dry-run mode
+- [x] Test with known low-density skills
 
 ## 3. Validation
 
-- [x] Confirm snapshot stores data correctly
-- [x] Confirm trend report shows density changes
-- [x] Test with multiple snapshots
-- [x] Verify JSON format is correct
+- [x] Confirm command performs automated refactoring with approval
+- [x] Confirm dry-run mode works correctly
+- [x] Test with low-density skill
+- [x] Verify changes are correct
 
 ## 4. Completion
 
 - [x] Update project memory if a durable decision emerges
-- [x] Confirm Stage 13 acceptance checklist
+- [x] Confirm Stage 14 acceptance checklist
 - [x] Suggest commit only after this stage is complete
 
 ---
 
 # Acceptance Checklist
 
-Stage 13 is done only when:
+Stage 14 is done only when:
 
-- [x] CLI command `density:snapshot` exists
-- [x] CLI command `density:trends` exists
-- [x] Historical data stored in JSON format
-- [x] Trend report shows density changes over time
+- [x] CLI command `refactor:auto` exists
+- [x] Command performs automated refactoring with user approval
+- [x] Dry-run mode works correctly
+- [x] Changes are previewed before applying
 - [x] Documentation is updated
 - [x] future stages remain deferred

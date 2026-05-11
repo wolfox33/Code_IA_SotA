@@ -1,10 +1,10 @@
-# PRD — Stage 13: Density Trends Over Time
+# PRD — Stage 14: Automated Refactoring with User Approval
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through Stage 13: add density trends tracking over time to monitor density changes and identify bloat accumulation.
+Evolution of the `Code_IA_SotA` harness through Stage 14: add automated refactoring with user approval to streamline the refactoring process while maintaining control.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`), Stage 8 (`CI integration for harness validation`), Stage 9 (`automated bloat detection rules`), Stage 10 (`CI enforcement of density thresholds`), Stage 11 (`automated refactoring suggestions`) and Stage 12 (`bulk density benchmarking and reporting`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`), Stage 8 (`CI integration for harness validation`), Stage 9 (`automated bloat detection rules`), Stage 10 (`CI enforcement of density thresholds`), Stage 11 (`automated refactoring suggestions`), Stage 12 (`bulk density benchmarking and reporting`) and Stage 13 (`density trends over time`) are complete.
 
 ---
 
@@ -12,42 +12,42 @@ This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 
 
 Separate specs are not required for this stage.
 
-This stage adds density trends tracking over time. The work can be tracked directly in `TASK.md`.
+This stage adds automated refactoring with user approval. The work can be tracked directly in `TASK.md`.
 
 Create separate specs only if later work introduces:
 
 - automated bulk migration
 - generated reports with fixed schema
-- CI enforcement of trend tracking
+- CI enforcement of refactoring
 - compatibility contracts for external platforms
 
 ---
 
 # 2. Vision
 
-Add density trends tracking over time to monitor density changes and identify bloat accumulation, enabling proactive refactoring before density degrades significantly.
+Add automated refactoring with user approval to streamline the refactoring process while maintaining control, reducing manual effort while ensuring quality.
 
-Stage 13 should add a simple mechanism to store historical density data and generate trend reports.
+Stage 14 should add a CLI command that performs automated refactoring with user approval for each change.
 
 ---
 
 # 3. Problem Statement
 
-Stage 12 provides snapshot density reports, but no way to track density changes over time or identify gradual bloat accumulation.
+Stage 11 provides refactoring suggestions, but requires manual implementation of each suggestion, which is time-consuming and error-prone.
 
-Without trend tracking:
-- No visibility into density changes over time
-- Difficult to identify gradual bloat accumulation
-- No way to measure impact of refactoring efforts
-- No early warning system for density degradation
+Without automated refactoring:
+- Manual implementation is slow and error-prone
+- Risk of inconsistent refactoring across skills
+- Difficult to ensure all suggestions are applied correctly
+- High effort for repetitive tasks
 
 ---
 
 # 4. Objective
 
-Add density trends tracking over time to monitor density changes and identify bloat accumulation.
+Add automated refactoring with user approval to streamline the refactoring process while maintaining control.
 
-The goal is to provide a simple mechanism to store historical density data and generate trend reports.
+The goal is to provide a CLI command that performs automated refactoring with user approval for each change.
 
 ---
 
@@ -55,65 +55,67 @@ The goal is to provide a simple mechanism to store historical density data and g
 
 ## In Scope
 
-- Add simple file-based storage for historical density data
-- Add CLI command to store density snapshot
-- Add CLI command to generate trend report
-- Store data in JSON format in `.agents/data/density-history.json`
-- Generate trend report showing density changes over time
+- Add CLI command `refactor:auto` to perform automated refactoring
+- Implement user approval for each change (interactive)
+- Move reference content to `references/` automatically
+- Expand Procedure section with executable steps
+- Generate preview before applying changes
+- Support dry-run mode
 
 ## Out of Scope
 
-- Database storage
-- Complex trend analysis algorithms
-- CI integration of trend tracking
-- Automated alerts based on trends
+- Automated refactoring without user approval
+- Complex refactoring beyond moving content
+- CI integration of automated refactoring
+- Bulk refactoring without review
 
 ---
 
 # 6. Required Implementation Standard
 
-- Storage: JSON file at `.agents/data/density-history.json`
-- Snapshot format: timestamp, skill name, density
-- CLI command `npm run density:snapshot` to store snapshot
-- CLI command `npm run density:trends` to generate trend report
-- Trend report: show density changes for each skill over time
+- CLI command: `npm run refactor:auto`
+- Interactive approval: prompt user for each change
+- Dry-run mode: `npm run refactor:auto -- --dry-run`
+- Preview changes before applying
+- Create `references/` directory if needed
+- Preserve original content in comments
 
 ---
 
 # 7. Design Constraints
 
-- Simple file-based storage (no database)
-- JSON format for easy parsing
-- Manual snapshot creation (no automation)
-- Preserve existing CLI behavior
+- User approval required for each change
+- Dry-run mode for preview
+- Preserve original content
+- No automated changes without review
 
 ---
 
 # 8. Acceptance Criteria
 
-Stage 13 is complete when:
+Stage 14 is complete when:
 
-- CLI command `density:snapshot` exists
-- CLI command `density:trends` exists
-- Historical data stored in JSON format
-- Trend report shows density changes over time
+- CLI command `refactor:auto` exists
+- Command performs automated refactoring with user approval
+- Dry-run mode works correctly
+- Changes are previewed before applying
 - Documentation is updated
 
 ---
 
 # 9. Risks
 
-## R1 — File Growth
+## R1 — Incorrect Refactoring
 
-Risk: Density history file may grow large over time.
+Risk: Automated refactoring may make incorrect changes.
 
-Mitigation: Simple JSON format; manual cleanup if needed.
+Mitigation: User approval required for each change; dry-run mode for preview.
 
-## R2 — Manual Process
+## R2 — Data Loss
 
-Risk: Snapshots must be created manually; may be forgotten.
+Risk: Original content may be lost during refactoring.
 
-Mitigation: Document process; can be automated in future stages.
+Mitigation: Preserve original content in comments; dry-run mode for preview.
 
 ---
 
@@ -123,12 +125,13 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Add CLI command `density:snapshot`
-2. Implement JSON file storage
-3. Add CLI command `density:trends`
-4. Generate trend report
-5. Test snapshot and trend commands
-6. Update documentation
+1. Add CLI command `refactor:auto`
+2. Implement content detection (reference vs executable)
+3. Implement refactoring logic (move to references/, expand procedure)
+4. Add interactive approval prompts
+5. Add dry-run mode
+6. Test with known low-density skills
+7. Update documentation
 
 ---
 
@@ -136,8 +139,8 @@ High-level sequence:
 
 Future stages may include:
 
-- Stage 14: Automated refactoring with user approval
 - Stage 15: CI integration of density tracking
 - Stage 16: Automated alerts based on trends
+- Stage 17: Bulk refactoring with batch approval
 
 Each future stage should receive its own PRD update or separate task plan before implementation.

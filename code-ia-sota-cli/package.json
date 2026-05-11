@@ -11,7 +11,8 @@
     "suggest:refactor": "node bin/code-ia-sota.js suggest:refactor ..",
     "benchmark:density": "node bin/code-ia-sota.js benchmark:density ..",
     "density:snapshot": "node bin/code-ia-sota.js density:snapshot ..",
-    "density:trends": "node bin/code-ia-sota.js density:trends .."
+    "density:trends": "node bin/code-ia-sota.js density:trends ..",
+    "refactor:auto": "node bin/code-ia-sota.js refactor:auto .."
   },
   "files": [
     "bin",

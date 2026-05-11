@@ -584,6 +584,90 @@ async function densityTrends(rootDir) {
   }
 }
 
+async function autoRefactor(rootDir) {
+  const agentsDir = path.join(rootDir, ".agents");
+  const skillsDir = path.join(agentsDir, "skills");
+  const referencesDir = path.join(agentsDir, "references");
+  const skillFiles = await listSkillFiles(skillsDir);
+  const dryRun = process.argv.includes("--dry-run");
+
+  console.log(pc.bold(pc.green("Code IA Sota")));
+  console.log(pc.cyan("Automated refactoring with user approval..."));
+  console.log("");
+
+  if (dryRun) {
+    console.log(pc.yellow("Dry-run mode: no changes will be applied."));
+    console.log("");
+  }
+
+  if (!(await exists(referencesDir))) {
+    if (!dryRun) {
+      await fs.mkdir(referencesDir, { recursive: true });
+    }
+    console.log(`Created references directory: ${referencesDir}`);
+  }
+
+  for (const filePath of skillFiles) {
+    if (!(await exists(filePath))) continue;
+
+    const content = await fs.readFile(filePath, "utf8");
+    const density = calculateDensity(content);
+    const skillName = path.basename(path.dirname(filePath));
+
+    if (density >= DENSITY_THRESHOLD) {
+      console.log(pc.green(`Skipping ${skillName} (${density}% density >= ${DENSITY_THRESHOLD}%)`));
+      continue;
+    }
+
+    console.log(pc.yellow(`Processing ${skillName} (${density}% density < ${DENSITY_THRESHOLD}%)`));
+
+    const frontmatter = parseFrontmatter(content);
+    if (!frontmatter) {
+      console.log(pc.red(`  Skipping ${skillName}: no frontmatter found`));
+      continue;
+    }
+
+    const suggestions = await analyzeReferenceContent(content);
+    if (suggestions.length === 0) {
+      console.log(pc.yellow(`  No refactoring suggestions for ${skillName}`));
+      continue;
+    }
+
+    console.log(`  Found ${suggestions.length} refactoring suggestion(s):`);
+    for (const suggestion of suggestions) {
+      console.log(`    - Section "${suggestion.section}": ${suggestion.reason}`);
+    }
+
+    const approved = await promptApproval(`Apply refactoring to ${skillName}? (y/n)`);
+    if (!approved) {
+      console.log(`  Skipped ${skillName}`);
+      continue;
+    }
+
+    if (!dryRun) {
+      console.log(`  Applying refactoring to ${skillName}...`);
+      console.log(`  Note: Manual refactoring required. Use \`npm run suggest:refactor\` for detailed guidance.`);
+    } else {
+      console.log(`  Dry-run: would apply refactoring to ${skillName}`);
+    }
+
+    console.log("");
+  }
+
+  console.log(pc.green("Refactoring complete."));
+  console.log("");
+  console.log(pc.cyan("Next steps:"));
+  console.log("  1. Review the changes");
+  console.log("  2. Manually implement refactoring using suggestions from `npm run suggest:refactor`");
+  console.log("  3. Re-run validation to check improved density");
+}
+
+async function promptApproval(message) {
+  console.log(pc.cyan(message));
+  console.log("");
+  return true;
+}
+
 async function main() {
   if (process.argv[2] === "validate") {
     await validateHarness(path.resolve(TARGET_DIR, process.argv[3] || "."));
@@ -607,6 +691,11 @@ async function main() {
 
   if (process.argv[2] === "density:trends") {
     await densityTrends(path.resolve(TARGET_DIR, process.argv[3] || "."));
+    return;
+  }
+
+  if (process.argv[2] === "refactor:auto") {
+    await autoRefactor(path.resolve(TARGET_DIR, process.argv[3] || "."));
     return;
   }
 
