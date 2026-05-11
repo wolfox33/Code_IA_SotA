@@ -1,0 +1,61 @@
+name: Automated Bulk Refactoring
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday at 00:00 UTC
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  auto-refactor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: ./code-ia-sota-cli
+        run: npm ci
+
+      - name: Run bulk refactoring analysis
+        working-directory: ./code-ia-sota-cli
+        run: npm run refactor:bulk -- --dry-run
+        env:
+          HARNESS_DENSITY_THRESHOLD: "30"
+
+      - name: Create PR with refactoring suggestions
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Create a new branch
+          BRANCH_NAME="auto-refactor-$(date +%Y%m%d)"
+          git checkout -b $BRANCH_NAME
+          
+          # Create a summary file (placeholder for future automated refactoring)
+          echo "# Automated Refactoring Suggestions" > REFACTOR_SUMMARY.md
+          echo "" >> REFACTOR_SUMMARY.md
+          echo "This PR contains automated refactoring suggestions for low-density skills." >> REFACTOR_SUMMARY.md
+          echo "" >> REFACTOR_SUMMARY.md
+          echo "Run \`npm run suggest:refactor\` locally to get detailed suggestions for each skill." >> REFACTOR_SUMMARY.md
+          
+          git add REFACTOR_SUMMARY.md
+          git commit -m "chore: add automated refactoring suggestions"
+          git push origin $BRANCH_NAME
+          
+          # Create PR
+          gh pr create \
+            --title "Automated Bulk Refactoring Suggestions" \
+            --body "This PR contains automated refactoring suggestions for low-density skills. Review and apply suggestions manually using \`npm run suggest:refactor\`." \
+            --base main \
+            --head $BRANCH_NAME
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
