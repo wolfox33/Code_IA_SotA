@@ -1,12 +1,12 @@
-# TASK — Stage 11: Automated Refactoring Suggestions for Low-Density Skills
+# TASK — Stage 12: Bulk Density Benchmarking and Reporting
 
 ## Goal
 
-Add automated refactoring suggestions to CLI to guide manual refactoring of low-density skills.
+Add bulk density benchmarking and reporting to track density across all skills.
 
 ## Execution Rule
 
-Work in stages. Do not automate refactoring; provide suggestions only, manual review required.
+Work in stages. Do not store historical data; generate snapshot reports only.
 
 ---
 
@@ -14,41 +14,42 @@ Work in stages. Do not automate refactoring; provide suggestions only, manual re
 
 ## 1. Preparation
 
-- [x] Confirm Stage 10 is committed
-- [x] Confirm working tree is clean before Stage 11
-- [x] Update `PRD.md` for Stage 11
+- [x] Confirm Stage 11 is committed
+- [x] Confirm working tree is clean before Stage 12
+- [x] Update `PRD.md` for Stage 12
 - [x] Update this `TASK.md`
 
 ## 2. Implementation
 
-- [x] Add CLI command `suggest:refactor`
-- [x] Implement density analysis per skill
-- [x] Implement section analysis to identify reference content
-- [x] Generate specific refactoring suggestions
-- [x] Test with known low-density skills
+- [x] Add CLI command `benchmark:density`
+- [x] Implement density calculation for all skills
+- [x] Generate human-readable report
+- [x] Add JSON output flag
+- [x] Calculate statistics (average, min, max)
+- [x] Test with all skills
 
 ## 3. Validation
 
-- [x] Confirm command analyzes low-density skills
-- [x] Confirm suggestions are actionable and accurate
-- [x] Test with high-density skill (no suggestions)
-- [x] Test with low-density skill (suggestions generated)
+- [x] Confirm command generates density report for all skills
+- [x] Confirm JSON output flag works correctly
+- [x] Confirm statistics are accurate
+- [x] Test sorting (ascending/descending)
 
 ## 4. Completion
 
 - [x] Update project memory if a durable decision emerges
-- [x] Confirm Stage 11 acceptance checklist
+- [x] Confirm Stage 12 acceptance checklist
 - [x] Suggest commit only after this stage is complete
 
 ---
 
 # Acceptance Checklist
 
-Stage 11 is done only when:
+Stage 12 is done only when:
 
-- [x] CLI command `suggest:refactor` exists
-- [x] Command analyzes low-density skills
-- [x] Command generates specific refactoring suggestions
-- [x] Suggestions are actionable and accurate
+- [x] CLI command `benchmark:density` exists
+- [x] Command generates density report for all skills
+- [x] JSON output flag works correctly
+- [x] Statistics are accurate
 - [x] Documentation is updated
 - [x] future stages remain deferred

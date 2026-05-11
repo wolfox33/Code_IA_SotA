@@ -398,6 +398,77 @@ async function suggestRefactor(rootDir) {
   console.log("  4. Re-run validation to check improved density");
 }
 
+async function benchmarkDensity(rootDir) {
+  const agentsDir = path.join(rootDir, ".agents");
+  const skillsDir = path.join(agentsDir, "skills");
+  const skillFiles = await listSkillFiles(skillsDir);
+  const results = [];
+  const jsonOutput = process.argv.includes("--json");
+
+  console.log(pc.bold(pc.green("Code IA Sota")));
+  console.log(pc.cyan("Benchmarking density for all skills..."));
+  console.log("");
+
+  for (const filePath of skillFiles) {
+    if (!(await exists(filePath))) continue;
+
+    const content = await fs.readFile(filePath, "utf8");
+    const density = calculateDensity(content);
+    const skillName = path.basename(path.dirname(filePath));
+
+    results.push({
+      skill: skillName,
+      density: density,
+      filePath: path.relative(rootDir, filePath)
+    });
+  }
+
+  results.sort((a, b) => a.density - b.density);
+
+  const densities = results.map(r => r.density);
+  const average = Math.round(densities.reduce((a, b) => a + b, 0) / densities.length);
+  const min = Math.min(...densities);
+  const max = Math.max(...densities);
+
+  if (jsonOutput) {
+    console.log(JSON.stringify({
+      skills: results,
+      statistics: {
+        average: average,
+        min: min,
+        max: max,
+        total: results.length
+      }
+    }, null, 2));
+    return;
+  }
+
+  console.log(`Total skills: ${results.length}`);
+  console.log(`Average density: ${average}%`);
+  console.log(`Min density: ${min}%`);
+  console.log(`Max density: ${max}%`);
+  console.log("");
+  console.log("Density by skill (ascending):");
+  console.log("");
+
+  for (const result of results) {
+    const densityColor = result.density < DENSITY_THRESHOLD ? pc.red : result.density < 50 ? pc.yellow : pc.green;
+    console.log(`${densityColor(result.density + "%")} ${result.skill}`);
+    console.log(`  File: ${result.filePath}`);
+    console.log("");
+  }
+
+  console.log(pc.cyan("Low-density skills (<" + DENSITY_THRESHOLD + "%):"));
+  const lowDensity = results.filter(r => r.density < DENSITY_THRESHOLD);
+  if (lowDensity.length === 0) {
+    console.log("  None");
+  } else {
+    for (const result of lowDensity) {
+      console.log(`  - ${result.skill} (${result.density}%)`);
+    }
+  }
+}
+
 async function main() {
   if (process.argv[2] === "validate") {
     await validateHarness(path.resolve(TARGET_DIR, process.argv[3] || "."));
@@ -406,6 +477,11 @@ async function main() {
 
   if (process.argv[2] === "suggest:refactor") {
     await suggestRefactor(path.resolve(TARGET_DIR, process.argv[3] || "."));
+    return;
+  }
+
+  if (process.argv[2] === "benchmark:density") {
+    await benchmarkDensity(path.resolve(TARGET_DIR, process.argv[3] || "."));
     return;
   }
 
