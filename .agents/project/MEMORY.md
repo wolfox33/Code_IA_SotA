@@ -16,6 +16,7 @@
 - [2026-05-11] Stage 3 criou `harness-repair` como skill de diagnóstico estrutural do harness; separa diagnóstico, plano e reparo, sem mutação automática.
 - [2026-05-11] Após teste de `harness-repair`, `data-science` e `quant` foram expandidas de placeholders para skills operacionais alinhadas a `ml`; o workflow de plataformas foi mantido fora do reparo.
 - [2026-05-11] Stage 4 criou `.agents/workflows/harness-maintenance.md` para orquestrar manutenção do harness, roteando `skill-creator`, `skill-reviewer` e `harness-repair` sem duplicar seus procedimentos.
+- [2026-05-11] Stage 5 adicionou validação no CLI: erros de frontmatter/metadata bloqueiam; lacunas operacionais em skills antigas viram warnings.
 
 ## Bugs Conhecidos / Débitos Técnicos
 

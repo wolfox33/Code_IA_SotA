@@ -1,8 +1,8 @@
-# TASK — Stage 4: Harness Maintenance Workflow
+# TASK — Stage 5: Harness Validation Scripts
 
 ## Goal
 
-Create `.agents/workflows/harness-maintenance.md` as the canonical workflow for coordinating safe maintenance of the `.agents/` harness.
+Create deterministic validation tooling for the `.agents/` harness without adding auto-fix behavior or semantic review.
 
 ## Execution Rule
 
@@ -14,57 +14,62 @@ Work in stages. Do not implement future roadmap items unless explicitly requeste
 
 ## 1. Preparation
 
-- [x] Confirm Stage 3 `harness-repair` is complete
-- [x] Confirm working tree is clean before Stage 4
-- [x] Review existing workflow style
-- [x] Update `PRD.md` for Stage 4
+- [x] Confirm Stage 4 `harness-maintenance` is committed
+- [x] Confirm working tree is clean before Stage 5
+- [x] Update `PRD.md` for Stage 5
 - [x] Update this `TASK.md`
 
-## 2. Create `harness-maintenance` workflow
+## 2. Tooling Discovery
 
-- [x] Create `.agents/workflows/harness-maintenance.md`
-- [x] Add valid YAML frontmatter
-- [x] Add clear `description`
-- [x] Define use cases
-- [x] Define non-use cases
-- [x] Define workflow stages
-- [x] Define routing to `skill-creator`, `skill-reviewer` and `harness-repair`
-- [x] Define approval-before-mutation rule
-- [x] Define validation and memory checkpoints
+- [x] Inspect existing CLI/tooling structure
+- [x] Identify package manager and runnable commands
+- [x] Decide whether to extend existing CLI or create a minimal script
+- [x] Confirm no competing tooling path is needed
 
-## 3. Scope Control
+## 3. Implement Validation
 
-- [x] Confirm no validation scripts were created
-- [x] Confirm no existing workflows were refactored
-- [x] Confirm no platform compatibility work was changed
-- [x] Confirm no unrelated skills were modified
-- [x] Confirm no full harness audit was performed
+- [x] Add validation command or script
+- [x] Validate skill frontmatter presence
+- [x] Validate skill `name` and `description`
+- [x] Detect placeholder skill descriptions
+- [x] Validate operational skill sections as warnings
+- [x] Validate workflow frontmatter and `description`
+- [x] Print clear failure messages
+- [x] Exit non-zero on failure
 
-## 4. Validation
+## 4. Documentation
 
-- [x] Re-read created `harness-maintenance.md`
-- [x] Verify workflow is compact and operational
-- [x] Verify it routes to skills instead of duplicating them
-- [x] Verify acceptance criteria from `PRD.md`
+- [x] Document how to run validation
+- [x] Keep documentation close to existing tooling
+- [x] Confirm no CI integration was added
+- [x] Confirm no auto-fix behavior was added
+
+## 5. Validation
+
+- [x] Run validation command
+- [x] Review output
 - [x] Review diff before completion
+- [x] Update project memory if a durable decision emerges
 
-## 5. Completion
+## 6. Completion
 
 - [x] Summarize changes
-- [x] Record project memory only if a durable decision or lesson emerges
-- [x] Ask user whether to test the workflow with a limited maintenance scenario
+- [x] Confirm Stage 5 acceptance checklist
+- [x] Suggest commit only after this stage is complete
 
 ---
 
 # Acceptance Checklist
 
-Stage 4 is done only when:
+Stage 5 is done only when:
 
-- [x] `.agents/workflows/harness-maintenance.md` exists
-- [x] the workflow defines when to use and not use it
-- [x] the workflow sequences diagnosis, planning, repair and validation
-- [x] the workflow routes to `skill-creator`, `skill-reviewer` and `harness-repair`
-- [x] the workflow requires approval before mutation
-- [x] memory and deferral checkpoints are present
-- [x] no unrelated workflow/platform files are changed
+- [x] repository tooling structure has been inspected
+- [x] a validation command exists
+- [x] skills under `.agents/skills/` are validated structurally
+- [x] workflows under `.agents/workflows/` are validated structurally
+- [x] failures include file path and reason
+- [x] validation exits non-zero on failure
+- [x] run instructions are documented
+- [x] no auto-fix behavior exists
+- [x] no CI integration was added
 - [x] future stages remain deferred

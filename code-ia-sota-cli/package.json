@@ -6,6 +6,9 @@
   "bin": {
     "code-ia-sota": "bin/code-ia-sota.js"
   },
+  "scripts": {
+    "validate:harness": "node bin/code-ia-sota.js validate .."
+  },
   "files": [
     "bin",
     "README.md"

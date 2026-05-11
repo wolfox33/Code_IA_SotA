@@ -14,6 +14,15 @@ const REPO_URL =
 
 const TARGET_DIR = process.cwd();
 
+const REQUIRED_OPERATIONAL_SKILL_SECTIONS = [
+  ["Objetivo", "Objective"],
+  ["Use this skill when"],
+  ["Do not use this skill when"],
+  ["Output contracts", "Output esperado"],
+  ["Procedure", "Processo", "Review dimensions", "Diagnostic dimensions"],
+  ["Verification"]
+];
+
 async function exists(filePath) {
   try {
     await fs.access(filePath);
@@ -82,7 +91,195 @@ async function copyFiles(tmpDir) {
   }
 }
 
+function parseFrontmatter(content) {
+  const normalizedContent = content.replace(/\r\n/g, "\n");
+
+  if (!normalizedContent.startsWith("---\n")) {
+    return null;
+  }
+
+  const endIndex = normalizedContent.indexOf("\n---", 4);
+
+  if (endIndex === -1) {
+    return null;
+  }
+
+  const raw = normalizedContent.slice(4, endIndex).trim();
+  const data = {};
+
+  for (const line of raw.split("\n")) {
+    const match = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+
+    if (match) {
+      data[match[1]] = match[2].replace(/^["']|["']$/g, "");
+    }
+  }
+
+  return {
+    data,
+    body: normalizedContent.slice(endIndex + 5).trim()
+  };
+}
+
+function hasSection(content, sectionNames) {
+  const names = Array.isArray(sectionNames) ? sectionNames : [sectionNames];
+
+  return names.some((sectionName) => {
+    const escaped = sectionName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(`^#{1,6}\\s+${escaped}\\s*$`, "im");
+
+    return pattern.test(content);
+  });
+}
+
+function addFailure(failures, rootDir, filePath, reason) {
+  failures.push({
+    filePath: path.relative(rootDir, filePath),
+    reason
+  });
+}
+
+function addWarning(warnings, rootDir, filePath, reason) {
+  warnings.push({
+    filePath: path.relative(rootDir, filePath),
+    reason
+  });
+}
+
+async function listMarkdownFiles(dirPath) {
+  if (!(await exists(dirPath))) {
+    return [];
+  }
+
+  const entries = await fs.readdir(dirPath, {
+    withFileTypes: true
+  });
+
+  return entries
+    .filter((entry) => entry.isFile() && entry.name.endsWith(".md") && entry.name !== "README.md")
+    .map((entry) => path.join(dirPath, entry.name));
+}
+
+async function listSkillFiles(skillsDir) {
+  if (!(await exists(skillsDir))) {
+    return [];
+  }
+
+  const entries = await fs.readdir(skillsDir, {
+    withFileTypes: true
+  });
+
+  return entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => path.join(skillsDir, entry.name, "SKILL.md"));
+}
+
+async function validateSkill(rootDir, filePath, failures, warnings) {
+  if (!(await exists(filePath))) {
+    addFailure(failures, rootDir, filePath, "SKILL.md is missing.");
+    return;
+  }
+
+  const content = await fs.readFile(filePath, "utf8");
+  const frontmatter = parseFrontmatter(content);
+
+  if (!frontmatter) {
+    addFailure(failures, rootDir, filePath, "YAML frontmatter is missing or invalid.");
+    return;
+  }
+
+  if (!frontmatter.data.name) {
+    addFailure(failures, rootDir, filePath, "frontmatter field `name` is missing.");
+  }
+
+  if (!frontmatter.data.description) {
+    addFailure(failures, rootDir, filePath, "frontmatter field `description` is missing.");
+  }
+
+  if (/placeholder/i.test(frontmatter.data.description || "")) {
+    addFailure(failures, rootDir, filePath, "placeholder description is not allowed.");
+  }
+
+  for (const sectionGroup of REQUIRED_OPERATIONAL_SKILL_SECTIONS) {
+    if (!hasSection(content, sectionGroup)) {
+      addWarning(warnings, rootDir, filePath, `operational section group \`${sectionGroup.join(" | ")}\` is missing.`);
+    }
+  }
+}
+
+async function validateWorkflow(rootDir, filePath, failures) {
+  const content = await fs.readFile(filePath, "utf8");
+  const frontmatter = parseFrontmatter(content);
+
+  if (!frontmatter) {
+    addFailure(failures, rootDir, filePath, "YAML frontmatter is missing or invalid.");
+    return;
+  }
+
+  if (!frontmatter.data.description) {
+    addFailure(failures, rootDir, filePath, "frontmatter field `description` is missing.");
+  }
+
+  if (!frontmatter.body) {
+    addFailure(failures, rootDir, filePath, "workflow body is empty.");
+  }
+}
+
+async function validateHarness(rootDir) {
+  const agentsDir = path.join(rootDir, ".agents");
+  const skillsDir = path.join(agentsDir, "skills");
+  const workflowsDir = path.join(agentsDir, "workflows");
+  const failures = [];
+  const warnings = [];
+  const skillFiles = await listSkillFiles(skillsDir);
+  const workflowFiles = await listMarkdownFiles(workflowsDir);
+
+  console.log(pc.bold(pc.green("Code IA Sota")));
+  console.log(pc.cyan("Validating harness..."));
+
+  for (const filePath of skillFiles) {
+    await validateSkill(rootDir, filePath, failures, warnings);
+  }
+
+  for (const filePath of workflowFiles) {
+    await validateWorkflow(rootDir, filePath, failures);
+  }
+
+  console.log("");
+  console.log(`Checked ${skillFiles.length} skills.`);
+  console.log(`Checked ${workflowFiles.length} workflows.`);
+
+  if (warnings.length > 0) {
+    console.log("");
+    console.warn(pc.yellow(`Validation completed with ${warnings.length} warning(s):`));
+
+    for (const warning of warnings) {
+      console.warn(`  ${warning.filePath}: ${warning.reason}`);
+    }
+  }
+
+  if (failures.length > 0) {
+    console.log("");
+    console.error(pc.red(`Validation failed with ${failures.length} issue(s):`));
+
+    for (const failure of failures) {
+      console.error(`  ${failure.filePath}: ${failure.reason}`);
+    }
+
+    process.exitCode = 1;
+    return;
+  }
+
+  console.log("");
+  console.log(pc.green("Validation passed."));
+}
+
 async function main() {
+  if (process.argv[2] === "validate") {
+    await validateHarness(path.resolve(TARGET_DIR, process.argv[3] || "."));
+    return;
+  }
+
   const tmpDir = await fs.mkdtemp(
     path.join(os.tmpdir(), "code-ia-sota-")
   );

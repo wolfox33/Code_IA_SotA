@@ -1,82 +1,68 @@
-# PRD — Stage 4: Harness Maintenance Workflow
+# PRD — Stage 5: Harness Validation Scripts
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through a focused fourth stage: create `.agents/workflows/harness-maintenance.md` as the operational workflow for coordinating harness maintenance.
+Evolution of the `Code_IA_SotA` harness through a focused fifth stage: create deterministic validation scripts for the `.agents/` harness.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`) and Stage 3 (`harness-repair`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`) and Stage 4 (`harness-maintenance`) are complete.
 
 ---
 
 # 1. Decision on Specs
 
-Separate specs are not required for this stage.
+Separate specs are required at the PRD/TASK level only for this stage.
 
-This PRD is sufficient because:
+This stage introduces executable validation behavior, so the PRD must define a small, stable contract before implementation.
 
-- the target artifact is specific: `.agents/workflows/harness-maintenance.md`
-- the change is documentation/harness-logic oriented, not runtime application code
-- there is no API, database, external integration, or user-facing product contract
-- acceptance criteria can be expressed directly in this PRD and tracked in `TASK.md`
+A separate OpenSpec package is not required because:
 
-Create separate specs only if a later stage introduces:
+- the script is local repository tooling
+- there is no public API or service contract
+- the CLI contract is intentionally minimal
+- acceptance criteria can be tracked directly in `TASK.md`
 
-- validation scripts with CLI contracts
-- automated repair behavior
-- fixed report schemas consumed by tools
-- multi-file migration rules with compatibility requirements
+Create separate specs only if later stages add:
+
+- multiple commands with structured output schemas
+- CI integration requirements
+- auto-fix behavior
+- machine-consumed reports
 
 ---
 
 # 2. Vision
 
-Make `harness-maintenance` the canonical workflow for deciding how to maintain `.agents/` artifacts safely.
+Make harness validation repeatable and cheap by adding a deterministic script that catches structural issues before manual review.
 
-The workflow should coordinate:
-
-- when to use `skill-creator`
-- when to use `skill-reviewer`
-- when to use `harness-repair`
-- when to update project memory
-- when to defer scripts or broader audits
-- how to keep diagnosis, planning and mutation separated
+The script should validate the minimum standards established by prior stages without replacing human diagnosis.
 
 ---
 
 # 3. Problem Statement
 
-The harness now has specialized skills for creation, review and structural diagnosis, but there is no operational workflow that sequences them.
+The harness now has canonical skills and workflows, but validation is manual.
 
 Current gaps:
 
-- agents may jump directly from diagnosis to edits
-- skill-level and harness-level concerns may be mixed
-- workflow findings may become accidental scope creep
-- memory updates may be inconsistent
-- future script work needs a stable maintenance process first
+- frontmatter parse issues can be missed
+- required sections can drift silently
+- workflow metadata can become inconsistent
+- manual review is slower than a deterministic baseline check
 
-Without a maintenance workflow, future work may drift into:
+Without a validation script, future maintenance may regress into:
 
-- ad hoc task sequencing
-- unnecessary full audits
-- premature automation
-- unclear handoff between skills
-- broad repairs without explicit approval
+- broken discovery metadata
+- placeholder skills reappearing unnoticed
+- inconsistent workflow frontmatter
+- more expensive manual audits
 
 ---
 
 # 4. Objective
 
-Create `.agents/workflows/harness-maintenance.md` as the canonical workflow for:
+Create a minimal validation script that checks `.agents/` artifacts for structural readiness.
 
-- scoping harness maintenance work
-- selecting the right skill or diagnostic layer
-- sequencing diagnosis, plan, repair and validation
-- preserving surgical changes
-- recording durable decisions
-- deferring unrelated workflow/platform findings
-
-The goal is not automation. The goal is a compact operational sequence for maintainers.
+The goal is not semantic review or automatic repair. The goal is deterministic validation of basic harness invariants.
 
 ---
 
@@ -84,130 +70,133 @@ The goal is not automation. The goal is a compact operational sequence for maint
 
 ## In Scope
 
-- Create `.agents/workflows/harness-maintenance.md`
-- Define use and non-use conditions
-- Define workflow stages
-- Define handoff rules between `skill-creator`, `skill-reviewer` and `harness-repair`
-- Define validation and memory checkpoints
-- Keep platform compatibility work out of scope
+- Inspect existing CLI/tooling structure before implementation
+- Add or extend a local validation command
+- Validate skill `SKILL.md` frontmatter presence and required keys
+- Validate workflow frontmatter presence and `description`
+- Warn about missing operational skill sections without failing the command
+- Provide clear pass/fail output
+- Exit non-zero on validation failure
+- Document how to run the validation
 
 ## Out of Scope
 
-- Creating validation scripts
-- Refactoring existing workflows
-- Refactoring `AGENTS.md`
-- Refactoring subagents
-- Running a full harness audit
-- Creating compatibility mirrors for specific platforms
-- Automating repairs
+- Auto-fixing files
+- Full semantic review
+- CI integration
+- Platform compatibility mirrors
+- Benchmarking context efficiency
+- Refactoring skills or workflows as part of script creation
+- Validating subagents unless explicitly added later
 
 ---
 
 # 6. Target Artifact
 
+Target artifact depends on existing repository tooling discovered during implementation.
+
+Preferred target if compatible with current structure:
+
 ```txt
-.agents/workflows/harness-maintenance.md
+code-ia-sota-cli/
 ```
 
-No resources, scripts or assets are required in this stage.
+Do not create a second competing CLI if the existing CLI can be extended safely.
 
 ---
 
 # 7. Required Capabilities
 
-## 7.1 Workflow Stages
+## 7.1 Skill validation
 
-The workflow must include:
+For each `.agents/skills/*/SKILL.md`, validate:
 
-- scope definition
-- artifact selection
-- diagnostic path selection
-- repair planning
-- explicit approval before mutation
-- validation
-- project memory update
+- YAML frontmatter exists
+- `name` exists
+- `description` exists
+- placeholder descriptions are not used
+- missing operational sections are reported as warnings
 
-## 7.2 Skill Routing
+Warned section groups:
 
-The workflow must route:
+- `Objetivo` or objective equivalent
+- `Use this skill when` or equivalent
+- `Do not use this skill when` or equivalent
+- `Output contracts` when the skill is operational
+- `Procedure` or process equivalent
+- `Verification`
 
-- skill creation/modification to `skill-creator`
-- skill review/readiness checks to `skill-reviewer`
-- multi-artifact structural diagnosis to `harness-repair`
+## 7.2 Workflow validation
 
-## 7.3 Output Expectations
+For each `.agents/workflows/*.md`, validate:
 
-The workflow must produce:
+- YAML frontmatter exists
+- `description` exists
+- body is not empty
 
-- a scoped maintenance plan
-- a clear list of files in scope
-- a diagnosis or repair summary
-- validation status
-- deferred items when out of scope
+## 7.3 Output behavior
 
-## 7.4 Anti-Pattern Detection
+The validation command must:
 
-The workflow must avoid:
-
-- auditing everything by default
-- editing during diagnosis
-- mixing platform compatibility with harness maintenance
-- creating scripts before rules stabilize
-- treating workflow orchestration as skill content
+- print checked artifact counts
+- print each failure with file path and reason
+- print each warning with file path and reason
+- exit `0` when valid
+- exit non-zero when invalid
 
 ---
 
 # 8. Design Constraints
 
-- Keep the workflow compact and executable.
-- Do not duplicate the full content of skills.
-- Reference skills by responsibility instead of copying their procedures.
-- Do not modify existing workflows in this stage.
-- Do not add scripts or resources.
-- Do not reopen platform compatibility work.
+- Keep implementation simple and dependency-light.
+- Prefer existing Node/CLI structure if present.
+- Do not introduce external dependencies unless necessary.
+- Do not validate semantics that require model judgment.
+- Do not modify harness artifacts to make tests pass unless separately requested.
 
 ---
 
 # 9. Acceptance Criteria
 
-Stage 4 is complete when:
+Stage 5 is complete when:
 
-- `.agents/workflows/harness-maintenance.md` exists
-- frontmatter has a clear `description`
-- workflow defines when to use and not use it
-- workflow sequences diagnosis, planning, repair and validation
-- workflow routes to `skill-creator`, `skill-reviewer` and `harness-repair`
-- workflow requires approval before mutation
-- workflow includes memory and deferral checkpoints
-- no unrelated workflows are changed
+- repository tooling structure has been inspected
+- a validation command exists
+- command validates skills and workflows under `.agents/`
+- command reports clear failures
+- command reports non-blocking warnings for maturity gaps
+- command exits non-zero on failure
+- command exits zero on current valid harness with known maturity warnings
+- run instructions are documented
+- no auto-fix behavior is introduced
 
 ---
 
 # 10. Risks
 
-## R1 — Workflow Becomes Policy
+## R1 — Overvalidation
 
-Risk: duplicating global `AGENTS.md` policy in the workflow.
+Risk: script encodes subjective review rules.
 
-Mitigation: keep only operational sequencing.
+Mitigation: validate only deterministic structural rules.
 
-## R2 — Workflow Becomes Skill
+## R2 — Competing Tooling
 
-Risk: copying detailed skill procedures into the workflow.
+Risk: creating a new CLI when one already exists.
 
-Mitigation: route to skills instead of duplicating them.
+Mitigation: inspect existing CLI first and extend it when practical.
 
-## R3 — Scope Creep
+## R3 — False Positives
 
-Risk: using Stage 4 to refactor old workflows or platform docs.
+Risk: older intentional artifacts fail strict canonical checks.
 
-Mitigation: create only the maintenance workflow.
+Mitigation: separate minimum checks from operational skill checks.
 
-## R4 — Premature Automation
+## R4 — Scope Creep
 
-Risk: turning the workflow into scripts before the process stabilizes.
+Risk: adding CI, auto-fix or semantic audits.
 
-Mitigation: defer scripts to Stage 5.
+Mitigation: defer those to future stages.
 
 ---
 
@@ -217,11 +206,11 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Define Stage 4 scope
-2. Create `.agents/workflows/harness-maintenance.md`
-3. Verify workflow compactness and routing
-4. Review diff for accidental scope expansion
-5. Record durable decisions if needed
+1. Define Stage 5 validation contract
+2. Inspect existing CLI/tooling
+3. Implement minimum deterministic validation
+4. Run validation and adjust only the script unless harness fixes are explicitly needed
+5. Document run command and record durable decisions
 
 ---
 
@@ -229,8 +218,8 @@ High-level sequence:
 
 Future stages may include:
 
-- Stage 5: create validation scripts
 - Stage 6: audit and refactor existing skills
 - Stage 7: benchmark context efficiency
+- Stage 8: CI integration for harness validation
 
 Each future stage should receive its own PRD update or separate task plan before implementation.
