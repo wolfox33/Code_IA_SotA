@@ -25,6 +25,7 @@ const REQUIRED_OPERATIONAL_SKILL_SECTIONS = [
 
 const DENSITY_THRESHOLD = parseInt(process.env.HARNESS_DENSITY_THRESHOLD || "30", 10);
 const FAIL_ON_WARNINGS = process.env.HARNESS_FAIL_ON_WARNINGS === "true";
+const ALERT_THRESHOLD = parseInt(process.env.HARNESS_ALERT_THRESHOLD || "10", 10);
 
 async function exists(filePath) {
   try {
@@ -668,6 +669,88 @@ async function promptApproval(message) {
   return true;
 }
 
+async function densityAlerts(rootDir) {
+  const agentsDir = path.join(rootDir, ".agents");
+  const historyFile = path.join(agentsDir, "data", "density-history.json");
+
+  console.log(pc.bold(pc.green("Code IA Sota")));
+  console.log(pc.cyan("Analyzing density trends for alerts..."));
+  console.log("");
+
+  if (!(await exists(historyFile))) {
+    console.log(pc.yellow("No density history found. Run `npm run density:snapshot` first."));
+    return;
+  }
+
+  const historyContent = await fs.readFile(historyFile, "utf8");
+  const history = JSON.parse(historyContent);
+
+  if (history.length < 2) {
+    console.log(pc.yellow("Need at least 2 snapshots to analyze trends."));
+    return;
+  }
+
+  const alerts = [];
+  const skillTrends = {};
+
+  for (const snapshot of history) {
+    for (const skill of snapshot.skills) {
+      if (!skillTrends[skill.skill]) {
+        skillTrends[skill.skill] = [];
+      }
+      skillTrends[skill.skill].push({
+        timestamp: snapshot.timestamp,
+        density: skill.density
+      });
+    }
+  }
+
+  for (const [skillName, trends] of Object.entries(skillTrends)) {
+    if (trends.length < 2) continue;
+
+    const first = trends[0];
+    const last = trends[trends.length - 1];
+    const change = last.density - first.density;
+    const changePercent = Math.round((change / first.density) * 100);
+
+    if (change < -ALERT_THRESHOLD) {
+      alerts.push({
+        skill: skillName,
+        firstDensity: first.density,
+        lastDensity: last.density,
+        change: change,
+        changePercent: changePercent,
+        severity: change < -20 ? "critical" : "warning"
+      });
+    }
+  }
+
+  if (alerts.length === 0) {
+    console.log(pc.green("No density degradation alerts. All skills are stable."));
+    return;
+  }
+
+  console.log(`Found ${alerts.length} density degradation alert(s):`);
+  console.log("");
+
+  for (const alert of alerts) {
+    const severityColor = alert.severity === "critical" ? pc.red : pc.yellow;
+    console.log(severityColor(`${alert.severity.toUpperCase()}: ${alert.skill}`));
+    console.log(`  Density dropped from ${alert.firstDensity}% to ${alert.lastDensity}% (${alert.changePercent}% change)`);
+    console.log(`  Recommendation: Use \`npm run suggest:refactor\` to identify refactoring opportunities`);
+    console.log("");
+  }
+
+  console.log(pc.cyan("Summary:"));
+  console.log(`  Critical alerts: ${alerts.filter(a => a.severity === "critical").length}`);
+  console.log(`  Warning alerts: ${alerts.filter(a => a.severity === "warning").length}`);
+  console.log("");
+  console.log(pc.cyan("Next steps:"));
+  console.log("  1. Review the alerts above");
+  console.log("  2. Use `npm run suggest:refactor` for detailed guidance");
+  console.log("  3. Consider refactoring critical alerts first");
+}
+
 async function main() {
   if (process.argv[2] === "validate") {
     await validateHarness(path.resolve(TARGET_DIR, process.argv[3] || "."));
@@ -696,6 +779,11 @@ async function main() {
 
   if (process.argv[2] === "refactor:auto") {
     await autoRefactor(path.resolve(TARGET_DIR, process.argv[3] || "."));
+    return;
+  }
+
+  if (process.argv[2] === "density:alerts") {
+    await densityAlerts(path.resolve(TARGET_DIR, process.argv[3] || "."));
     return;
   }
 

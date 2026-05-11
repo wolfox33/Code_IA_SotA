@@ -12,6 +12,7 @@
     "benchmark:density": "node bin/code-ia-sota.js benchmark:density ..",
     "density:snapshot": "node bin/code-ia-sota.js density:snapshot ..",
     "density:trends": "node bin/code-ia-sota.js density:trends ..",
+    "density:alerts": "node bin/code-ia-sota.js density:alerts ..",
     "refactor:auto": "node bin/code-ia-sota.js refactor:auto .."
   },
   "files": [

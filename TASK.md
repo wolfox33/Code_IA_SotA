@@ -1,12 +1,12 @@
-# TASK — Stage 15: CI Integration of Density Tracking
+# TASK — Stage 16: Automated Alerts Based on Trends
 
 ## Goal
 
-Add CI integration of density tracking to automatically create density snapshots on each push/PR.
+Add automated alerts based on density trends to notify when density degrades significantly.
 
 ## Execution Rule
 
-Work in stages. Non-blocking; density snapshot should not fail CI.
+Work in stages. Alerts should be informational, not blocking.
 
 ---
 
@@ -14,40 +14,41 @@ Work in stages. Non-blocking; density snapshot should not fail CI.
 
 ## 1. Preparation
 
-- [x] Confirm Stage 14 is committed
-- [x] Confirm working tree is clean before Stage 15
-- [x] Update `PRD.md` for Stage 15
+- [x] Confirm Stage 15 is committed
+- [x] Confirm working tree is clean before Stage 16
+- [x] Update `PRD.md` for Stage 16
 - [x] Update this `TASK.md`
 
 ## 2. Implementation
 
-- [x] Add `density:snapshot` step to GitHub Actions workflow
-- [x] Configure git user for automated commits
-- [x] Commit density history file to repository
-- [x] Test workflow with push/PR
+- [x] Add CLI command `density:alerts`
+- [x] Implement trend analysis logic
+- [x] Define alert thresholds
+- [x] Generate alert report
+- [x] Test with historical data
 
 ## 3. Validation
 
-- [x] Confirm workflow runs density snapshot on push/PR
-- [x] Verify automated commits are identifiable
-- [x] Confirm existing validation behavior is preserved
-- [x] Test commit conflicts scenario
+- [x] Confirm command analyzes density trends
+- [x] Confirm alerts generated when density degrades
+- [x] Test with normal density (no alerts)
+- [x] Verify alert format is clear and actionable
 
 ## 4. Completion
 
 - [x] Update project memory if a durable decision emerges
-- [x] Confirm Stage 15 acceptance checklist
+- [x] Confirm Stage 16 acceptance checklist
 - [x] Suggest commit only after this stage is complete
 
 ---
 
 # Acceptance Checklist
 
-Stage 15 is done only when:
+Stage 16 is done only when:
 
-- [x] GitHub Actions workflow runs density snapshot on push/PR
-- [x] Density history file is committed to repository
-- [x] Automated commits are clearly identifiable
-- [x] Existing validation behavior is preserved
+- [x] CLI command `density:alerts` exists
+- [x] Command analyzes density trends
+- [x] Alerts generated when density degrades beyond thresholds
+- [x] Alert format is clear and actionable
 - [x] Documentation is updated
 - [x] future stages remain deferred
