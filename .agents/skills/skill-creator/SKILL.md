@@ -85,6 +85,7 @@ Entregue quando:
 - activation, escopo, frontmatter, procedimento, modularidade e verificação forem avaliados
 - anti-patterns encontrados forem nomeados
 - correções sugeridas forem pequenas e rastreáveis
+- diagnóstico formal, auditoria ou readiness check de skill for encaminhado para `skill-reviewer`
 
 ## Procedure
 

@@ -32,6 +32,7 @@ Skill para revisar skills existentes do harness `.agents/` usando o padrão can�
 - A tarefa for auditoria ampla do harness inteiro, incluindo `AGENTS.md`, workflows e subagents.
 - A tarefa exigir scripts determinísticos de validação.
 - A tarefa for apenas aplicar uma skill existente em um problema de produto.
+- A tarefa envolver diagnóstico multi-artefato ou reparo estrutural do harness; use `harness-repair`.
 
 ## Review dimensions
 
