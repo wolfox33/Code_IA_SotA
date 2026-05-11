@@ -56,6 +56,15 @@ Work in stages. Do not implement future roadmap items unless explicitly requeste
 - [x] Record project memory only if a durable decision or lesson emerges
 - [x] Ask user whether to test `harness-repair` with a limited diagnostic run
 
+## 6. Follow-up repair from `harness-repair` test
+
+- [x] Test `harness-repair` against `AGENTS.md`, selected skills and workflows
+- [x] Keep workflow findings out of this repair cycle
+- [x] Refactor `.agents/skills/data-science/SKILL.md` from placeholder to operational skill
+- [x] Refactor `.agents/skills/quant/SKILL.md` from placeholder to operational skill
+- [x] Preserve boundaries between `ml`, `data-science` and `quant`
+- [x] Review diff before completion
+
 ---
 
 # Acceptance Checklist
