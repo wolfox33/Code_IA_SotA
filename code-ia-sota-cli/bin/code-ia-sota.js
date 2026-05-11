@@ -840,7 +840,6 @@ async function bulkRefactor(rootDir) {
 async function densityFix(rootDir) {
   const agentsDir = path.join(rootDir, ".agents");
   const skillsDir = path.join(agentsDir, "skills");
-  const referencesDir = path.join(agentsDir, "references");
   const skillFiles = await listSkillFiles(skillsDir);
   const dryRun = process.argv.includes("--dry-run");
 
@@ -851,13 +850,6 @@ async function densityFix(rootDir) {
   if (dryRun) {
     console.log(pc.yellow("Dry-run mode: no changes will be applied."));
     console.log("");
-  }
-
-  if (!(await exists(referencesDir))) {
-    if (!dryRun) {
-      await fs.mkdir(referencesDir, { recursive: true });
-    }
-    console.log(`Created references directory: ${referencesDir}`);
   }
 
   const lowDensitySkills = [];
@@ -903,8 +895,22 @@ async function densityFix(rootDir) {
     console.log("");
     console.log(pc.green("Automated fixes approved."));
     console.log("");
+    console.log(pc.cyan("Creating references directories per skill..."));
+
+    for (const skill of lowDensitySkills) {
+      const skillPath = path.join(skillsDir, skill.skill);
+      const referencesPath = path.join(skillPath, "references");
+
+      if (!(await exists(referencesPath))) {
+        await fs.mkdir(referencesPath, { recursive: true });
+        console.log(`  Created references directory: ${skill.skill}/references`);
+      }
+    }
+
+    console.log("");
     console.log(pc.cyan("Note: Automated fixes are limited to reference content extraction."));
-    console.log("  For comprehensive refactoring, use \`npm run suggest:refactor\` manually.");
+    console.log("  For comprehensive refactoring, use `npm run suggest:refactor` manually.");
+    console.log("  References should be split into smaller files by specialty.");
     console.log("");
     console.log(pc.cyan("Summary:"));
     console.log(`  Total skills to fix: ${lowDensitySkills.length}`);
