@@ -1,10 +1,10 @@
-# PRD — Stage 6 (Batch 3): Skill Audit and Incremental Refactor
+# PRD — Stage 6 (Batch 4): Skill Audit and Incremental Refactor
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through a focused sixth stage (batch 3): refactor `harness-repair` and `skill-reviewer` based on Stage 7 benchmark findings.
+Evolution of the `Code_IA_SotA` harness through a focused sixth stage (batch 4): refactor `api-design-chat` and `database-schema-design-chat` to add missing operational sections.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batch 1: `skill audit and incremental refactor`), Stage 6 (Batch 2: `vps-docker-deploy refactor`), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batches 1-3: skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
 
 ---
 
@@ -12,7 +12,7 @@ This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 
 
 Separate specs are not required for this stage.
 
-This stage refactors two structural skills based on benchmark data. The work can be tracked directly in `TASK.md`.
+This stage adds missing operational sections to skills based on validation warnings. The work can be tracked directly in `TASK.md`.
 
 Create separate specs only if later work introduces:
 
@@ -25,50 +25,38 @@ Create separate specs only if later work introduces:
 
 # 2. Vision
 
-Refactor `harness-repair` and `skill-reviewer` to reduce bloat from detailed output contracts while preserving their diagnostic utility.
+Add missing operational sections to `api-design-chat` and `database-schema-design-chat` to reduce validation warnings while preserving their domain-specific scope.
 
-Stage 6 (Batch 3) should improve density of structural skills without losing clarity for their diagnostic role.
+Stage 6 (Batch 4) should follow the same pattern as Batch 1: add missing sections (Objetivo, Use/Do not use, Output contracts, Procedure, Verification) without changing skill intent.
 
 ---
 
 # 3. Problem Statement
 
-The Stage 7 benchmark identified `harness-repair` and `skill-reviewer` as secondary bloat candidates:
+The validation command shows that many skills still have missing operational sections.
 
-**harness-repair**
-- Density: 44.9%
-- Size: 8201 bytes, 234 lines
-- Issue: Output contracts section is long (lines 68-105)
+Current gaps for target skills:
 
-**skill-reviewer**
-- Density: 41.9%
-- Size: 7793 bytes, 217 lines
-- Issue: Output contracts section (lines 65-103) contributes to bloat
+**api-design-chat** (7 warnings):
+- Missing: Objetivo, Use this skill when, Do not use this skill when, Output contracts, Procedure, Verification
 
-Current state:
-
-- Both skills are structural/diagnostic with detailed output contract templates
-- Output contracts provide clarity but increase line count
-- Density is moderate but could be improved
+**database-schema-design-chat** (5 warnings):
+- Missing: Objetivo, Do not use this skill when, Output contracts, Procedure, Verification
 
 Without refactoring, these skills continue to:
 
-- Consume more context than needed for their diagnostic role
-- Have lower density than optimal for structural skills
-- Include verbose templates that could be simplified
+- Generate validation warnings
+- Lack clarity on activation and boundaries
+- Miss explicit verification criteria
+- Have incomplete operational structure
 
 ---
 
 # 4. Objective
 
-Refactor `harness-repair` and `skill-reviewer` to:
+Add missing operational sections to `api-design-chat` and `database-schema-design-chat` to reduce validation warnings.
 
-- Simplify output contract templates where possible
-- Move verbose examples to references if rarely needed
-- Preserve diagnostic clarity and contract specificity
-- Improve density toward 50%+ target
-
-The goal is not to remove output contracts. The goal is to make them concise while preserving utility.
+The goal is not to rewrite the skills. The goal is to complete their operational structure following the canonical pattern.
 
 ---
 
@@ -76,115 +64,98 @@ The goal is not to remove output contracts. The goal is to make them concise whi
 
 ## In Scope
 
-- Read `harness-repair/SKILL.md` and `skill-reviewer/SKILL.md` completely
-- Evaluate output contracts sections for simplification opportunities
-- Simplify templates or move examples to references
-- Preserve essential contract structure
-- Re-run validation to confirm improvement
-- Update TASK.md with decision rationale
+- Read target skills completely
+- Add missing sections: Objetivo, Use this skill when, Do not use this skill when, Output contracts, Procedure, Verification
+- Preserve existing domain knowledge and scope
+- Add skill log entries for changed skills
+- Re-run validation to confirm warnings reduced
 
 ## Out of Scope
 
-- Refactoring other skills from the benchmark
+- Refactoring other skills from the validation output
 - Changing validation command rules
 - Modifying workflows or subagents
-- Removing output contracts entirely
+- Changing skill intent or scope
 
 ---
 
-# 6. Decision Criteria
-
-Simplify output contracts when:
-
-- Templates are verbose with redundant examples
-- Multiple contract types share similar structure
-- Examples can be moved to references without losing clarity
-
-Keep detailed contracts when:
-
-- Contracts provide essential diagnostic specificity
-- Templates are already concise
-- Examples are needed for contract understanding
-- Skill is frequently used and clarity is critical
-
----
-
-# 7. Required Refactor Standard
+# 6. Required Refactor Standard
 
 For each skill:
 
-- Preserve all output contract types (report, diagnosis, plan, etc.)
-- Simplify template descriptions where verbose
-- Consider moving example formats to references
-- Maintain frontmatter and other sections unchanged
-- Aim for 50%+ procedure density
+- Add `## Objetivo` section if missing
+- Ensure `## Use this skill when` is clear and concrete
+- Ensure `## Do not use this skill when` avoids over-triggering
+- Add `## Output contracts` when the skill produces deliverables
+- Add or complete `## Procedure` with executable steps
+- Add `## Verification` checklist
+- Add skill log entry documenting the change
 
 ---
 
-# 8. Design Constraints
+# 7. Design Constraints
 
-- Preserve diagnostic utility of both skills.
-- Do not remove contract types entirely.
-- Keep changes minimal and reversible.
-- Do not expand scope to other benchmark candidates.
+- Preserve domain-specific knowledge.
+- Keep changes minimal and surgical.
+- Follow the same pattern as Stage 6 Batch 1.
+- Do not expand scope to other skills.
 
 ---
 
-# 9. Acceptance Criteria
+# 8. Acceptance Criteria
 
-Stage 6 (Batch 3) is complete when:
+Stage 6 (Batch 4) is complete when:
 
-- `harness-repair` and `skill-reviewer` have been refactored
+- `api-design-chat` and `database-schema-design-chat` have been refactored
 - Validation command exits `0`
-- Density is improved toward 50%+ target
+- Target skills no longer emit avoidable operational-section warnings
 - No other skills or workflows are modified
-- Decision rationale is documented in TASK.md
+- Skill log entries are added
 
 ---
 
-# 10. Risks
+# 9. Risks
 
-## R1 — Loss of Clarity
+## R1 — Scope Drift
 
-Risk: Simplifying contracts reduces diagnostic specificity.
+Risk: Adding sections expands skill beyond original intent.
 
-Mitigation: Keep essential contract structure; simplify only verbose descriptions.
+Mitigation: Preserve existing content; only add missing sections, don't change existing ones.
 
-## R2 — Overrefactoring
+## R2 — Generic Content
 
-Risk: Moving examples to references makes contracts harder to understand.
+Risk: Added sections become too generic.
 
-Mitigation: Keep examples in SKILL.md if they are critical for contract understanding.
+Mitigation: Make sections domain-specific based on existing skill content.
 
-## R3 — Scope Creep
+## R3 — Overrefactoring
 
-Risk: Extending refactor to other benchmark candidates.
+Risk: Refactoring changes skill behavior inadvertently.
 
-Mitigation: This batch is scoped only to `harness-repair` and `skill-reviewer`.
+Mitigation: Read skill completely before editing; preserve existing procedure and scope.
 
 ---
 
-# 11. Execution Plan
+# 10. Execution Plan
 
 Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Read `harness-repair/SKILL.md` and `skill-reviewer/SKILL.md` completely
-2. Evaluate output contracts sections for simplification opportunities
-3. Decide which templates to simplify or move to references
-4. Implement refactor for each skill
-5. Re-run validation and verify density improvement
-6. Document decision rationale in TASK.md
-7. Update project memory if a durable decision emerges
+1. Read target skills completely
+2. Identify missing operational sections
+3. Add missing sections for each skill
+4. Add skill log entries
+5. Re-run validation and confirm warnings reduced
+6. Update project memory if a durable decision emerges
 
 ---
 
-# 12. Future Roadmap
+# 11. Future Roadmap
 
 Future stages may include:
 
-- additional skill refactor batches based on Stage 7 benchmark
+- additional skill refactor batches based on validation warnings
 - Stage 9: automated bloat detection rules
 - Stage 10: CI enforcement of density thresholds
 
