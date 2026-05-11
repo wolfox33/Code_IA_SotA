@@ -1,10 +1,10 @@
-# PRD — Stage 6 (Batch 8): Skill Audit and Incremental Refactor
+# PRD — Stage 9: Automated Bloat Detection Rules
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through a focused eighth stage (batch 8): refactor `langgraph-agent-patterns`, `systematic-debugging`, `test-driven-development`, `verification-before-completion` and `vps-docker-deploy` to add missing operational sections.
+Evolution of the `Code_IA_SotA` harness through Stage 9: implement automated bloat detection rules to prevent low-density skills.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batches 1-7: skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
 
 ---
 
@@ -12,7 +12,7 @@ This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 
 
 Separate specs are not required for this stage.
 
-This stage adds missing operational sections to skills based on validation warnings. The work can be tracked directly in `TASK.md`.
+This stage adds automated bloat detection to the CLI validation command. The work can be tracked directly in `TASK.md`.
 
 Create separate specs only if later work introduces:
 
@@ -25,47 +25,29 @@ Create separate specs only if later work introduces:
 
 # 2. Vision
 
-Add missing operational sections to 5 skills to reduce validation warnings while preserving their domain-specific scope.
+Add automated bloat detection rules to the CLI validation command to warn about low-density skills, preventing future bloat.
 
-Stage 6 (Batch 8) should follow the same pattern as previous batches: add missing sections (Objetivo, Use/Do not use, Output contracts, Procedure, Verification) without changing skill intent.
+Stage 9 should add a density metric and threshold warning to the existing validation command, without blocking validation (warnings only).
 
 ---
 
 # 3. Problem Statement
 
-The validation command shows that 5 skills still have missing operational sections.
+Stage 7 identified `vps-docker-deploy` as having 0% density (content as reference), which was later fixed in Stage 6 Batch 2 by moving reference content to `references/` and adding executable procedure.
 
-Current gaps for target skills:
+Without automated detection, new skills may also become low-density over time, leading to:
 
-**langgraph-agent-patterns** (1 warning):
-- Missing: Output contracts
-
-**systematic-debugging** (1 warning):
-- Missing: Output contracts
-
-**test-driven-development** (1 warning):
-- Missing: Output contracts
-
-**verification-before-completion** (1 warning):
-- Missing: Output contracts
-
-**vps-docker-deploy** (1 warning):
-- Missing: Output contracts
-
-Without refactoring, these skills continue to:
-
-- Generate validation warnings
-- Lack clarity on activation and boundaries
-- Miss explicit verification criteria
-- Have incomplete operational structure
+- Skills with reference content instead of executable procedures
+- High context cost for low value
+- Difficulty identifying bloat without manual benchmarking
 
 ---
 
 # 4. Objective
 
-Add missing operational sections to 5 skills to reduce validation warnings.
+Add automated bloat detection to the CLI validation command to warn about low-density skills.
 
-The goal is not to rewrite the skills. The goal is to complete their operational structure following the canonical pattern.
+The goal is to provide early warning when a skill has low density, allowing proactive refactoring before bloat becomes widespread.
 
 ---
 
@@ -73,65 +55,63 @@ The goal is not to rewrite the skills. The goal is to complete their operational
 
 ## In Scope
 
-- Read target skills completely
-- Add missing sections: Output contracts (all 5 skills)
-- Preserve existing domain knowledge and scope
-- Add skill log entries for changed skills
-- Re-run validation to confirm warnings reduced
+- Add density metric calculation to CLI validation
+- Define density threshold (e.g., <30% density triggers warning)
+- Add warning output for low-density skills
+- Update validation command documentation
 
 ## Out of Scope
 
-- Refactoring other skills from the validation output
-- Changing validation command rules
-- Modifying workflows or subagents
-- Changing skill intent or scope
+- Changing existing skills (already addressed in Stage 6)
+- Blocking validation based on density (warnings only)
+- CI enforcement of density thresholds (deferred to Stage 10)
+- Automated refactoring of low-density skills
 
 ---
 
-# 6. Required Refactor Standard
+# 6. Required Implementation Standard
 
-For each skill:
-
-- Add `## Output contracts` when the skill produces deliverables
-- Add skill log entry documenting the change
+- Density calculation: (procedure lines / total lines) * 100
+- Threshold: <30% density triggers warning
+- Warning message: "Low density (<30%): {skill_name} has {density}% density. Consider moving reference content to references/ and adding executable procedure."
+- Validation should still exit 0 (warnings only)
 
 ---
 
 # 7. Design Constraints
 
-- Preserve domain-specific knowledge.
-- Keep changes minimal and surgical.
-- Follow the same pattern as Stage 6 previous batches.
-- Do not use emojis in section headings (validation does not recognize them).
-- Do not expand scope to other skills.
+- Preserve existing validation behavior
+- Warnings only, no blocking errors
+- Density calculation should be simple and fast
+- Threshold should be configurable via environment variable
 
 ---
 
 # 8. Acceptance Criteria
 
-Stage 6 (Batch 8) is complete when:
+Stage 9 is complete when:
 
-- All 5 target skills have been refactored
-- Validation command exits `0`
-- Target skills no longer emit avoidable operational-section warnings
-- No other skills or workflows are modified
-- Skill log entries are added
+- CLI validation calculates density for each skill
+- Skills with <30% density trigger warnings
+- Validation still exits 0 with warnings
+- Density threshold is configurable via environment variable
+- Documentation is updated
 
 ---
 
 # 9. Risks
 
-## R1 — Scope Drift
+## R1 — False Positives
 
-Risk: Adding sections expands skill beyond original intent.
+Risk: Skills with legitimate low density (e.g., simple placeholder skills) trigger warnings.
 
-Mitigation: Preserve existing content; only add missing sections, don't change existing ones.
+Mitigation: Warnings only, not errors; threshold configurable; placeholder skills can be documented as exceptions.
 
-## R2 — Generic Content
+## R2 — Performance Impact
 
-Risk: Added sections become too generic.
+Risk: Density calculation slows down validation.
 
-Mitigation: Make sections domain-specific based on existing skill content.
+Mitigation: Simple line count calculation; no complex parsing; fast enough for 26 skills.
 
 ---
 
@@ -141,12 +121,13 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Read target skills completely
-2. Identify missing operational sections
-3. Add missing sections for each skill
-4. Add skill log entries
-5. Re-run validation and confirm warnings reduced
-6. Update project memory if a durable decision emerges
+1. Read CLI validation code
+2. Add density calculation function
+3. Add density threshold check
+4. Add warning output for low-density skills
+5. Make threshold configurable via environment variable
+6. Test validation with low-density skill
+7. Update documentation
 
 ---
 
@@ -154,8 +135,8 @@ High-level sequence:
 
 Future stages may include:
 
-- additional skill refactor batches based on validation warnings
-- Stage 9: automated bloat detection rules
 - Stage 10: CI enforcement of density thresholds
+- Stage 11: Automated refactoring suggestions for low-density skills
+- Stage 12: Bulk density benchmarking and reporting
 
 Each future stage should receive its own PRD update or separate task plan before implementation.

@@ -23,6 +23,8 @@ const REQUIRED_OPERATIONAL_SKILL_SECTIONS = [
   ["Verification"]
 ];
 
+const DENSITY_THRESHOLD = parseInt(process.env.HARNESS_DENSITY_THRESHOLD || "30", 10);
+
 async function exists(filePath) {
   try {
     await fs.access(filePath);
@@ -174,6 +176,25 @@ async function listSkillFiles(skillsDir) {
     .map((entry) => path.join(skillsDir, entry.name, "SKILL.md"));
 }
 
+function calculateDensity(content) {
+  const lines = content.split("\n").filter(line => line.trim().length > 0);
+  const totalLines = lines.length;
+
+  const procedureMatch = content.match(/^##\s+Procedure/im);
+  if (!procedureMatch) {
+    return 0;
+  }
+
+  const procedureIndex = procedureMatch.index;
+  const nextSectionMatch = content.slice(procedureIndex + procedureMatch[0].length).match(/^##\s+/im);
+  const endIndex = nextSectionMatch ? procedureIndex + nextSectionMatch.index : content.length;
+
+  const procedureContent = content.slice(procedureIndex, endIndex);
+  const procedureLines = procedureContent.split("\n").filter(line => line.trim().length > 0).length;
+
+  return Math.round((procedureLines / totalLines) * 100);
+}
+
 async function validateSkill(rootDir, filePath, failures, warnings) {
   if (!(await exists(filePath))) {
     addFailure(failures, rootDir, filePath, "SKILL.md is missing.");
@@ -204,6 +225,11 @@ async function validateSkill(rootDir, filePath, failures, warnings) {
     if (!hasSection(content, sectionGroup)) {
       addWarning(warnings, rootDir, filePath, `operational section group \`${sectionGroup.join(" | ")}\` is missing.`);
     }
+  }
+
+  const density = calculateDensity(content);
+  if (density < DENSITY_THRESHOLD) {
+    addWarning(warnings, rootDir, filePath, `Low density (<${DENSITY_THRESHOLD}%): ${density}% density. Consider moving reference content to references/ and adding executable procedure.`);
   }
 }
 
