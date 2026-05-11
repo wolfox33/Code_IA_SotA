@@ -23,7 +23,9 @@ Harness canônico para organizar regras globais, contexto progressivo, skills, s
     │   └── MEMORY.md
     ├── skills/
     │   └── <skill-name>/
-    │       └── SKILL.md
+    │       ├── SKILL.md
+    │       └── references/
+    │           └── <reference-file>.md
     ├── subagents/
     │   └── <subagent-name>.md
     └── workflows/
@@ -38,7 +40,8 @@ Harness canônico para organizar regras globais, contexto progressivo, skills, s
 - **`.agents/project/context.md`**: stack, arquitetura, constraints e convenções específicas do projeto.
 - **`.agents/project/context-design.md`**: contexto de design system apenas para tarefas de UI/frontend.
 - **`.agents/project/MEMORY.md`**: fatos emergentes, decisões e workarounds relevantes da sessão/projeto.
-- **`.agents/skills/`**: capacidades técnicas carregadas sob demanda.
+- **`.agents/skills/<skill-name>/SKILL.md`**: arquivo principal da skill com frontmatter parse-safe, objetivo, uso, não uso, output contracts e procedure executável.
+- **`.agents/skills/<skill-name>/references/`**: conteúdo referencial denso (templates, guias detalhados, anti-patterns, checklists) movido para arquivos especializados por tópico.
 - **`.agents/subagents/`**: personas por fase, como discovery, planning, implementation, review e deployment.
 - **`.agents/workflows/`**: processos sequenciais reutilizáveis.
 
@@ -49,13 +52,42 @@ O harness assume que agentes modernos conseguem descobrir a estrutura por leitur
 1. Ler `AGENTS.md` na raiz como política global.
 2. Usar `.agents/project/` para contexto específico quando relevante.
 3. Avaliar `name` e `description` de skills antes de carregar conteúdo completo.
-4. Carregar subagents e workflows apenas quando a tarefa justificar ou quando o usuário pedir.
+4. Carregar conteúdo completo de `SKILL.md` apenas quando a skill for realmente necessária.
+5. Carregar `references/` apenas quando conteúdo detalhado for necessário para a tarefa.
+6. Carregar subagents e workflows apenas quando a tarefa justificar ou quando o usuário pedir.
 
 Não há requisito de gerar `.windsurf/`, `.claude/`, `.opencode/` ou outros mirrors de compatibilidade.
 
 ## Skills
 
 Uma skill vive em `.agents/skills/<skill-name>/SKILL.md`.
+
+### Densidade procedural
+
+O CLI de validação calcula a densidade procedural como a proporção de linhas da seção Procedure em relação ao total do arquivo. O threshold padrão é 30%.
+
+- Skills com densidade < 30% geram warnings
+- Para aumentar densidade: expandir a seção Procedure com passos executáveis detalhados
+- Conteúdo referencial denso (templates, guias detalhados, anti-patterns, checklists) deve ser movido para `references/`
+- Cada arquivo em `references/` deve ser especializado por tópico (ex: pitfalls.md, output-contracts.md)
+
+### Quando usar references/
+
+Mova conteúdo para `references/` quando:
+
+- Seções com links externos, listas longas (>5 itens) ou conteúdo denso sem code blocks
+- Templates ou guias detalhados que não são parte do fluxo executável
+- Anti-patterns e pitfalls que são referência, não parte do procedure
+- Checklists ou padrões que são consultados, não executados sequencialmente
+
+Mantenha em `SKILL.md`:
+
+- Frontmatter parse-safe
+- Objetivo, Use/Do not use
+- Output contracts (resumo executável)
+- Procedure (passos executáveis detalhados)
+- Verification
+- References (links para arquivos em references/)
 
 ### Contrato parse-safe
 
@@ -101,17 +133,21 @@ O que esta skill resolve e por que existe.
 
 - Caso parecido que não deve acionar esta skill.
 
+## Output contracts
+
+O que deve ser entregue ao aplicar esta skill.
+
 ## Procedure
 
 Passos para executar a skill com sucesso.
 
-## Pitfalls
-
-- Armadilha conhecida e como evitar.
-
 ## Verification
 
 Como confirmar que a skill foi aplicada corretamente.
+
+## References
+
+Links para arquivos em `references/` com conteúdo referencial detalhado (opcional).
 ```
 
 ## Subagents
@@ -142,8 +178,10 @@ Workflows vivem em `.agents/workflows/` e descrevem sequência operacional. Eles
 - O harness deve ser generalista, não acoplado a um projeto específico.
 - Informações específicas de projeto ficam em `.agents/project/`.
 - Skills devem ser parse-safe e descobertas por `name` + `description`.
+- Conteúdo referencial denso deve ser movido para `references/` para manter densidade procedural > 30%.
 - Evite duplicar regras entre arquivos.
 - Remova documentação obsoleta quando uma decisão estrutural mudar.
+- Valide densidade procedural com `npm run validate:harness` após mudanças em skills.
 
 ## Validação recomendada
 
@@ -155,6 +193,17 @@ Ao alterar skills, valide pelo menos:
 - Não há `compatible_with` em frontmatter.
 - Não há separadores `---` no corpo.
 - Não há caracteres de controle no frontmatter.
+- Densidade procedural >= 30% (use `npm run validate:harness`).
+
+### CLI de validação
+
+O projeto usa o CLI `code-ia-sota-cli` para validação automática do harness:
+
+- `npm run validate:harness` - valida todas as skills e workflows
+- `npm run benchmark:density` - mostra densidade de todas as skills
+- `npm run suggest:refactor` - sugere refatoração para skills com baixa densidade
+
+O CLI valida frontmatter, metadata, seções obrigatórias e densidade procedural.
 
 ## CI Integration
 
@@ -168,7 +217,7 @@ O workflow `.github/workflows/validate-harness.yml`:
 - Roda em push para main
 - Executa `npm run validate:harness` em `code-ia-sota-cli/`
 - Falha o build se houver erros de validação (frontmatter, metadata, placeholders)
-- Permite warnings (seções operacionais faltantes em skills antigas)
+- Falha o build se houver warnings de densidade procedural (< 30%)
 
 ### Bypassar CI
 
