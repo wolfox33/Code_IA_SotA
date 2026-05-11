@@ -29,3 +29,15 @@ jobs:
         env:
           HARNESS_DENSITY_THRESHOLD: "30"
           HARNESS_FAIL_ON_WARNINGS: "false"
+
+      - name: Create density snapshot
+        working-directory: ./code-ia-sota-cli
+        run: npm run density:snapshot
+
+      - name: Commit density history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .agents/data/density-history.json
+          git diff --staged --quiet || git commit -m "chore: update density snapshot [skip ci]"
+          git push

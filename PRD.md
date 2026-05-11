@@ -1,10 +1,10 @@
-# PRD — Stage 14: Automated Refactoring with User Approval
+# PRD — Stage 15: CI Integration of Density Tracking
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through Stage 14: add automated refactoring with user approval to streamline the refactoring process while maintaining control.
+Evolution of the `Code_IA_SotA` harness through Stage 15: add CI integration of density tracking to automatically create density snapshots on each push/PR.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`), Stage 8 (`CI integration for harness validation`), Stage 9 (`automated bloat detection rules`), Stage 10 (`CI enforcement of density thresholds`), Stage 11 (`automated refactoring suggestions`), Stage 12 (`bulk density benchmarking and reporting`) and Stage 13 (`density trends over time`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (skill audit and incremental refactor), Stage 7 (`benchmark context efficiency`), Stage 8 (`CI integration for harness validation`), Stage 9 (`automated bloat detection rules`), Stage 10 (`CI enforcement of density thresholds`), Stage 11 (`automated refactoring suggestions`), Stage 12 (`bulk density benchmarking and reporting`), Stage 13 (`density trends over time`) and Stage 14 (`automated refactoring with user approval`) are complete.
 
 ---
 
@@ -12,42 +12,42 @@ This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 
 
 Separate specs are not required for this stage.
 
-This stage adds automated refactoring with user approval. The work can be tracked directly in `TASK.md`.
+This stage adds CI integration of density tracking. The work can be tracked directly in `TASK.md`.
 
 Create separate specs only if later work introduces:
 
 - automated bulk migration
 - generated reports with fixed schema
-- CI enforcement of refactoring
+- CI enforcement of density trends
 - compatibility contracts for external platforms
 
 ---
 
 # 2. Vision
 
-Add automated refactoring with user approval to streamline the refactoring process while maintaining control, reducing manual effort while ensuring quality.
+Add CI integration of density tracking to automatically create density snapshots on each push/PR, enabling continuous monitoring of density changes without manual intervention.
 
-Stage 14 should add a CLI command that performs automated refactoring with user approval for each change.
+Stage 15 should add a GitHub Actions workflow step that runs `density:snapshot` on each push/PR to automatically track density changes.
 
 ---
 
 # 3. Problem Statement
 
-Stage 11 provides refactoring suggestions, but requires manual implementation of each suggestion, which is time-consuming and error-prone.
+Stage 13 provides density snapshot and trend tracking, but requires manual execution of `density:snapshot`. Without CI integration, density tracking may be forgotten or inconsistent.
 
-Without automated refactoring:
-- Manual implementation is slow and error-prone
-- Risk of inconsistent refactoring across skills
-- Difficult to ensure all suggestions are applied correctly
-- High effort for repetitive tasks
+Without CI integration:
+- Manual snapshot creation is error-prone
+- Density tracking may be inconsistent
+- No automatic monitoring of density changes
+- Difficult to correlate density changes with commits
 
 ---
 
 # 4. Objective
 
-Add automated refactoring with user approval to streamline the refactoring process while maintaining control.
+Add CI integration of density tracking to automatically create density snapshots on each push/PR.
 
-The goal is to provide a CLI command that performs automated refactoring with user approval for each change.
+The goal is to provide automatic density tracking without manual intervention.
 
 ---
 
@@ -55,67 +55,64 @@ The goal is to provide a CLI command that performs automated refactoring with us
 
 ## In Scope
 
-- Add CLI command `refactor:auto` to perform automated refactoring
-- Implement user approval for each change (interactive)
-- Move reference content to `references/` automatically
-- Expand Procedure section with executable steps
-- Generate preview before applying changes
-- Support dry-run mode
+- Add `density:snapshot` step to existing GitHub Actions workflow
+- Commit density history file to repository
+- Configure workflow to run on push/PR
+- Preserve existing validation behavior
 
 ## Out of Scope
 
-- Automated refactoring without user approval
-- Complex refactoring beyond moving content
-- CI integration of automated refactoring
-- Bulk refactoring without review
+- Automated alerts based on density changes
+- Trend analysis in CI
+- Blocking CI based on density trends
+- Complex density monitoring dashboards
 
 ---
 
 # 6. Required Implementation Standard
 
-- CLI command: `npm run refactor:auto`
-- Interactive approval: prompt user for each change
-- Dry-run mode: `npm run refactor:auto -- --dry-run`
-- Preview changes before applying
-- Create `references/` directory if needed
-- Preserve original content in comments
+- Add step to existing `.github/workflows/validate-harness.yml`
+- Run `density:snapshot` after validation
+- Commit `.agents/data/density-history.json` to repository
+- Configure git user for automated commits
+- Non-blocking (validation failures should still fail CI)
 
 ---
 
 # 7. Design Constraints
 
-- User approval required for each change
-- Dry-run mode for preview
-- Preserve original content
-- No automated changes without review
+- Preserve existing CI behavior
+- Density snapshot should not block CI
+- Automated commits should be clearly identifiable
+- No breaking changes to existing workflow
 
 ---
 
 # 8. Acceptance Criteria
 
-Stage 14 is complete when:
+Stage 15 is complete when:
 
-- CLI command `refactor:auto` exists
-- Command performs automated refactoring with user approval
-- Dry-run mode works correctly
-- Changes are previewed before applying
+- GitHub Actions workflow runs `density:snapshot` on push/PR
+- Density history file is committed to repository
+- Automated commits are clearly identifiable
+- Existing validation behavior is preserved
 - Documentation is updated
 
 ---
 
 # 9. Risks
 
-## R1 — Incorrect Refactoring
+## R1 — Commit Conflicts
 
-Risk: Automated refactoring may make incorrect changes.
+Risk: Automated density snapshot commits may conflict with manual changes.
 
-Mitigation: User approval required for each change; dry-run mode for preview.
+Mitigation: Separate commits; workflow runs after validation; conflicts rare.
 
-## R2 — Data Loss
+## R2 — File Growth
 
-Risk: Original content may be lost during refactoring.
+Risk: Density history file may grow large over time.
 
-Mitigation: Preserve original content in comments; dry-run mode for preview.
+Mitigation: Simple JSON format; manual cleanup if needed; can be optimized in future.
 
 ---
 
@@ -125,13 +122,12 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Add CLI command `refactor:auto`
-2. Implement content detection (reference vs executable)
-3. Implement refactoring logic (move to references/, expand procedure)
-4. Add interactive approval prompts
-5. Add dry-run mode
-6. Test with known low-density skills
-7. Update documentation
+1. Add `density:snapshot` step to GitHub Actions workflow
+2. Configure git user for automated commits
+3. Commit density history file to repository
+4. Test workflow with push/PR
+5. Verify automated commits are identifiable
+6. Update documentation
 
 ---
 
@@ -139,8 +135,8 @@ High-level sequence:
 
 Future stages may include:
 
-- Stage 15: CI integration of density tracking
 - Stage 16: Automated alerts based on trends
 - Stage 17: Bulk refactoring with batch approval
+- Stage 18: Density monitoring dashboard
 
 Each future stage should receive its own PRD update or separate task plan before implementation.

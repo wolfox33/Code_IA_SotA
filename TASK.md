@@ -1,12 +1,12 @@
-# TASK — Stage 14: Automated Refactoring with User Approval
+# TASK — Stage 15: CI Integration of Density Tracking
 
 ## Goal
 
-Add automated refactoring with user approval to streamline the refactoring process while maintaining control.
+Add CI integration of density tracking to automatically create density snapshots on each push/PR.
 
 ## Execution Rule
 
-Work in stages. User approval required for each change; no automated changes without review.
+Work in stages. Non-blocking; density snapshot should not fail CI.
 
 ---
 
@@ -14,42 +14,40 @@ Work in stages. User approval required for each change; no automated changes wit
 
 ## 1. Preparation
 
-- [x] Confirm Stage 13 is committed
-- [x] Confirm working tree is clean before Stage 14
-- [x] Update `PRD.md` for Stage 14
+- [x] Confirm Stage 14 is committed
+- [x] Confirm working tree is clean before Stage 15
+- [x] Update `PRD.md` for Stage 15
 - [x] Update this `TASK.md`
 
 ## 2. Implementation
 
-- [x] Add CLI command `refactor:auto`
-- [x] Implement content detection (reference vs executable)
-- [x] Implement refactoring logic (move to references/, expand procedure)
-- [x] Add interactive approval prompts
-- [x] Add dry-run mode
-- [x] Test with known low-density skills
+- [x] Add `density:snapshot` step to GitHub Actions workflow
+- [x] Configure git user for automated commits
+- [x] Commit density history file to repository
+- [x] Test workflow with push/PR
 
 ## 3. Validation
 
-- [x] Confirm command performs automated refactoring with approval
-- [x] Confirm dry-run mode works correctly
-- [x] Test with low-density skill
-- [x] Verify changes are correct
+- [x] Confirm workflow runs density snapshot on push/PR
+- [x] Verify automated commits are identifiable
+- [x] Confirm existing validation behavior is preserved
+- [x] Test commit conflicts scenario
 
 ## 4. Completion
 
 - [x] Update project memory if a durable decision emerges
-- [x] Confirm Stage 14 acceptance checklist
+- [x] Confirm Stage 15 acceptance checklist
 - [x] Suggest commit only after this stage is complete
 
 ---
 
 # Acceptance Checklist
 
-Stage 14 is done only when:
+Stage 15 is done only when:
 
-- [x] CLI command `refactor:auto` exists
-- [x] Command performs automated refactoring with user approval
-- [x] Dry-run mode works correctly
-- [x] Changes are previewed before applying
+- [x] GitHub Actions workflow runs density snapshot on push/PR
+- [x] Density history file is committed to repository
+- [x] Automated commits are clearly identifiable
+- [x] Existing validation behavior is preserved
 - [x] Documentation is updated
 - [x] future stages remain deferred
