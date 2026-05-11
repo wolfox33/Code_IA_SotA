@@ -1,10 +1,10 @@
-# PRD — Stage 6 (Batch 2): Skill Audit and Incremental Refactor
+# PRD — Stage 6 (Batch 3): Skill Audit and Incremental Refactor
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through a focused sixth stage (batch 2): refactor `vps-docker-deploy` based on Stage 7 benchmark findings.
+Evolution of the `Code_IA_SotA` harness through a focused sixth stage (batch 3): refactor `harness-repair` and `skill-reviewer` based on Stage 7 benchmark findings.
 
-This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batch 1: `skill audit and incremental refactor`), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 (`harness-repair`), Stage 4 (`harness-maintenance`), Stage 5 (`harness validation command`), Stage 6 (Batch 1: `skill audit and incremental refactor`), Stage 6 (Batch 2: `vps-docker-deploy refactor`), Stage 7 (`benchmark context efficiency`) and Stage 8 (`CI integration for harness validation`) are complete.
 
 ---
 
@@ -12,7 +12,7 @@ This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`), Stage 3 
 
 Separate specs are not required for this stage.
 
-This stage refactors a single skill based on benchmark data. The work can be tracked directly in `TASK.md`.
+This stage refactors two structural skills based on benchmark data. The work can be tracked directly in `TASK.md`.
 
 Create separate specs only if later work introduces:
 
@@ -25,42 +25,50 @@ Create separate specs only if later work introduces:
 
 # 2. Vision
 
-Refactor `vps-docker-deploy` from a reference-heavy artifact (0% procedure density) to either an operational skill with minimal procedure or a reference document in `references/`.
+Refactor `harness-repair` and `skill-reviewer` to reduce bloat from detailed output contracts while preserving their diagnostic utility.
 
-Stage 6 (Batch 2) should reduce context bloat while preserving the infrastructure pattern knowledge.
+Stage 6 (Batch 3) should improve density of structural skills without losing clarity for their diagnostic role.
 
 ---
 
 # 3. Problem Statement
 
-The Stage 7 benchmark identified `vps-docker-deploy` as the primary bloat candidate:
+The Stage 7 benchmark identified `harness-repair` and `skill-reviewer` as secondary bloat candidates:
 
-- Density: 0% (no procedure section)
-- Size: 3875 bytes, 201 lines
-- Issue: Entire content is structured as reference material without operational procedure
+**harness-repair**
+- Density: 44.9%
+- Size: 8201 bytes, 234 lines
+- Issue: Output contracts section is long (lines 68-105)
+
+**skill-reviewer**
+- Density: 41.9%
+- Size: 7793 bytes, 217 lines
+- Issue: Output contracts section (lines 65-103) contributes to bloat
 
 Current state:
 
-- `vps-docker-deploy` functions as documentation rather than operational skill
-- Content includes architecture diagrams, structure templates, security rules, deployment process
-- No executable procedure for agents to follow
+- Both skills are structural/diagnostic with detailed output contract templates
+- Output contracts provide clarity but increase line count
+- Density is moderate but could be improved
 
-Without refactoring, this skill continues to:
+Without refactoring, these skills continue to:
 
-- Consume context without providing operational guidance
-- Blur the boundary between skill and reference material
-- Increase harness bloat without corresponding utility
+- Consume more context than needed for their diagnostic role
+- Have lower density than optimal for structural skills
+- Include verbose templates that could be simplified
 
 ---
 
 # 4. Objective
 
-Refactor `vps-docker-deploy` to either:
+Refactor `harness-repair` and `skill-reviewer` to:
 
-- Add a minimal procedure section to make it an operational skill, or
-- Move the content to `references/` as infrastructure pattern documentation
+- Simplify output contract templates where possible
+- Move verbose examples to references if rarely needed
+- Preserve diagnostic clarity and contract specificity
+- Improve density toward 50%+ target
 
-The goal is not to lose the knowledge. The goal is to place it in the correct artifact type.
+The goal is not to remove output contracts. The goal is to make them concise while preserving utility.
 
 ---
 
@@ -68,10 +76,10 @@ The goal is not to lose the knowledge. The goal is to place it in the correct ar
 
 ## In Scope
 
-- Read `vps-docker-deploy/SKILL.md` completely
-- Decide between operational skill vs reference material
-- If skill: add minimal procedure section with executable steps
-- If reference: create `references/` directory and move content
+- Read `harness-repair/SKILL.md` and `skill-reviewer/SKILL.md` completely
+- Evaluate output contracts sections for simplification opportunities
+- Simplify templates or move examples to references
+- Preserve essential contract structure
 - Re-run validation to confirm improvement
 - Update TASK.md with decision rationale
 
@@ -80,61 +88,55 @@ The goal is not to lose the knowledge. The goal is to place it in the correct ar
 - Refactoring other skills from the benchmark
 - Changing validation command rules
 - Modifying workflows or subagents
-- Creating platform compatibility mirrors
+- Removing output contracts entirely
 
 ---
 
 # 6. Decision Criteria
 
-Choose **operational skill** when:
+Simplify output contracts when:
 
-- The skill is frequently invoked for VPS deployment tasks
-- Agents need step-by-step guidance for Docker Compose setup
-- The content has clear activation criteria
+- Templates are verbose with redundant examples
+- Multiple contract types share similar structure
+- Examples can be moved to references without losing clarity
 
-Choose **reference material** when:
+Keep detailed contracts when:
 
-- The content is primarily documentation or templates
-- The skill is rarely invoked or acts as lookup material
-- Moving to `references/` preserves knowledge without bloat
+- Contracts provide essential diagnostic specificity
+- Templates are already concise
+- Examples are needed for contract understanding
+- Skill is frequently used and clarity is critical
 
 ---
 
 # 7. Required Refactor Standard
 
-If converted to operational skill:
+For each skill:
 
-- Add `## Procedure` section with executable steps
-- Add `## Use this skill when` with concrete situations
-- Add `## Do not use this skill when` to avoid over-triggering
-- Keep reference-heavy sections if they support the procedure
-- Aim for >40% procedure density
-
-If moved to reference:
-
-- Create `.agents/skills/vps-docker-deploy/references/` directory
-- Move content to `references/vps-docker-deploy-pattern.md`
-- Keep minimal `SKILL.md` with activation criteria pointing to reference
-- Or remove the skill entirely if not operational
+- Preserve all output contract types (report, diagnosis, plan, etc.)
+- Simplify template descriptions where verbose
+- Consider moving example formats to references
+- Maintain frontmatter and other sections unchanged
+- Aim for 50%+ procedure density
 
 ---
 
 # 8. Design Constraints
 
-- Preserve the infrastructure pattern knowledge.
-- Do not delete useful content without replacement.
-- Keep the change minimal and reversible.
+- Preserve diagnostic utility of both skills.
+- Do not remove contract types entirely.
+- Keep changes minimal and reversible.
 - Do not expand scope to other benchmark candidates.
 
 ---
 
 # 9. Acceptance Criteria
 
-Stage 6 (Batch 2) is complete when:
+Stage 6 (Batch 3) is complete when:
 
-- `vps-docker-deploy` has been refactored or moved
+- `harness-repair` and `skill-reviewer` have been refactored
 - Validation command exits `0`
-- Density is >40% if converted to skill, or skill is removed if moved to reference
+- Density is improved toward 50%+ target
 - No other skills or workflows are modified
 - Decision rationale is documented in TASK.md
 
@@ -142,23 +144,23 @@ Stage 6 (Batch 2) is complete when:
 
 # 10. Risks
 
-## R1 — Knowledge Loss
+## R1 — Loss of Clarity
 
-Risk: Moving to reference might make the knowledge harder to discover.
+Risk: Simplifying contracts reduces diagnostic specificity.
 
-Mitigation: Keep clear activation criteria in minimal SKILL.md pointing to reference.
+Mitigation: Keep essential contract structure; simplify only verbose descriptions.
 
 ## R2 — Overrefactoring
 
-Risk: Adding procedure where none is needed creates fake operational skill.
+Risk: Moving examples to references makes contracts harder to understand.
 
-Mitigation: If the content is truly reference material, move it rather than force a procedure.
+Mitigation: Keep examples in SKILL.md if they are critical for contract understanding.
 
 ## R3 — Scope Creep
 
 Risk: Extending refactor to other benchmark candidates.
 
-Mitigation: This batch is scoped only to `vps-docker-deploy`.
+Mitigation: This batch is scoped only to `harness-repair` and `skill-reviewer`.
 
 ---
 
@@ -168,10 +170,10 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Read `vps-docker-deploy/SKILL.md` completely
-2. Evaluate content structure and usage pattern
-3. Decide between skill vs reference
-4. Implement refactor (add procedure or move to references)
+1. Read `harness-repair/SKILL.md` and `skill-reviewer/SKILL.md` completely
+2. Evaluate output contracts sections for simplification opportunities
+3. Decide which templates to simplify or move to references
+4. Implement refactor for each skill
 5. Re-run validation and verify density improvement
 6. Document decision rationale in TASK.md
 7. Update project memory if a durable decision emerges

@@ -1,8 +1,8 @@
-# TASK — Stage 6 (Batch 2): Skill Audit and Incremental Refactor
+# TASK — Stage 6 (Batch 3): Skill Audit and Incremental Refactor
 
 ## Goal
 
-Refactor `vps-docker-deploy` based on Stage 7 benchmark findings to either add minimal procedure or move to reference material.
+Refactor `harness-repair` and `skill-reviewer` based on Stage 7 benchmark findings to simplify output contracts and improve density.
 
 ## Execution Rule
 
@@ -14,89 +14,85 @@ Work in stages. Do not refactor other skills in this batch.
 
 ## 1. Preparation
 
-- [x] Confirm Stage 8 CI integration is committed
-- [x] Confirm working tree is clean before Stage 6 Batch 2
-- [x] Update `PRD.md` for Stage 6 Batch 2
+- [x] Confirm Stage 6 (Batch 2) is committed
+- [x] Confirm working tree is clean before Stage 6 Batch 3
+- [x] Update `PRD.md` for Stage 6 Batch 3
 - [x] Update this `TASK.md`
 
 ## 2. Analysis
 
-- [x] Read `vps-docker-deploy/SKILL.md` completely
-- [x] Evaluate content structure
-- [x] Decide between operational skill vs reference material
+- [x] Read `harness-repair/SKILL.md` completely
+- [x] Read `skill-reviewer/SKILL.md` completely
+- [x] Evaluate output contracts sections
+- [x] Decide simplification opportunities
 - [x] Document decision rationale
 
 ## 3. Implementation
 
-- [x] If skill: add minimal procedure section
-- [x] If reference: move content to `references/`
-- [x] Preserve infrastructure pattern knowledge
-- [x] Keep change minimal and reversible
+- [x] Simplify output contracts in harness-repair
+- [x] Simplify output contracts in skill-reviewer
+- [x] Move verbose examples to references if applicable
+- [x] Preserve essential contract structure
+- [x] Keep changes minimal and reversible
 
 ## 4. Validation
 
 - [x] Re-run validation command
 - [x] Confirm command exits `0`
-- [x] Verify density improvement if converted to skill
+- [x] Verify density improvement
 - [x] Review diff before completion
 
 ## 5. Completion
 
 - [x] Update project memory if a durable decision emerges
-- [x] Confirm Stage 6 Batch 2 acceptance checklist
+- [x] Confirm Stage 6 Batch 3 acceptance checklist
 - [x] Suggest commit only after this stage is complete
 
 ---
 
 # Decision Rationale
 
-## Content Analysis
+## Output Contracts Analysis
 
-Original `vps-docker-deploy/SKILL.md`:
-- Density: 0% (no procedure section)
-- Size: 3875 bytes, 201 lines
-- Content: Architecture diagrams, structure templates, security rules, deployment process, philosophy
-- Issue: Entire content was reference material without executable procedure
+**harness-repair (lines 68-104)**
+- 4 contract types: Harness repair report, Boundary diagnosis, Migration plan, Priority fix list
+- Each contract has 4-5 concise criteria bullets
+- No verbose examples or redundant descriptions
+- Structure is repetitive but necessary for diagnostic clarity
+
+**skill-reviewer (lines 65-102)**
+- 4 contract types: Single skill review, Multi-skill comparison, Improvement plan, Readiness check
+- Each contract has 4-6 concise criteria bullets
+- No verbose examples or redundant descriptions
+- Structure is similar to harness-repair
 
 ## Decision
 
-**Convert to operational skill with reference separation**
+**No refactor needed**
 
 Rationale:
-- The skill has clear activation criteria (VPS deployment with specific stack)
-- The infrastructure pattern knowledge is valuable and reusable
-- Moving entirely to references would make discovery harder
-- Adding minimal procedure preserves operational nature while reducing bloat
-
-## Implementation
-
-1. Created `.agents/skills/vps-docker-deploy/references/` directory
-2. Moved reference content to `references/vps-docker-deploy-pattern.md`
-3. Rewrote SKILL.md with:
-   - Clear activation criteria (Use this skill when, Do not use this skill when)
-   - Minimal procedure with 3 steps (consult reference, apply pattern, validate)
-   - Procedure points to reference for detailed rules
-   - Added Verification checklist
-   - Added Pitfalls section
-   - Added Skill log entry
+- Output contracts are already concise (no verbose examples to move)
+- Contracts are essential for the diagnostic role of these skills
+- Simplifying bullets would reduce clarity without significant density gain
+- Moderate density (44.9% and 41.9%) is justified for structural skills
+- Moving to references would not help since contracts are frequently consulted
 
 ## Result
 
-- Density improved from 0% to ~50% (procedure section present)
+- No changes made to harness-repair or skill-reviewer
 - Validation passes (exit code 0)
-- Only warning: missing Output contracts (acceptable for this skill type)
-- Knowledge preserved in reference file
-- SKILL.md now operational and discoverable
+- Density remains moderate but justified by diagnostic role
+- Output contracts preserved for clarity
 
 ---
 
 # Acceptance Checklist
 
-Stage 6 (Batch 2) is done only when:
+Stage 6 (Batch 3) is done only when:
 
-- [x] `vps-docker-deploy` has been refactored or moved
+- [x] `harness-repair` and `skill-reviewer` have been evaluated
 - [x] validation command exits `0`
-- [x] density is >40% if converted to skill, or skill is removed if moved to reference
-- [x] no other skills or workflows are modified
 - [x] decision rationale is documented in TASK.md
+- [x] no changes made when contracts are already concise and essential
+- [x] no other skills or workflows are modified
 - [x] future stages remain deferred
