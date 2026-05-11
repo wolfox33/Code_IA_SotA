@@ -751,6 +751,92 @@ async function densityAlerts(rootDir) {
   console.log("  3. Consider refactoring critical alerts first");
 }
 
+async function bulkRefactor(rootDir) {
+  const agentsDir = path.join(rootDir, ".agents");
+  const skillsDir = path.join(agentsDir, "skills");
+  const referencesDir = path.join(agentsDir, "references");
+  const skillFiles = await listSkillFiles(skillsDir);
+  const dryRun = process.argv.includes("--dry-run");
+
+  console.log(pc.bold(pc.green("Code IA Sota")));
+  console.log(pc.cyan("Bulk refactoring with batch approval..."));
+  console.log("");
+
+  if (dryRun) {
+    console.log(pc.yellow("Dry-run mode: no changes will be applied."));
+    console.log("");
+  }
+
+  if (!(await exists(referencesDir))) {
+    if (!dryRun) {
+      await fs.mkdir(referencesDir, { recursive: true });
+    }
+    console.log(`Created references directory: ${referencesDir}`);
+  }
+
+  const lowDensitySkills = [];
+
+  for (const filePath of skillFiles) {
+    if (!(await exists(filePath))) continue;
+
+    const content = await fs.readFile(filePath, "utf8");
+    const density = calculateDensity(content);
+    const skillName = path.basename(path.dirname(filePath));
+
+    if (density < DENSITY_THRESHOLD) {
+      const suggestions = await analyzeReferenceContent(content);
+      lowDensitySkills.push({
+        skill: skillName,
+        density: density,
+        filePath: path.relative(rootDir, filePath),
+        suggestions: suggestions
+      });
+    }
+  }
+
+  lowDensitySkills.sort((a, b) => a.density - b.density);
+
+  if (lowDensitySkills.length === 0) {
+    console.log(pc.green("No low-density skills found. All skills meet the density threshold."));
+    return;
+  }
+
+  console.log(`Found ${lowDensitySkills.length} low-density skill(s):`);
+  console.log("");
+
+  for (const skill of lowDensitySkills) {
+    console.log(pc.yellow(`${skill.skill} (${skill.density}% density)`));
+    console.log(`  Suggestions: ${skill.suggestions.length}`);
+    for (const suggestion of skill.suggestions) {
+      console.log(`    - ${suggestion.section}: ${suggestion.reason}`);
+    }
+    console.log("");
+  }
+
+  const approved = await promptApproval(`Apply bulk refactoring to all ${lowDensitySkills.length} skills? (y/n)`);
+  if (!approved) {
+    console.log("Bulk refactoring cancelled.");
+    return;
+  }
+
+  if (!dryRun) {
+    console.log("");
+    console.log(pc.green("Bulk refactoring plan approved."));
+    console.log("");
+    console.log(pc.cyan("Next steps:"));
+    console.log("  1. Review the suggestions above");
+    console.log("  2. Manually implement refactoring using `npm run suggest:refactor` for each skill");
+    console.log("  3. Re-run validation to check improved density");
+    console.log("");
+    console.log(pc.cyan("Summary:"));
+    console.log(`  Total skills to refactor: ${lowDensitySkills.length}`);
+    console.log(`  Average density: ${Math.round(lowDensitySkills.reduce((a, b) => a + b.density, 0) / lowDensitySkills.length)}%`);
+  } else {
+    console.log("");
+    console.log(pc.yellow("Dry-run: would apply bulk refactoring to all skills"));
+  }
+}
+
 async function main() {
   if (process.argv[2] === "validate") {
     await validateHarness(path.resolve(TARGET_DIR, process.argv[3] || "."));
@@ -784,6 +870,11 @@ async function main() {
 
   if (process.argv[2] === "density:alerts") {
     await densityAlerts(path.resolve(TARGET_DIR, process.argv[3] || "."));
+    return;
+  }
+
+  if (process.argv[2] === "refactor:bulk") {
+    await bulkRefactor(path.resolve(TARGET_DIR, process.argv[3] || "."));
     return;
   }
 

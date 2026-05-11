@@ -13,7 +13,8 @@
     "density:snapshot": "node bin/code-ia-sota.js density:snapshot ..",
     "density:trends": "node bin/code-ia-sota.js density:trends ..",
     "density:alerts": "node bin/code-ia-sota.js density:alerts ..",
-    "refactor:auto": "node bin/code-ia-sota.js refactor:auto .."
+    "refactor:auto": "node bin/code-ia-sota.js refactor:auto ..",
+    "refactor:bulk": "node bin/code-ia-sota.js refactor:bulk .."
   },
   "files": [
     "bin",
