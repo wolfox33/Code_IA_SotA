@@ -1,10 +1,10 @@
-# PRD — Stage 3: Harness Repair
+# PRD — Stage 4: Harness Maintenance Workflow
 
 ## Project
 
-Evolution of the `Code_IA_SotA` harness through a focused third stage: create `.agents/skills/harness-repair/SKILL.md` as the diagnostic skill for detecting structural drift, duplicated responsibilities, context bloat, and misplaced harness responsibilities across `.agents/`.
+Evolution of the `Code_IA_SotA` harness through a focused fourth stage: create `.agents/workflows/harness-maintenance.md` as the operational workflow for coordinating harness maintenance.
 
-This PRD assumes Stage 1 (`skill-creator`) and Stage 2 (`skill-reviewer`) are complete and keeps repair as diagnosis-first, not automatic mutation.
+This PRD assumes Stage 1 (`skill-creator`), Stage 2 (`skill-reviewer`) and Stage 3 (`harness-repair`) are complete.
 
 ---
 
@@ -14,7 +14,7 @@ Separate specs are not required for this stage.
 
 This PRD is sufficient because:
 
-- the target artifact is specific: `.agents/skills/harness-repair/SKILL.md`
+- the target artifact is specific: `.agents/workflows/harness-maintenance.md`
 - the change is documentation/harness-logic oriented, not runtime application code
 - there is no API, database, external integration, or user-facing product contract
 - acceptance criteria can be expressed directly in this PRD and tracked in `TASK.md`
@@ -22,64 +22,61 @@ This PRD is sufficient because:
 Create separate specs only if a later stage introduces:
 
 - validation scripts with CLI contracts
-- harness-wide audit reports with fixed schema
 - automated repair behavior
-- multi-file migration rules
-- compatibility contracts for external agent runtimes
+- fixed report schemas consumed by tools
+- multi-file migration rules with compatibility requirements
 
 ---
 
 # 2. Vision
 
-Make `harness-repair` the canonical operational guide for diagnosing harness-wide structural issues in `.agents/`.
+Make `harness-maintenance` the canonical workflow for deciding how to maintain `.agents/` artifacts safely.
 
-The skill should help future agents and maintainers identify:
+The workflow should coordinate:
 
-- architectural drift
-- responsibility overlap
-- context bloat
-- misplaced policy or operational instructions
-- invalid or inconsistent topology
-- high-priority repair opportunities
-- safe migration plans
+- when to use `skill-creator`
+- when to use `skill-reviewer`
+- when to use `harness-repair`
+- when to update project memory
+- when to defer scripts or broader audits
+- how to keep diagnosis, planning and mutation separated
 
 ---
 
 # 3. Problem Statement
 
-Stage 2 created a skill-level reviewer, but the harness still needs a broader diagnostic layer for issues that span multiple artifacts.
+The harness now has specialized skills for creation, review and structural diagnosis, but there is no operational workflow that sequences them.
 
 Current gaps:
 
-- skill-level review does not cover topology-level drift
-- overlap across skills, workflows, subagents and `AGENTS.md` needs a separate lens
-- there is no standard harness repair report format
-- broad repair can easily become unsafe if diagnosis and mutation are mixed
-- future scripts/workflows need a diagnostic baseline first
+- agents may jump directly from diagnosis to edits
+- skill-level and harness-level concerns may be mixed
+- workflow findings may become accidental scope creep
+- memory updates may be inconsistent
+- future script work needs a stable maintenance process first
 
-Without `harness-repair`, future maintenance may drift into:
+Without a maintenance workflow, future work may drift into:
 
-- duplicated governance
-- bloated skills
-- unclear boundaries between skills and workflows
-- scattered policy
-- premature scripts
-- inconsistent maintenance decisions
+- ad hoc task sequencing
+- unnecessary full audits
+- premature automation
+- unclear handoff between skills
+- broad repairs without explicit approval
 
 ---
 
 # 4. Objective
 
-Create `.agents/skills/harness-repair/SKILL.md` as the canonical skill for:
+Create `.agents/workflows/harness-maintenance.md` as the canonical workflow for:
 
-- diagnosing harness-wide structural problems
-- detecting overlap and responsibility drift
-- separating local skill issues from architecture issues
-- recommending safe, staged repair plans
-- producing a standard harness repair report
-- keeping repair diagnosis separate from file mutation
+- scoping harness maintenance work
+- selecting the right skill or diagnostic layer
+- sequencing diagnosis, plan, repair and validation
+- preserving surgical changes
+- recording durable decisions
+- deferring unrelated workflow/platform findings
 
-The goal is not automatic repair. The goal is a practical diagnosis and planning skill for harness-wide maintenance.
+The goal is not automation. The goal is a compact operational sequence for maintainers.
 
 ---
 
@@ -87,171 +84,130 @@ The goal is not automatic repair. The goal is a practical diagnosis and planning
 
 ## In Scope
 
-- Create `.agents/skills/harness-repair/SKILL.md`
-- Define when to use and not use harness repair
-- Define diagnostic dimensions
-- Define repair report format
-- Define severity and priority model
-- Define safe migration planning rules
-- Define verification criteria
-- Keep the skill focused on diagnosis and planning
+- Create `.agents/workflows/harness-maintenance.md`
+- Define use and non-use conditions
+- Define workflow stages
+- Define handoff rules between `skill-creator`, `skill-reviewer` and `harness-repair`
+- Define validation and memory checkpoints
+- Keep platform compatibility work out of scope
 
 ## Out of Scope
 
 - Creating validation scripts
-- Creating maintenance workflows
+- Refactoring existing workflows
 - Refactoring `AGENTS.md`
 - Refactoring subagents
-- Refactoring existing skills
+- Running a full harness audit
 - Creating compatibility mirrors for specific platforms
-- Benchmarking context efficiency
-- Automatically modifying harness files unless explicitly requested
-- Running a full repository audit as part of skill creation
+- Automating repairs
 
 ---
 
 # 6. Target Artifact
 
 ```txt
-.agents/skills/harness-repair/
-  SKILL.md
+.agents/workflows/harness-maintenance.md
 ```
 
-Optional resource files are not required in this stage.
-
-Create `references/` only if repair report examples, topology maps, or migration templates become too long for the main `SKILL.md`.
+No resources, scripts or assets are required in this stage.
 
 ---
 
 # 7. Required Capabilities
 
-## 7.1 Diagnostic Dimensions
+## 7.1 Workflow Stages
 
-The skill must diagnose:
+The workflow must include:
 
-- topology consistency
-- duplicated responsibilities
-- misplaced global policy
-- skills that should be split or merged
-- workflow responsibilities inside skills
-- subagent responsibilities inside skills
-- references or scripts created prematurely
-- context bloat and excessive examples
-- missing or weak validation layer opportunities
-- unsafe repair sequencing
+- scope definition
+- artifact selection
+- diagnostic path selection
+- repair planning
+- explicit approval before mutation
+- validation
+- project memory update
 
-## 7.2 Output Contracts
+## 7.2 Skill Routing
 
-The skill must define expected outputs for common scenarios:
+The workflow must route:
 
-- harness repair report
-- boundary diagnosis
-- migration plan
-- priority fix list
+- skill creation/modification to `skill-creator`
+- skill review/readiness checks to `skill-reviewer`
+- multi-artifact structural diagnosis to `harness-repair`
 
-Each output must have a minimal completion definition.
+## 7.3 Output Expectations
 
-## 7.3 Severity and Priority
+The workflow must produce:
 
-Findings must be classified as:
+- a scoped maintenance plan
+- a clear list of files in scope
+- a diagnosis or repair summary
+- validation status
+- deferred items when out of scope
 
-- **Blocker**: breaks discovery, parsing, or safe harness operation
-- **High**: creates major duplication, wrong routing, or unsafe maintenance path
-- **Medium**: increases context cost, ambiguity, or maintainability burden
-- **Low**: local cleanup or clarity issue
+## 7.4 Anti-Pattern Detection
 
-Priorities must be classified as:
+The workflow must avoid:
 
-- **P0**: fix before proceeding
-- **P1**: fix in current maintenance cycle
-- **P2**: backlog improvement
-
-## 7.4 Repair Report Format
-
-The skill must produce reports with:
-
-- scope reviewed
-- topology findings
-- context findings
-- boundary findings
-- duplication findings
-- parsing or validation findings
-- repair recommendations
-- staged migration plan
-- out-of-scope notes
-- final readiness status
-
-## 7.5 Anti-Pattern Detection
-
-The skill must teach maintainers to detect:
-
-- broad catch-all skills or workflows
-- global policy duplicated outside `AGENTS.md`
-- skill-level fixes that are actually architecture issues
-- workflow orchestration embedded inside skills
-- subagent role definitions embedded inside skills
-- references created to hide unclear scope
-- scripts created before stable rules exist
-- repair plans that change too many files at once
+- auditing everything by default
+- editing during diagnosis
+- mixing platform compatibility with harness maintenance
+- creating scripts before rules stabilize
+- treating workflow orchestration as skill content
 
 ---
 
 # 8. Design Constraints
 
-- Keep the change surgical.
-- Use Stage 1 `skill-creator` and Stage 2 `skill-reviewer` as baselines.
-- Prefer compact operational instructions over long explanations.
-- Do not create future-stage artifacts.
-- Do not refactor unrelated files.
-- Do not run a full harness audit during skill creation.
-- Do not turn future ideas into current obligations.
-- Do not modify diagnosed artifacts unless the user asks for repair.
+- Keep the workflow compact and executable.
+- Do not duplicate the full content of skills.
+- Reference skills by responsibility instead of copying their procedures.
+- Do not modify existing workflows in this stage.
+- Do not add scripts or resources.
+- Do not reopen platform compatibility work.
 
 ---
 
 # 9. Acceptance Criteria
 
-Stage 3 is complete when:
+Stage 4 is complete when:
 
-- `.agents/skills/harness-repair/SKILL.md` exists
-- `description` explains when to use the skill and what it does
-- the skill clearly states when not to use it
-- the procedure includes reading only the necessary harness artifacts
-- the procedure includes diagnostic dimensions
-- the procedure includes severity and priority levels
-- the procedure includes output contracts
-- the procedure includes a repair report format
-- the procedure separates diagnosis, planning and repair
-- the skill remains focused on harness-wide diagnosis
-- no unrelated harness files are changed
+- `.agents/workflows/harness-maintenance.md` exists
+- frontmatter has a clear `description`
+- workflow defines when to use and not use it
+- workflow sequences diagnosis, planning, repair and validation
+- workflow routes to `skill-creator`, `skill-reviewer` and `harness-repair`
+- workflow requires approval before mutation
+- workflow includes memory and deferral checkpoints
+- no unrelated workflows are changed
 
 ---
 
 # 10. Risks
 
-## R1 — Overengineering
+## R1 — Workflow Becomes Policy
 
-Risk: making `harness-repair` too abstract or too long.
+Risk: duplicating global `AGENTS.md` policy in the workflow.
 
-Mitigation: keep it focused on actionable diagnosis and staged repair plans.
+Mitigation: keep only operational sequencing.
 
-## R2 — Scope Creep
+## R2 — Workflow Becomes Skill
 
-Risk: implementing future stages while creating the repair skill.
+Risk: copying detailed skill procedures into the workflow.
 
-Mitigation: track only Stage 3 in `TASK.md`.
+Mitigation: route to skills instead of duplicating them.
 
-## R3 — Duplicated Global Policy
+## R3 — Scope Creep
 
-Risk: copying broad `AGENTS.md` rules into the repair skill.
+Risk: using Stage 4 to refactor old workflows or platform docs.
 
-Mitigation: only include skill-specific operational rules.
+Mitigation: create only the maintenance workflow.
 
-## R4 — Diagnosis Becomes Mutation
+## R4 — Premature Automation
 
-Risk: the skill starts changing many files during diagnosis.
+Risk: turning the workflow into scripts before the process stabilizes.
 
-Mitigation: diagnose and plan first; mutate only when explicitly requested.
+Mitigation: defer scripts to Stage 5.
 
 ---
 
@@ -261,21 +217,18 @@ Execution is tracked in `TASK.md`.
 
 High-level sequence:
 
-1. Review Stage 1 and Stage 2 standards
-2. Create `.agents/skills/harness-repair/SKILL.md`
-3. Verify structure, scope, and parse safety
+1. Define Stage 4 scope
+2. Create `.agents/workflows/harness-maintenance.md`
+3. Verify workflow compactness and routing
 4. Review diff for accidental scope expansion
-5. Decide whether any lessons should be recorded in project memory
+5. Record durable decisions if needed
 
 ---
 
 # 12. Future Roadmap
 
-The broader harness self-maintenance vision remains valid, but later stages remain deferred.
-
 Future stages may include:
 
-- Stage 4: create maintenance workflow
 - Stage 5: create validation scripts
 - Stage 6: audit and refactor existing skills
 - Stage 7: benchmark context efficiency
