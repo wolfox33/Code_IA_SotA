@@ -17,6 +17,10 @@ metadata:
 
 Skill para revisar skills existentes do harness `.agents/` usando o padrão canônico definido por `skill-creator`.
 
+## Objetivo
+
+Avaliar uma ou mais skills quanto a parse safety, ativação, boundaries, contratos de saída, procedimento, modularidade e prontidão para uso, mantendo diagnóstico separado de reparo.
+
 ## Use this skill when
 
 - Usuário pedir revisão, diagnóstico, auditoria ou checklist de uma skill existente.
@@ -210,3 +214,4 @@ Omitir seções de severidade vazias quando isso tornar o relatório mais claro.
 
 > **Skill log**
 > - [2026-05-11] Skill criada como Stage 2 do PRD de manutenção do harness, baseada no padrão canônico de `skill-creator`.
+> - [2026-05-11] Stage 6 adicionou objetivo explícito para alinhar a validação estrutural do harness.

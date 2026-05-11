@@ -17,6 +17,10 @@ metadata:
 
 Skill para diagnosticar problemas estruturais do harness `.agents/` e produzir planos de reparo seguros, sem modificar arquivos automaticamente.
 
+## Objetivo
+
+Detectar drift, overlap, context bloat e problemas estruturais do harness, produzindo diagnóstico e plano de reparo seguro antes de qualquer mutação.
+
 ## Use this skill when
 
 - Usuário pedir análise estrutural do harness `.agents/`.
@@ -227,3 +231,4 @@ Omitir categorias vazias quando isso melhorar a clareza.
 
 > **Skill log**
 > - [2026-05-11] Skill criada como Stage 3 do PRD de manutenção do harness, após `skill-creator` e `skill-reviewer`.
+> - [2026-05-11] Stage 6 adicionou objetivo explícito para alinhar a validação estrutural do harness.

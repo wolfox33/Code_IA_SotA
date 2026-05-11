@@ -150,7 +150,7 @@ Se não houver estrutura de teste disponível, valide manualmente o comportament
 - Endpoint de login, cadastro, password reset ou IA sem rate limit.
 - Erro genérico que impede diagnóstico ou erro detalhado que vaza informação sensível.
 
-## Output Expectations
+## Output contracts
 
 Ao aplicar esta skill, entregue ou registre:
 
@@ -181,3 +181,4 @@ Ao aplicar esta skill, entregue ou registre:
 
 > **Skill log**
 > - [2026-05-05] Skill criada para aplicar resiliência backend durante desenvolvimento e também servir como validador antes da conclusão.
+> - [2026-05-11] Stage 6 alinhou o heading de saída ao contrato canônico `Output contracts`.
