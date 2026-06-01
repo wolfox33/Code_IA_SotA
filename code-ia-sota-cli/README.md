@@ -12,7 +12,7 @@ Installs the canonical `AGENTS.md` and `.agents/` scaffold into the current dire
 
 This installer is intentionally a personal bootstrap. It clones the current scaffold state from the GitHub repository at install time instead of pinning a packaged template snapshot.
 
-When run in a terminal, the installer also offers a tool selector inspired by OpenSpec so you can generate lightweight integrations for supported CLIs/IDEs on top of that base scaffold.
+By default, the installer opens a tool selector inspired by OpenSpec so you can generate lightweight integrations for supported CLIs/IDEs on top of the base scaffold. In CI or GitHub Actions, it falls back to `codex` unless `--tools` is passed explicitly.
 
 Supported tool ids:
 

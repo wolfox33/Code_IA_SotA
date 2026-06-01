@@ -281,7 +281,7 @@ async function selectTools() {
     return selectedTools;
   }
 
-  if (!process.stdin.isTTY || !process.stdout.isTTY) {
+  if (process.env.CI === "true" || process.env.GITHUB_ACTIONS === "true") {
     return ["codex"];
   }
 
