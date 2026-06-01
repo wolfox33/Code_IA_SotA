@@ -10,6 +10,7 @@
 
 ## Decisões Tomadas
 
+- [2026-06-01] Adicionado workflow `.agents/workflows/product-development.md` e o conjunto inicial de skills `discovery-grill`, `prd-generator`, `architecture-generator`, `roadmap-generator` e `openspec-generator` para orquestrar desenvolvimento de produto com OpenSpec sem criar artefatos paralelos.
 - [2026-05-05] Criada a skill `backend-resilience-by-design` para aplicar resiliência backend durante implementação e validação antes de concluir.
 - [2026-05-11] PRD de manutenção do harness foi reduzido para Stage 1 focado em `skill-creator`; specs separadas não são necessárias nesta fase, e etapas futuras ficam diferidas.
 - [2026-05-11] Stage 2 criou `skill-reviewer` como skill de diagnóstico/revisão de skills; reparos continuam separados e exigem pedido explícito.
@@ -40,9 +41,9 @@
 - [2026-05-11] Stage 21 adicionou job de auto-merge ao workflow `auto-refactor.yml`; job roda em eventos de PR (opened, reopened, synchronize); verifica aprovação antes de merge; verifica conflitos de merge antes de merge; só merge PRs de auto-refactor; usa método squash para merge; merge automatizado após aprovação reduz esforço manual.
 - [2026-05-11] Stage 22 adicionou comando CLI `density:fix` para correção automatizada de densidade; comando identifica skills com baixa densidade (<30%) e aplica correções automatizadas; suporta modo dry-run via flag --dry-run; cria diretório `references/` se necessário; correções limitadas a extração de conteúdo referencial; para refatoração abrangente, usar `npm run suggest:refactor` manualmente; aprovação interativa para aplicar fixes.
 - [2026-05-11] Stage 23 adicionou comando CLI `skill:lifecycle` para gerenciamento de lifecycle de skills; comando lê status do frontmatter (active, deprecated, archived); gera relatório de distribuição de status por skill; exibe densidade de cada skill; fornece instruções para atualizar status via frontmatter (status, owner, created, updated); permite tracking sistemático de obsolescência e manutenção de skills.
+- [2026-06-01] O instalador `code-ia-sota` passou a suportar seleção de integrações por ferramenta (`--tools` / seletor interativo) e gera shims leves para Claude, Cursor e Windsurf sem sobrescrever arquivos não gerenciados.
 
 ## Bugs Conhecidos / Débitos Técnicos
 
 
 ## Lições Aprendidas
-
