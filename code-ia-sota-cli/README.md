@@ -10,6 +10,40 @@ npx code-ia-sota
 
 Installs the canonical `AGENTS.md` and `.agents/` scaffold into the current directory.
 
+This installer is intentionally a personal bootstrap. It clones the current scaffold state from the GitHub repository at install time instead of pinning a packaged template snapshot.
+
+When run in a terminal, the installer also offers a tool selector inspired by OpenSpec so you can generate lightweight integrations for supported CLIs/IDEs on top of that base scaffold.
+
+Supported tool ids:
+
+- `codex`
+- `claude`
+- `cursor`
+- `windsurf`
+
+Non-interactive examples:
+
+```sh
+# Base scaffold only
+npx code-ia-sota --tools none
+
+# Install base scaffold plus Claude + Cursor shims
+npx code-ia-sota --tools claude,cursor
+
+# Install every supported integration
+npx code-ia-sota --tools all
+
+# List supported tool ids
+npx code-ia-sota --list-tools
+```
+
+Generated integrations:
+
+- `claude` -> `CLAUDE.md`
+- `cursor` -> `.cursor/rules/code-ia-sota.mdc`
+- `windsurf` -> `.windsurf/rules/code-ia-sota.md`
+- `codex` -> no extra file; uses the root scaffold directly
+
 ## Harness validation
 
 ```sh
@@ -37,5 +71,5 @@ code-ia-sota
 
 ```sh
 npm pack
-npx ./code-ia-sota-0.1.0.tgz
+npx ./code-ia-sota-0.1.1.tgz
 ```

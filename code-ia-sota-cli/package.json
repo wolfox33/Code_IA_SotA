@@ -1,6 +1,6 @@
 {
   "name": "code-ia-sota",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agent scaffold installer for AGENTS.md and .agents",
   "type": "module",
   "bin": {
