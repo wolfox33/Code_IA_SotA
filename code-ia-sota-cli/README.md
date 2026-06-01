@@ -73,3 +73,11 @@ code-ia-sota
 npm pack
 npx ./code-ia-sota-0.1.1.tgz
 ```
+
+## GitHub Actions publish
+
+The repository workflow `.github/workflows/publish-cli.yml` publishes the package from `code-ia-sota-cli/` on pushes to `main` that change the CLI files, or by manual dispatch.
+
+Required secret:
+
+- `NPM_TOKEN` with publish permission for the `code-ia-sota` package on npm
