@@ -28,6 +28,18 @@ const SUPPORTED_TOOLS = [
     files: []
   },
   {
+    id: "opencode",
+    label: "OpenCode",
+    description:
+      "Uses the root AGENTS.md directly and detects local OpenCode workspace config.",
+    detectPaths: [
+      ".opencode",
+      "opencode.json",
+      "opencode.jsonc"
+    ],
+    files: []
+  },
+  {
     id: "claude",
     label: "Claude Code",
     description:

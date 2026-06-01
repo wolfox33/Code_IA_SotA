@@ -17,6 +17,7 @@ By default, the installer opens a tool selector inspired by OpenSpec so you can 
 Supported tool ids:
 
 - `codex`
+- `opencode`
 - `claude`
 - `cursor`
 - `windsurf`
@@ -42,6 +43,7 @@ Generated integrations:
 - `claude` -> `CLAUDE.md`
 - `cursor` -> `.cursor/rules/code-ia-sota.mdc`
 - `windsurf` -> `.windsurf/rules/code-ia-sota.md`
+- `opencode` -> no extra file; uses the root scaffold directly
 - `codex` -> no extra file; uses the root scaffold directly
 
 ## Harness validation
