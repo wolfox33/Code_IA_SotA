@@ -20,7 +20,7 @@ Supported tool ids:
 - `opencode`
 - `claude`
 - `cursor`
-- `windsurf`
+- `devin`
 
 Non-interactive examples:
 
@@ -42,7 +42,7 @@ Generated integrations:
 
 - `claude` -> `CLAUDE.md`
 - `cursor` -> `.cursor/rules/code-ia-sota.mdc`
-- `windsurf` -> `.windsurf/rules/code-ia-sota.md`
+- `devin` -> no extra file; uses the root scaffold directly
 - `opencode` -> no extra file; uses the root scaffold directly
 - `codex` -> no extra file; uses the root scaffold directly
 

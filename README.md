@@ -56,7 +56,7 @@ O harness assume que agentes modernos conseguem descobrir a estrutura por leitur
 5. Carregar `references/` apenas quando conteúdo detalhado for necessário para a tarefa.
 6. Carregar subagents e workflows apenas quando a tarefa justificar ou quando o usuário pedir.
 
-Não há requisito de gerar `.windsurf/`, `.claude/`, `.opencode/` ou outros mirrors de compatibilidade.
+Não há requisito de gerar `.devin/`, `.claude/`, `.opencode/` ou outros mirrors de compatibilidade.
 
 ## Skills
 

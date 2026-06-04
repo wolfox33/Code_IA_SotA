@@ -1,4 +1,4 @@
-.windsurf/
+.devin/config.local.json
 node_modules/
 *.tgz
 npm-debug.log*

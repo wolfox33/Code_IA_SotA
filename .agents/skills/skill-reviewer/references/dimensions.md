@@ -11,7 +11,8 @@ Revise cada skill nestas dimensões:
 - **Non-use**: a skill evita acionamento em tarefas parecidas, mas fora de escopo.
 - **Scope**: responsabilidade é estreita, operacional e não duplica outras skills.
 - **Output contracts**: entregas esperadas são explícitas quando aplicável.
-- **Procedure**: passos são executáveis, ordenados e rastreáveis.
+- **Invariants**: limites, riscos e regras críticas de execução estão explícitos quando a skill envolve decisões, outputs verificáveis ou alto impacto.
+- **Procedure**: passos são executáveis, ordenados e rastreáveis, sem virar tutorial de framework.
 - **Modularity**: conteúdo pertence ao artefato correto (`SKILL.md`, `references/`, `scripts/`, workflow, subagent ou `AGENTS.md`).
 - **Pitfalls**: riscos e anti-patterns relevantes estão nomeados.
 - **Verification**: há checklist objetivo para confirmar uso correto.

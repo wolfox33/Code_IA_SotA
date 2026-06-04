@@ -59,7 +59,7 @@ Sequenciar manutenção do harness com escopo explícito, diagnóstico antes de 
 
 - Releia os arquivos alterados ou o diff relevante.
 - Confirme que não houve mudança fora de escopo.
-- Atualize `TASK.md` quando a tarefa tiver tracker ativo.
+- Se houver tracker ativo (ex: `TASK.md` ou `ARCHIVE.md`), atualize-o com o status da tarefa.
 - Atualize `.agents/project/MEMORY.md` somente para decisões ou lições duráveis.
 - Finalize com status, arquivos alterados, validação feita e próximos passos.
 
@@ -89,4 +89,4 @@ Entregue quando:
 - Diagnóstico, plano, reparo e validação ficaram separados.
 - Mudanças foram pequenas, rastreáveis e aprovadas.
 - Itens fora de escopo foram diferidos.
-- `TASK.md` e memória foram avaliados antes da conclusão.
+- Tracker de tarefa (se existente) e memória foram avaliados antes da conclusão.

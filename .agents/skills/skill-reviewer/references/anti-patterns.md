@@ -10,6 +10,8 @@ Conteúdo referencial de anti-patterns para skill-reviewer.
 - **Misturar reparo com diagnóstico**: Editar antes de o usuário aprovar correções.
 - **Ignorar boundaries**: Recomendar que uma skill assuma função de workflow, subagent ou `AGENTS.md`.
 - **Checklist genérico**: Produzir relatório que não ajuda a priorizar ação.
+- **Aceitar skill como prompt**: Não marcar quando a skill é só instrução vaga sem procedimento, invariantes ou saída verificável.
+- **Aceitar tutorial como skill**: Não marcar quando o corpo principal depende de comandos ou APIs específicas que deveriam estar em `references/`.
 - **Ignorar caracteres problemáticos no frontmatter**: Não marcar como blocker o uso de caracteres YAML problemáticos sem aspas.
 
 ## Caracteres problemáticos em valores YAML (Blocker)

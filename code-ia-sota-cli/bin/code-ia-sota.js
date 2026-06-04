@@ -99,30 +99,14 @@ const SUPPORTED_TOOLS = [
     ]
   },
   {
-    id: "windsurf",
-    label: "Windsurf",
+    id: "devin",
+    label: "Devin",
     description:
-      "Creates a workspace rule file that points Cascade to AGENTS.md and .agents.",
+      "Uses the root AGENTS.md and .agents scaffold directly. Devin CLI reads AGENTS.md natively.",
     detectPaths: [
-      ".windsurf",
-      ".windsurfrules"
+      ".devin"
     ],
-    files: [
-      {
-        relativePath: path.join(".windsurf", "rules", "code-ia-sota.md"),
-        content: [
-          "# Code IA Sota",
-          "",
-          "Use `AGENTS.md` at the repository root as the canonical project policy.",
-          "",
-          "Load additional context on demand from `.agents/project/context.md`, `.agents/USER.md`, `.agents/project/MEMORY.md`, `.agents/workflows/`, and `.agents/skills/`.",
-          "",
-          "Prefer the smallest correct change, preserve the existing architecture, and do not expand scope silently.",
-          "",
-          `<!-- ${MANAGED_FILE_MARKER}: windsurf -->`
-        ].join("\n")
-      }
-    ]
+    files: []
   }
 ];
 

@@ -82,6 +82,8 @@ Antes de escrever, separe responsabilidades:
 
 Não duplique política global dentro da skill. Referencie o boundary e mantenha a skill focada no trabalho operacional.
 
+Trate a skill como procedimento operacional reutilizável, não como prompt, tutorial ou documentação de framework. O corpo principal deve ser abstrato no método e concreto nos invariantes, passos, critérios de sucesso e saída esperada. Detalhes de biblioteca, comandos extensos, comparativos de ferramenta e exemplos longos pertencem a `references/`.
+
 ### 4. Escrever frontmatter parse-safe
 
 Use YAML simples seguindo as diretrizes em `references/frontmatter.md`.
@@ -93,7 +95,10 @@ Baseado na entrevista, preencha:
 - **name**: Identificador da skill (kebab-case)
 - **description**: String entre aspas com quando acionar + o que faz. Seja específico e inclua contextos de uso. Seja um pouco "pushy" para evitar under-triggering
 - **metadata**: Preencha apenas metadados úteis para discovery e manutenção do harness
-- **Corpo da skill**: Instruções em markdown
+- **Objetivo**: O resultado operacional que a skill deve produzir
+- **Invariantes**: Regras que não podem ser violadas durante a execução
+- **Procedimento**: Passos acionáveis e rastreáveis
+- **Critérios de sucesso e saída**: Como saber que a skill foi aplicada corretamente e o que entregar
 
 Use a estrutura recomendada em `references/structure.md`.
 
@@ -102,6 +107,7 @@ Use a estrutura recomendada em `references/structure.md`.
 - Use forma imperativa nas instruções
 - Explique o **porquê** em vez de usar MUST/NEVER em caps lock
 - Seja geral e não super-específico para exemplos
+- Seja concreto em invariantes e output, não em framework específico
 - Mantenha SKILL.md sob 500 linhas se possível
 - Para arquivos de referência grandes (>300 linhas), inclua índice
 - Evite transformar exemplo local em regra global
@@ -158,12 +164,15 @@ Repita até:
 - Procedimento é operacional e rastreável
 - Contrato de saída está explícito ou a ausência dele foi justificada
 - Conteúdo pertence ao artefato correto (`SKILL.md`, `references/`, `scripts/`, `assets/`, workflow, subagent ou `AGENTS.md`)
+- Invariantes e critérios de sucesso estão claros quando a skill envolve risco, decisões ou outputs verificáveis
+- Detalhes de framework, ferramenta ou exemplos longos foram mantidos fora do corpo principal quando não forem essenciais
 - Anti-patterns relevantes foram verificados
 - Se aplicável, testes foram executados e passaram
 
 > **Skill log**
 > - [2026-04-24] Skill criada baseada em skill-creator original, simplificada para harness .agents/
 > - [2026-05-11] Refatorada: conteúdo referencial movido para `references/` com arquivos divididos por especialidade.
+> - [2026-06-04] Incorporado padrão de skill como procedimento operacional reutilizável: invariantes e outputs concretos, detalhes de framework em `references/`.
 
 ## References
 
