@@ -48,6 +48,7 @@ Revise o harness nestas dimensões:
 - **Context bloat**: arquivos carregáveis estão maiores ou mais densos do que precisam.
 - **Routing clarity**: descriptions e boundaries reduzem acionamento ambíguo.
 - **Progressive disclosure**: conteúdo opcional fica em `references/` quando necessário.
+- **AGENTS.md entrypoint health**: o arquivo raiz continua leve, roteador e sem procedimentos especializados embutidos.
 - **Validation readiness**: há regras estáveis o bastante para virar script futuro.
 - **Repair safety**: correções podem ser feitas em etapas pequenas e reversíveis.
 
@@ -144,6 +145,8 @@ O `AGENTS.md` é o arquivo raiz de política global com impacto transversal. Ao 
 Procure:
 
 - política global duplicada fora de `AGENTS.md`
+- `AGENTS.md` funcionando como manual longo em vez de entrypoint leve
+- procedimentos de skills, workflows ou subagents embutidos no `AGENTS.md`
 - skill com responsabilidade de workflow
 - skill com papel de subagent
 - workflow com política global excessiva

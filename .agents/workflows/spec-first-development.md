@@ -14,9 +14,10 @@ Converter uma intencao inicial em escopo, criterios e contratos claros antes de 
 
 1. Leia `.agents/project/context.md`.
 2. Se `OpenSpec` estiver configurado, trate OpenSpec como fonte canonica.
-3. Se OpenSpec estiver ativo e houver ambiguidade, use `/opsx:explore` ou registre gaps no fluxo OpenSpec existente.
-4. Se OpenSpec nao estiver ativo, use `spec-questions.md`, issue, README ou `.agents/specs/` como fallback, conforme existir no projeto.
-5. Se o usuario ja iniciou pelo OpenSpec, nao crie outra spec fora dele.
+3. Se OpenSpec estiver ativo e a demanda precisar virar mudanca formal, use `.agents/skills/openspec-bridge/SKILL.md` para encaminhar aos comandos oficiais.
+4. Se OpenSpec estiver ativo e houver ambiguidade, use `/opsx:explore` ou registre gaps no fluxo OpenSpec existente.
+5. Se OpenSpec nao estiver ativo, use `spec-questions.md`, issue, README ou `.agents/specs/` como fallback, conforme existir no projeto.
+6. Se o usuario ja iniciou pelo OpenSpec, nao crie outra spec fora dele.
 
 ## Processo
 

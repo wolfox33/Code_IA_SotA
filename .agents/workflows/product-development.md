@@ -68,7 +68,7 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 
 ### 5. Abrir mudancas OpenSpec
 
-- Quando o roadmap apontar uma entrega relevante, use `openspec-generator`.
+- Quando o roadmap apontar uma entrega relevante, use `openspec-bridge`.
 - Antes de usar OpenSpec pela primeira vez no repositorio, rode `openspec init`.
 - Use os comandos OPSX da propria ferramenta em vez de reproduzir o fluxo manualmente no repositorio.
 - No profile `core`, use `/opsx:explore` para clarificar e `/opsx:propose` como caminho padrao para abrir a mudanca.

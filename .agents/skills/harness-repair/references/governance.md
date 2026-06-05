@@ -6,16 +6,45 @@ Este arquivo é carregado apenas quando a skill `harness-repair` é acionada par
 
 ---
 
-## Orçamento do AGENTS.md
+## AGENTS.md Entry Point Standard
 
-O `AGENTS.md` deve ter no máximo **300-500 linhas** para manter política global concisa e carregável.
+O `AGENTS.md` deve funcionar como entrypoint leve do harness: política global, fluxo padrão, roteamento de capacidades e mapa de contexto. Ele não deve tentar conter o harness inteiro.
+
+### Orçamento
+
+- **Ideal**: 120-220 linhas.
+- **Máximo excepcional**: 300 linhas, apenas com justificativa clara.
+- Se passar do ideal, procurar primeiro por conteúdo operacional que deveria estar em skills, workflows, subagents ou `.agents/project/`.
+
+### Deve permanecer no AGENTS.md
+
+- Objetivo, papel e estilo global do agente.
+- Princípios de engenharia sempre ativos.
+- Loop padrão de execução.
+- Roteamento curto para skills, workflows e subagents.
+- Estratégia de contexto e leitura progressiva.
+- Regras de mudança cirúrgica.
+- Non-negotiables de segurança, escopo e qualidade.
+- Referências rápidas para `.agents/`.
+
+### Não deve permanecer no AGENTS.md
+
+- Procedimentos longos de skills ou workflows.
+- Governança completa do harness.
+- Detalhes de subagents por fase.
+- Specs, contratos, roadmap ou decisões de produto.
+- Tutoriais, exemplos extensos ou documentação de ferramenta.
+- Regras condicionais raras que só importam para uma classe específica de tarefa.
+- Checklists detalhados que pertencem a `verification-before-completion` ou workflows.
 
 ### Diretrizes de Divisão
 
-- Política global central deve permanecer no `AGENTS.md`
-- Detalhes operacionais específicos devem ser movidos para skills/workflows
-- Quando exceder orçamento, mover seções para `references/` ou arquivos dedicados
-- Preservar no `AGENTS.md`: core principles, agent behavior, non-negotiables, quick references
+- Política global central permanece no `AGENTS.md`.
+- Detalhes operacionais específicos vivem em skills/workflows.
+- Conhecimento denso ou raro vive em `references/`.
+- Contexto específico do projeto vive em `.agents/project/context.md`.
+- Decisões duráveis e workarounds vivem em `.agents/project/MEMORY.md`.
+- Quando o `AGENTS.md` crescer, mover conteúdo para o artefato responsável em vez de aumentar o orçamento.
 
 ---
 

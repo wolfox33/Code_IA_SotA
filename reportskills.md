@@ -178,7 +178,7 @@
 **Linhas**: 151 linhas
 **Divergências**: Nenhuma
 
-### 16. openspec-generator ✅ CONFORME
+### 16. openspec-bridge ✅ CONFORME
 
 **Frontmatter**: Parse-safe, name em kebab-case, description entre aspas
 **Estrutura**: Todas as seções presentes
@@ -344,7 +344,7 @@
 - `architecture-generator`: Sem references/ mas skill é curta (90 linhas)
 - `backend-resilience-by-design`: Sem references/ mas bem estruturado com Decision Heuristics/Red Flags internos
 - `discovery-grill`: Sem references/ mas skill é curta (90 linhas) e focada em crítica
-- `openspec-generator`: Sem references/ mas skill é curta (96 linhas) e focada em processo
+- `openspec-bridge`: Sem references/ mas skill é curta e focada em processo
 - `prd-generator`: Sem references/ mas skill é curta (90 linhas) e focada em produto
 - `roadmap-generator`: Sem references/ mas skill é curta (96 linhas) e focada em planejamento
 
