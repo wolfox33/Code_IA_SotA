@@ -8,7 +8,7 @@ Use este workflow quando o objetivo for tirar um produto do discovery ate um pla
 
 ## Objetivo
 
-Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar decisoes corretas cedo, mantendo OpenSpec como mecanismo de mudanca e evitando documentos redundantes.
+Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar decisoes corretas cedo, mantendo OpenSpec como mecanismo real de mudanca e evitando documentos redundantes.
 
 ## Principios
 
@@ -25,6 +25,7 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 - `ARCHITECTURE.md`: responde como sera construido.
 - `ROADMAP.md`: responde em que ordem sera construido.
 - `openspec/changes/*`: registra mudancas relevantes antes da implementacao.
+- `openspec/config.yaml`: opcional, mas recomendado para contexto e regras do projeto.
 
 ## Regras de status
 
@@ -65,7 +66,11 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 ### 5. Abrir mudancas OpenSpec
 
 - Quando o roadmap apontar uma entrega relevante, use `openspec-generator`.
-- Crie ou atualize mudancas em `openspec/changes/*` com proposal, design, tasks e specs necessarios.
+- Antes de usar OpenSpec pela primeira vez no repositorio, rode `openspec init`.
+- Use os comandos OPSX da propria ferramenta em vez de reproduzir o fluxo manualmente no repositorio.
+- No profile `core`, use `/opsx:explore` para clarificar e `/opsx:propose` como caminho padrao para abrir a mudanca.
+- Use `/opsx:apply` durante implementacao, `/opsx:sync` quando houver delta specs e `/opsx:archive` ao concluir.
+- Se o projeto optar pelo profile expandido, configure com `openspec config profile` e aplique com `openspec update` antes de usar `/opsx:new`, `/opsx:continue`, `/opsx:ff`, `/opsx:verify` ou `/opsx:bulk-archive`.
 - Nenhuma feature significativa deve pular direto para codigo sem passar por OpenSpec.
 - Arquive a mudanca no fluxo OpenSpec apos implementacao e validacao.
 
@@ -80,12 +85,12 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 - `PRD.md Approved` habilita `ARCHITECTURE.md`.
 - `ARCHITECTURE.md Approved` habilita `ROADMAP.md`.
 - Itens relevantes de `ROADMAP.md` habilitam `openspec/changes/*`.
-- OpenSpec aprovado habilita implementacao.
+- Mudanca OPSX suficientemente definida habilita implementacao; os artefatos podem continuar evoluindo durante `/opsx:apply`.
 
 ## Verification
 
 - O workflow coordena fases, nao substitui skills especializadas.
 - Cada fase tem um artefato unico e uma pergunta clara.
 - Apenas documentos `Approved` foram usados como base definitiva.
-- OpenSpec foi usado para mudancas relevantes antes do codigo.
+- OpenSpec foi inicializado com `openspec init` quando necessario e usado via comandos OPSX reais.
 - Nenhum documento extra foi criado sem necessidade real.

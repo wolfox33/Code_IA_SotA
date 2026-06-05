@@ -74,13 +74,13 @@ Siga o processo padrão de deploy descrito na referência:
    - Atualize sistema: `apt update && apt upgrade -y`
 
 2. Instalar Docker + Docker Compose
-   - Instale Docker via script oficial
-   - Instale Docker Compose
-   - Adicione usuário ao grupo docker
+   - Instale Docker via script oficial: `curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh`
+   - Instale Docker Compose: `apt install docker-compose-plugin`
+   - Adicione usuário ao grupo docker: `usermod -aG docker $USER`
    - Valide instalação: `docker --version` e `docker compose version`
 
 3. Clonar projeto
-   - Clone repositório na VPS
+   - Clone repositório na VPS: `git clone <repo-url> && cd <repo-name>`
    - Configure git para deploy automático se necessário
    - Configure hooks de deploy se necessário
 
@@ -91,9 +91,9 @@ Siga o processo padrão de deploy descrito na referência:
    - Use valores diferentes para dev e prod
 
 5. docker compose up -d --build
-   - Execute build inicial
+   - Execute build inicial: `docker compose up -d --build`
    - Verifique logs: `docker compose logs -f`
-   - Confirme que todos os serviços estão rodando
+   - Confirme que todos os serviços estão rodando: `docker compose ps`
 
 6. Configurar SSL (Certbot ou Caddy)
    - Use Certbot com Nginx para HTTPS automático
@@ -133,6 +133,7 @@ Confirme que:
 > - [2026-05-11] Stage 6 (Batch 2) moveu conteúdo referencial para references/ e adicionou procedure executável para reduzir bloat
 > - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante
 > - [2026-05-11] Refatorada: conteúdo referencial movido para `references/` com arquivos divididos por especialidade.
+> - [2026-06-04] Refatorada: adicionados comandos essenciais ao Procedure para torná-lo auto-suficiente.
 
 ## References
 

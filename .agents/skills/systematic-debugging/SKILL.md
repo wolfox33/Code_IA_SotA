@@ -90,7 +90,7 @@ Ao aplicar esta skill, entregue ou registre:
 - Hipotese foi validada antes do fix.
 - Teste/comando demonstra que o bug nao ocorre mais.
 
-
 > **Skill log**
 > - [2026-04-25] Criada para disciplinar investigacao de bugs e falhas sem impor overhead a mudancas simples.
 > - [2026-05-11] Stage 6 (Batch 8) adicionou seção Output contracts faltante.
+> - [2026-06-04] Refatorada: adicionado fechamento à seção Verification.
