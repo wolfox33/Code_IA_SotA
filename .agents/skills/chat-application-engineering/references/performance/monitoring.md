@@ -1,6 +1,6 @@
 # Performance Optimization — Monitoring
 
-Conteúdo referencial de monitoring para performance-optimization-chat.
+Conteúdo referencial de monitoring para chat-application-engineering.
 
 ## Custom Metrics
 

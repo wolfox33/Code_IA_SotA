@@ -1,6 +1,6 @@
 # Performance Optimization — Database
 
-Conteúdo referencial de database optimization para performance-optimization-chat.
+Conteúdo referencial de database optimization para chat-application-engineering.
 
 ## Database Indexes
 

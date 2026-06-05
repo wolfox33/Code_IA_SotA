@@ -1,6 +1,6 @@
 # API Design Chat — Quick Reference
 
-Conteúdo referencial de quick reference para api-design-chat.
+Conteúdo referencial de quick reference para chat-application-engineering.
 
 ## Authenticated Endpoint
 

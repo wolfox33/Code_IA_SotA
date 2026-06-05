@@ -1,6 +1,6 @@
 # AI SDK UI — Patterns
 
-Conteúdo referencial de patterns para ai-sdk-ui-chat.
+Conteúdo referencial de patterns para chat-application-engineering.
 
 ## 🚀 Patterns
 

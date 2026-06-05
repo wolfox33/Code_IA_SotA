@@ -1,6 +1,6 @@
 # AI SDK UI — Server Implementation
 
-Conteúdo referencial de implementação server-side para ai-sdk-ui-chat.
+Conteúdo referencial de implementação server-side para chat-application-engineering.
 
 ### Route Handler (Server)
 

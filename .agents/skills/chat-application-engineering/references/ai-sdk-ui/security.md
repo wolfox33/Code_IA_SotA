@@ -1,6 +1,6 @@
 # AI SDK UI — Security & Gotchas
 
-Conteúdo referencial de segurança e common gotchas para ai-sdk-ui-chat.
+Conteúdo referencial de segurança e common gotchas para chat-application-engineering.
 
 ## 🔒 Security Checklist
 

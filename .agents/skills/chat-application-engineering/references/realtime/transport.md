@@ -1,6 +1,6 @@
 # Real-time Chat — Transport Options
 
-Conteúdo referencial de opções de transporte para realtime-chat-implementation.
+Conteúdo referencial de opções de transporte para chat-application-engineering.
 
 ## Instructions
 

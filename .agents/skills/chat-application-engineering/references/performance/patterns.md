@@ -1,6 +1,6 @@
 # Performance Optimization — Patterns
 
-Conteúdo referencial de optimization patterns para performance-optimization-chat.
+Conteúdo referencial de optimization patterns para chat-application-engineering.
 
 ## Pattern 3: Debounce Expensive Operations
 

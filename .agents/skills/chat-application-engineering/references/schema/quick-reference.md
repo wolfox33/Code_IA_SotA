@@ -1,6 +1,6 @@
 # Database Schema Design Chat — Quick Reference
 
-Conteúdo referencial de quick reference para database-schema-design-chat.
+Conteúdo referencial de quick reference para chat-application-engineering.
 
 ## Core Schema
 

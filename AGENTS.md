@@ -45,7 +45,7 @@ Carregar capacidades modulares apenas quando forem relevantes para a tarefa.
 - Bug reproduzível, regra de negócio ou lógica nova: usar `.agents/skills/test-driven-development/SKILL.md`.
 - APIs, banco, integrações externas, fluxos críticos ou consistência operacional: usar `.agents/skills/backend-resilience-by-design/SKILL.md`.
 - UI visual concreta, layout, responsividade ou design system: usar `.agents/skills/frontend-design/SKILL.md`.
-- Testes de aplicações de chat: usar `.agents/skills/testing-patterns-chat/SKILL.md`.
+- Aplicações de chat, incluindo UI, API, schema, realtime, AI SDK UI, testes ou performance: usar `.agents/skills/chat-application-engineering/SKILL.md`.
 - Mudança significativa, multi-arquivo, commit, workflow ou skill: antes de concluir, usar `.agents/skills/verification-before-completion/SKILL.md`.
 - Manutenção estrutural do harness: usar `.agents/skills/harness-repair/SKILL.md`.
 - Subagents em `.agents/subagents/` são excepcionais; usar apenas para revisão independente, risco operacional, paralelismo útil ou handoff claro.

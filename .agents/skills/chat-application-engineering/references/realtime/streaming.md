@@ -1,6 +1,6 @@
 # Real-time Chat — Server-Side Streaming
 
-Conteúdo referencial de implementação de streaming no servidor para realtime-chat-implementation.
+Conteúdo referencial de implementação de streaming no servidor para chat-application-engineering.
 
 ## 🚀 Implementation
 

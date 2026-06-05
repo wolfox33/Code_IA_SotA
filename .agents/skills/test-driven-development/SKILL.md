@@ -20,7 +20,7 @@ metadata:
 
 ## Objetivo
 
-Garantir que mudancas de comportamento sejam guiadas por teste que falha primeiro, implementacao minima e refatoracao com a suite verde. Esta skill define disciplina de execucao; skills como `testing-patterns-chat` continuam sendo a referencia tecnica para frameworks, mocks e tipos de teste.
+Garantir que mudancas de comportamento sejam guiadas por teste que falha primeiro, implementacao minima e refatoracao com a suite verde. Esta skill define disciplina de execucao; skills como `chat-application-engineering` continuam sendo a referencia tecnica para frameworks, mocks e tipos de teste.
 
 ## Use this skill when
 

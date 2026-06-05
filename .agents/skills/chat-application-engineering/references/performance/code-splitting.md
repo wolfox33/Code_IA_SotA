@@ -1,6 +1,6 @@
 # Performance Optimization — Code Splitting
 
-Conteúdo referencial de code splitting para performance-optimization-chat.
+Conteúdo referencial de code splitting para chat-application-engineering.
 
 ## Code Splitting
 

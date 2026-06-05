@@ -1,6 +1,6 @@
 # AI SDK UI — Setup
 
-Conteúdo referencial de setup inicial para ai-sdk-ui-chat.
+Conteúdo referencial de setup inicial para chat-application-engineering.
 
 ## 📦 Stack
 

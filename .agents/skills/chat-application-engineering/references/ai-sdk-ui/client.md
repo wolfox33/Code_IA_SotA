@@ -1,6 +1,6 @@
 # AI SDK UI — Client Component
 
-Conteúdo referencial de implementação client-side para ai-sdk-ui-chat.
+Conteúdo referencial de implementação client-side para chat-application-engineering.
 
 ## 📚 Quick Reference
 

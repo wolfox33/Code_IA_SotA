@@ -1,6 +1,6 @@
 # Real-time Chat — Client-Side Implementation
 
-Conteúdo referencial de implementação no cliente para realtime-chat-implementation.
+Conteúdo referencial de implementação no cliente para chat-application-engineering.
 
 ### Client-Side Hook
 

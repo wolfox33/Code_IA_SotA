@@ -1,6 +1,6 @@
 # Real-time Chat — Error Handling
 
-Conteúdo referencial de error handling para realtime-chat-implementation.
+Conteúdo referencial de error handling para chat-application-engineering.
 
 ## 🛡️ Error Handling
 

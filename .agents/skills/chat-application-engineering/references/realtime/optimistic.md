@@ -1,6 +1,6 @@
 # Real-time Chat — Optimistic Updates
 
-Conteúdo referencial de optimistic updates para realtime-chat-implementation.
+Conteúdo referencial de optimistic updates para chat-application-engineering.
 
 ## ⚡ Optimistic Updates
 

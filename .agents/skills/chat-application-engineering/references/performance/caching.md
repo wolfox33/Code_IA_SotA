@@ -1,6 +1,6 @@
 # Performance Optimization — Caching
 
-Conteúdo referencial de caching strategies para performance-optimization-chat.
+Conteúdo referencial de caching strategies para chat-application-engineering.
 
 ## Next.js Caching
 
