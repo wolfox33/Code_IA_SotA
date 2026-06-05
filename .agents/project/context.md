@@ -1,8 +1,9 @@
 # Project Context
 
-> **Campos não preenchidos = sem contexto específico. Use apenas `AGENTS.md` como referência.**
+> **Cache vivo do projeto. Campos não preenchidos = contexto ainda ausente. Não bloqueie a tarefa só por este arquivo estar vazio.**
 > Regras globais de engenharia vivem em `AGENTS.md`. Este arquivo contém apenas o que é específico deste projeto.
 > Não duplique aqui o que já está na OpenSpec — aponte para ela.
+> Atualize apenas com fatos estáveis verificados no repo ou decisões aprovadas.
 
 ## Spec
 

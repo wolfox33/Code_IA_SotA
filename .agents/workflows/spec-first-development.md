@@ -32,6 +32,7 @@ Converter uma intencao inicial em escopo, criterios e contratos claros antes de 
 - Pergunte uma decisao material por vez.
 - Ofereca opcoes concretas quando houver trade-off.
 - Bloqueie apenas as partes realmente ambiguas; nao paralise trabalho claro.
+- Nao exija spec perfeita para avancar; busque o minimo que permite planejar e implementar com seguranca.
 
 ### 3. Spec minima
 
@@ -39,6 +40,7 @@ Produza ou atualize a spec com:
 
 - objetivo;
 - in/out of scope;
+- non-goals explicitos quando isso reduzir ambiguidade;
 - comportamento esperado;
 - interfaces/contratos afetados;
 - criterios de aceite;
@@ -47,7 +49,7 @@ Produza ou atualize a spec com:
 
 ### 4. Handoff
 
-- Quando a spec estiver clara, encaminhe para planejamento.
+- Quando a spec estiver clara, encaminhe para planejamento usando as skills ou workflows adequados ao escopo.
 - Se ainda houver gap bloqueante, registre a pergunta no canal adequado e pare a implementacao afetada.
 
 ## Verification

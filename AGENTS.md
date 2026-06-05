@@ -48,13 +48,15 @@ Carregar capacidades modulares apenas quando forem relevantes para a tarefa.
 - Testes de aplicações de chat: usar `.agents/skills/testing-patterns-chat/SKILL.md`.
 - Mudança significativa, multi-arquivo, commit, workflow ou skill: antes de concluir, usar `.agents/skills/verification-before-completion/SKILL.md`.
 - Manutenção estrutural do harness: usar `.agents/skills/harness-repair/SKILL.md`.
-- Subagents em `.agents/subagents/` são opcionais; usar apenas quando houver especialização real, paralelismo útil ou handoff claro.
+- Subagents em `.agents/subagents/` são excepcionais; usar apenas para revisão independente, risco operacional, paralelismo útil ou handoff claro.
 
 ## Context Strategy
 - Carregar apenas o contexto necessário para a tarefa atual.
 - Preferir leitura progressiva: descrição/frontmatter -> conteúdo principal -> referências/scripts/templates.
 - Consultar `.agents/USER.md` para preferências do usuário quando isso afetar execução ou entrega.
 - Consultar `.agents/project/context.md` antes de assumir stack, estrutura, comandos ou convenções.
+- Se `.agents/project/context.md` estiver vazio ou com placeholders, tratar como contexto ausente; não bloquear a tarefa por isso.
+- Durante o trabalho, atualizar `.agents/project/context.md` apenas com fatos estáveis verificados no repo ou decisões aprovadas.
 - Consultar `.agents/project/context-design.md` apenas em tarefas de UI/frontend.
 - Consultar `.agents/project/MEMORY.md` quando houver risco de repetir decisão, workaround ou bug conhecido.
 - Ao concluir tarefa significativa, registrar em `MEMORY.md` apenas fatos duráveis úteis para sessões futuras.

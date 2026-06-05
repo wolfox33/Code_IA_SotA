@@ -58,6 +58,8 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 - Defina stack, banco, auth, billing, deploy, integracoes, observabilidade, riscos tecnicos e decisoes estruturais.
 - A arquitetura deve respeitar o baseline de producao: auth real, banco real, migrations, env vars, billing real em modo de teste se necessario, deploy reproduzivel, logging, tratamento de erros e testes criticos.
 - Nao aceite fundacao descartavel so porque o escopo inicial e pequeno.
+- Ao aprovar `ARCHITECTURE.md`, sincronize em `.agents/project/context.md` apenas fatos estruturais estaveis: stack, runtime, banco, auth, infra, package manager, comandos e constraints.
+- Nao duplique PRD, roadmap ou OpenSpec no contexto; aponte para eles quando forem fonte canonica.
 
 ### 4. Planejar a execucao
 
@@ -96,5 +98,6 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 - Cada fase tem um artefato unico e uma pergunta clara.
 - Discovery nao foi tratado como passagem rapida; houve loop com `discovery-grill` e checkpoint humano antes da aprovacao.
 - Apenas documentos `Approved` foram usados como base definitiva.
+- `.agents/project/context.md` foi sincronizado quando decisoes estruturais estaveis foram aprovadas.
 - OpenSpec foi inicializado com `openspec init` quando necessario e usado via comandos OPSX reais.
 - Nenhum documento extra foi criado sem necessidade real.
