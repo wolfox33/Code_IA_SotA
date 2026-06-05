@@ -21,11 +21,11 @@ metadata:
 
 # Frontend Design — Generalista
 
-Skill generalista de design frontend. Define padrões de layout, motion, acessibilidade, responsividade e componentes com Tailwind CSS v4, shadcn/ui e Next.js 16. Design system específico do projeto deve ser definido em `.agents/project/context-design.md`.
+Skill generalista de design frontend. Define baseline de layout, motion, acessibilidade, responsividade, componentes e polish visual proporcional ao risco com Tailwind CSS v4, shadcn/ui e Next.js 16. Design system específico do projeto deve ser definido em `.agents/project/context-design.md`.
 
 ## Objetivo
 
-Garantir que toda interface gerada siga o design system do projeto, use Tailwind CSS v4 com CSS variables, aproveite shadcn/ui como base, seja acessível (WCAG AA mínimo), responsiva (mobile-first) e tenha personalidade visual.
+Garantir que toda interface gerada siga o design system do projeto, use Tailwind CSS v4 com CSS variables, aproveite shadcn/ui como base, seja acessível (WCAG AA mínimo), responsiva (mobile-first), clara para o usuário-alvo e visualmente polida antes da entrega.
 
 ## Use this skill when
 
@@ -52,6 +52,8 @@ Ao aplicar esta skill, entregue ou registre:
 - Componentes shadcn/ui customizados quando necessário
 - Acessibilidade WCAG AA (contraste, focus states, aria labels)
 - Motion sutil com respeito a prefers-reduced-motion
+- Estados visuais completos quando aplicável: loading, empty, error, disabled, hover e focus
+- Critique/polish proporcional ao impacto visual da mudança
 
 ## Procedure
 
@@ -59,7 +61,19 @@ Ao aplicar esta skill, entregue ou registre:
 
 Leia `.agents/project/context-design.md` para design system do projeto. Se não existir, use padrões generalistas abaixo.
 
-### 2. Usar Tailwind v4 CSS variables
+### 2. Definir design intent
+
+Antes de desenhar ou alterar UI, identifique rapidamente:
+
+- tipo de produto ou tela: operacional, editorial, SaaS, dashboard, app, landing page, jogo ou ferramenta interna
+- usuário principal e ação primária
+- informação que precisa ser escaneável primeiro
+- densidade esperada: compacta, equilibrada ou expressiva
+- prioridade local entre clareza, eficiência, estética e exploração visual
+
+Use esse intent para evitar aplicar o mesmo padrão visual a todo tipo de interface.
+
+### 3. Usar Tailwind v4 CSS variables
 
 Nunca hardcodar cores. Use CSS variables do Tailwind v4:
 
@@ -70,7 +84,7 @@ Nunca hardcodar cores. Use CSS variables do Tailwind v4:
 }
 ```
 
-### 3. Estender shadcn/ui
+### 4. Estender shadcn/ui
 
 Use shadcn/ui como base, customize via tokens. Nunca recriar componentes:
 
@@ -80,7 +94,7 @@ Use shadcn/ui como base, customize via tokens. Nunca recriar componentes:
 </Button>
 ```
 
-### 4. Implementar responsividade mobile-first
+### 5. Implementar responsividade mobile-first
 
 Use breakpoints: 375px → 768px → 1024px → 1440px:
 
@@ -88,7 +102,7 @@ Use breakpoints: 375px → 768px → 1024px → 1440px:
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 ```
 
-### 5. Validar acessibilidade
+### 6. Validar acessibilidade
 
 Garanta contraste mínimo 4.5:1, focus states visíveis, aria labels:
 
@@ -98,7 +112,7 @@ Garanta contraste mínimo 4.5:1, focus states visíveis, aria labels:
 </button>
 ```
 
-### 6. Implementar motion sutil
+### 7. Implementar motion sutil
 
 Transições de 150-300ms, respeitando prefers-reduced-motion:
 
@@ -108,9 +122,33 @@ Transições de 150-300ms, respeitando prefers-reduced-motion:
 }
 ```
 
-### 7. Seguir pre-delivery checklist
+### 8. Completar estados visuais
+
+Para componentes interativos, telas de dados e fluxos assíncronos, implemente os estados relevantes:
+
+- loading sem layout shift desnecessário
+- empty state com próxima ação clara
+- error state acionável, sem esconder falhas
+- disabled state distinguível e acessível
+- hover/focus/active consistentes com o design system
+
+### 9. Fazer critique/polish antes de concluir
+
+Depois de implementar, revise a tela como designer crítico:
+
+- hierarquia visual comunica a ação principal?
+- espaçamento e alinhamentos têm ritmo consistente?
+- tipografia combina com a densidade da interface?
+- há decoração competindo com conteúdo ou workflow?
+- texto cabe no container em mobile e desktop?
+- componentes parecem pertencer ao mesmo sistema?
+- a UI evita os anti-patterns em `references/visual-anti-patterns.md`?
+
+### 10. Seguir pre-delivery checklist
 
 Verifique: cores seguem paleta, tipografia definida, espaçamento escala de 4px, contraste ≥ 4.5:1, funciona em 375px/768px/1024px/1440px.
+
+Para mudança visual significativa, validar por screenshot/browser em desktop e mobile quando o ambiente permitir. Corrigir problemas visuais óbvios antes de finalizar.
 
 ## Verification
 
@@ -120,12 +158,16 @@ Verifique: cores seguem paleta, tipografia definida, espaçamento escala de 4px,
 - Responsividade mobile-first implementada
 - Acessibilidade WCAG AA validada (contraste, focus, aria)
 - Motion respeita prefers-reduced-motion
+- Estados visuais relevantes foram cobertos
+- Critique/polish foi aplicado proporcionalmente ao impacto visual
+- Screenshot/browser foi usado para UI significativa quando disponível
 - Checklist pre-delivery completado
 
 > **Skill log**
 > - [2026-05-11] Skill criada com padrões de design frontend.
 > - [2026-05-11] Stage 6 (Batch 6) adicionou seções operacionais faltantes e removeu emoji de heading Objetivo.
 > - [2026-05-11] Refatorada: conteúdo referencial movido para `references/frontend-design.md` para aumentar densidade.
+> - [2026-06-05] Incorporado design intent, critique/polish, estados visuais e validação visual proporcional sem adotar fluxo externo obrigatório.
 
 ## References
 
@@ -133,3 +175,4 @@ Conteúdo referencial detalhado, padrões de design e exemplos de componentes es
 - `references/design-system.md` - Design.md, padrões generalistas, tokens, design thinking
 - `references/components.md` - Componentes shadcn/ui, layout patterns, motion & interactions
 - `references/accessibility.md` - WCAG AA, checklist, responsividade, anti-patterns
+- `references/visual-anti-patterns.md` - Anti-patterns visuais e de craft para critique/polish
