@@ -14,6 +14,7 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 
 - Preferir simplicidade a processo extra.
 - Cada documento responde uma pergunta unica.
+- O humano e a autoridade final em toda aprovacao.
 - Apenas documentos `Approved` viram fonte da verdade.
 - OpenSpec gerencia mudancas; nao substitui discovery, PRD, arquitetura ou roadmap.
 - Features podem ser pequenas, mas a base tecnica deve nascer production-shaped.
@@ -39,7 +40,9 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 
 - Trabalhe sempre no mesmo `DISCOVERY.md`; nao crie `v2` ou snapshots paralelos.
 - Registre problema, usuario, proposta de valor, monetizacao, concorrencia, riscos, hipoteses e decisoes abertas.
-- Antes de aprovar, execute a skill `discovery-grill` para pressionar premissas e reduzir escopo desnecessario.
+- Antes de qualquer aprovacao, execute a skill `discovery-grill` para pressionar premissas, expor lacunas e reduzir escopo desnecessario.
+- Trate `discovery-grill` como loop de refinamento: criticar, atualizar `DISCOVERY.md`, devolver ao humano e repetir se ainda houver bloqueios materiais.
+- Nao marque `DISCOVERY.md` como `Approved` sem revisao e decisao explicita do humano.
 - Nao avance enquanto perguntas comerciais ou de risco continuarem bloqueantes.
 
 ### 2. Estruturar o produto
@@ -91,6 +94,7 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 
 - O workflow coordena fases, nao substitui skills especializadas.
 - Cada fase tem um artefato unico e uma pergunta clara.
+- Discovery nao foi tratado como passagem rapida; houve loop com `discovery-grill` e checkpoint humano antes da aprovacao.
 - Apenas documentos `Approved` foram usados como base definitiva.
 - OpenSpec foi inicializado com `openspec init` quando necessario e usado via comandos OPSX reais.
 - Nenhum documento extra foi criado sem necessidade real.
