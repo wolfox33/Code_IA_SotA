@@ -99,40 +99,6 @@ Semântica de precedência quando políticas conflitam entre camadas do harness.
 
 ---
 
-## Ciclo de Vida Expandido
-
-Estados de ciclo de vida para skills, workflows e subagents.
-
-### Estados
-
-- **active** - artefato estável, pronto para uso em produção
-- **experimental** - artefato em desenvolvimento, pode mudar, não recomendado para uso crítico
-- **deprecated** - artefato obsoleto, não deve ser usado novo, mantido por compatibilidade
-- **archived** - artefato removido de uso, mantido apenas para histórico
-
-### Transições
-
-- experimental → active: após validação e estabilização
-- active → deprecated: quando substituído por versão melhor
-- deprecated → archived: após período de transição
-- experimental → archived: se abandonado
-
-### Frontmatter Metadata
-
-Skills devem incluir estado no frontmatter:
-
-```yaml
----
-name: skill-name
-description: "..."
-metadata:
-  status: active | experimental | deprecated | archived
-  version: "1.0.0"
----
-```
-
----
-
 ## Workflow Operacional de Manutenção
 
 O workflow `harness-maintenance.md` é o ponto de entrada para manutenção do harness.
@@ -154,49 +120,6 @@ O workflow `harness-maintenance.md` é o ponto de entrada para manutenção do h
 
 ---
 
-## Métricas de Observabilidade
-
-Métricas básicas para monitorar saúde do harness.
-
-### Métricas Atuais
-
-- **Frequência de ativação**: quantas vezes cada skill/workflow é carregada
-- **Sobreposição de skills**: skills competindo pelos mesmos gatilhos
-- **Tamanho de arquivos**: tracking de arquivos que crescem além de limites
-
-### Coleta
-
-- Manual durante revisões do harness
-- CLI commands para verificações pontuais
-- Registrado em `.agents/project/MEMORY.md` quando relevante
-
----
-
-## Comandos CLI para Verificações
-
-Comandos para validar governança do harness.
-
-### Verificações Disponíveis
-
-```bash
-# Verificar orçamento do AGENTS.md
-npx @custom-stack/harness-cli check-agents-budget
-
-# Verificar granularidade de referência
-npx @custom-stack/harness-cli check-reference-granularity
-
-# Verificar hierarquia de override
-npx @custom-stack/harness-cli check-override-hierarchy
-
-# Verificar ciclo de vida
-npx @custom-stack/harness-cli check-lifecycle-status
-
-# Verificação completa de governança
-npx @custom-stack/harness-cli check-governance
-```
-
----
-
 ## Anti-patterns de Governança
 
 ### A Evitar
@@ -204,8 +127,8 @@ npx @custom-stack/harness-cli check-governance
 - **Política global em skill**: regras transversais devem ficar no `AGENTS.md`
 - **Monolitos de referência**: arquivos `references/` com múltiplos tópicos
 - **Override implícito**: conflitos sem precedência clara
-- **Estado omitido**: skills sem status de ciclo de vida no frontmatter
 - **Governança duplicada**: mesmas regras em múltiplos lugares
+- **Auto-evolução implícita**: modificar o harness sem pedido, diagnóstico ou aprovação
 
 ### Quando Detectar
 
@@ -217,6 +140,5 @@ npx @custom-stack/harness-cli check-governance
 
 ## Referências
 
-- PRD Stage 24: Governança Evolutiva do Harness
 - AGENTS.md: política global do harness
 - harness-maintenance.md: workflow de manutenção

@@ -1,15 +1,15 @@
 # Agent Harness
 
-Harness canônico para organizar regras globais, contexto progressivo, skills, subagents e workflows em repositórios agent-ready.
+Harness reutilizavel para tornar repositorios agent-ready com baixo custo de contexto, regras claras e capacidades carregadas sob demanda.
 
 ## Objetivo
 
-- Definir uma estrutura simples e previsível para desenvolvimento assistido por IA.
-- Separar política global, contexto de projeto, capacidades técnicas e processos reutilizáveis.
-- Reduzir custo de contexto com carregamento progressivo.
-- Manter o harness descobrível por leitura do repositório, sem mirrors obrigatórios por plataforma.
+- Manter `AGENTS.md` como entrypoint leve e sempre ativo.
+- Separar politica global, contexto do projeto, skills, workflows e subagents.
+- Favorecer descoberta progressiva: ler pouco primeiro, aprofundar apenas quando necessario.
+- Permitir manutencao evolutiva sob demanda, sem automacao implicita ou refactors espontaneos.
 
-## Estrutura canônica
+## Estrutura
 
 ```text
 .
@@ -25,261 +25,111 @@ Harness canônico para organizar regras globais, contexto progressivo, skills, s
     │   └── <skill-name>/
     │       ├── SKILL.md
     │       └── references/
-    │           └── <reference-file>.md
     ├── subagents/
     │   └── <subagent-name>.md
     └── workflows/
         └── <workflow-name>.md
 ```
 
-## Responsabilidades por arquivo
+## Responsabilidades
 
-- **`AGENTS.md`**: política global always-on do repositório. Não usa frontmatter.
-- **`README.md`**: documentação do harness e guia de manutenção.
-- **`.agents/USER.md`**: preferências cross-projeto do usuário, quando versionadas no harness.
-- **`.agents/project/context.md`**: stack, arquitetura, constraints e convenções específicas do projeto.
-- **`.agents/project/context-design.md`**: contexto de design system apenas para tarefas de UI/frontend.
-- **`.agents/project/MEMORY.md`**: fatos emergentes, decisões e workarounds relevantes da sessão/projeto.
-- **`.agents/skills/<skill-name>/SKILL.md`**: arquivo principal da skill com frontmatter parse-safe, objetivo, uso, não uso, output contracts e procedure executável.
-- **`.agents/skills/<skill-name>/references/`**: conteúdo referencial denso (templates, guias detalhados, anti-patterns, checklists) movido para arquivos especializados por tópico.
-- **`.agents/subagents/`**: personas por fase, como discovery, planning, implementation, review e deployment.
-- **`.agents/workflows/`**: processos sequenciais reutilizáveis.
+- `AGENTS.md`: politica global, loop padrao, roteamento de capacidades e referencias rapidas.
+- `.agents/project/context.md`: cache vivo de fatos estruturais do projeto; vazio nao bloqueia trabalho.
+- `.agents/project/context-design.md`: contexto de design system apenas para tarefas de UI/frontend.
+- `.agents/project/MEMORY.md`: fatos emergentes, decisoes duraveis, workarounds e licoes do projeto consumidor.
+- `.agents/skills/*/SKILL.md`: capacidades operacionais especializadas.
+- `.agents/skills/*/references/`: conhecimento denso ou raro carregado apenas quando necessario.
+- `.agents/workflows/`: processos sequenciais reutilizaveis.
+- `.agents/subagents/`: perfis excepcionais para revisao independente, risco operacional, paralelismo util ou handoff claro.
 
-## Modelo de descoberta
+## Modelo De Uso
 
-O harness assume que agentes modernos conseguem descobrir a estrutura por leitura do repositório:
-
-1. Ler `AGENTS.md` na raiz como política global.
-2. Usar `.agents/project/` para contexto específico quando relevante.
-3. Avaliar `name` e `description` de skills antes de carregar conteúdo completo.
-4. Carregar conteúdo completo de `SKILL.md` apenas quando a skill for realmente necessária.
-5. Carregar `references/` apenas quando conteúdo detalhado for necessário para a tarefa.
-6. Carregar subagents e workflows apenas quando a tarefa justificar ou quando o usuário pedir.
-
-Não há requisito de gerar `.devin/`, `.claude/`, `.opencode/` ou outros mirrors de compatibilidade.
+1. Leia `AGENTS.md`.
+2. Consulte `.agents/project/context.md` antes de assumir stack, comandos ou convenções.
+3. Se `context.md` estiver vazio, trate como contexto ausente e derive fatos do repo.
+4. Carregue skills/workflows apenas quando o gatilho for claro.
+5. Carregue `references/` somente quando o detalhe for necessario.
+6. Atualize `context.md` apenas com fatos estruturais verificados ou decisoes aprovadas.
+7. Atualize `MEMORY.md` apenas com fatos duraveis que ajudam futuras sessoes do projeto.
 
 ## Skills
 
-Uma skill vive em `.agents/skills/<skill-name>/SKILL.md`.
+Uma skill deve ser procedimento operacional reutilizavel, nao tutorial longo nem prompt generico.
 
-### Lifecycle management
+Uma boa skill contem:
 
-Skills podem ter estados de lifecycle para rastrear manutenção e depreciação:
+- frontmatter parse-safe com `name` e `description`;
+- objetivo claro;
+- `Use this skill when`;
+- `Do not use this skill when`;
+- output contracts;
+- procedure acionavel;
+- verification;
+- references opcionais para material denso.
 
-- **active**: skill em uso e manutenção ativa (padrão)
-- **experimental**: skill em desenvolvimento, pode mudar, não recomendado para uso crítico
-- **deprecated**: skill obsoleta, não deve ser usada em novos projetos
-- **archived**: skill descontinuada, mantida apenas para referência
-
-Metadata opcional em frontmatter:
-
-```yaml
-metadata:
-  status: active  # ou experimental, deprecated, archived
-  owner: "author-name"
-  created: "2026-05-11"
-  updated: "2026-05-11"
-```
-
-Para gerar relatório de lifecycle:
-
-```bash
-npm run skill:lifecycle
-```
-
-O relatório mostra distribuição de status e lista skills por estado.
-
-### Densidade procedural
-
-O CLI de validação calcula a densidade procedural como a proporção de linhas da seção Procedure em relação ao total do arquivo. O threshold padrão é 30%.
-
-- Skills com densidade < 30% geram warnings
-- Para aumentar densidade: expandir a seção Procedure com passos executáveis detalhados
-- Conteúdo referencial denso (templates, guias detalhados, anti-patterns, checklists) deve ser movido para `references/`
-- Cada arquivo em `references/` deve ser especializado por tópico (ex: pitfalls.md, output-contracts.md)
-
-### Quando usar references/
-
-Mova conteúdo para `references/` quando:
-
-- Seções com links externos, listas longas (>5 itens) ou conteúdo denso sem code blocks
-- Templates ou guias detalhados que não são parte do fluxo executável
-- Anti-patterns e pitfalls que são referência, não parte do procedure
-- Checklists ou padrões que são consultados, não executados sequencialmente
-
-Mantenha em `SKILL.md`:
-
-- Frontmatter parse-safe
-- Objetivo, Use/Do not use
-- Output contracts (resumo executável)
-- Procedure (passos executáveis detalhados)
-- Verification
-- References (links para arquivos em references/)
-
-### Contrato parse-safe
-
-- O arquivo começa na primeira linha com `---`.
-- O frontmatter fecha com outro `---` antes do corpo Markdown.
-- `name` é kebab-case e igual ao nome da pasta.
-- `description` sempre fica entre aspas duplas.
-- `version`, `author` e `category` ficam entre aspas quando existirem.
-- `tags` usa lista YAML multilinha.
-- Não use `compatible_with`.
-- Não use emoji, Markdown ou links dentro do frontmatter.
-- Não deixe `: ` em valores YAML sem aspas.
-- Evite separadores `---` no corpo da skill; use headings Markdown.
-
-### Template recomendado
-
-```markdown
-<frontmatter-start: three hyphens>
-name: skill-name
-description: "Use quando a tarefa exigir X; esta skill orienta Y sem Z."
-metadata:
-  model: inherit
-  version: "1.0.0"
-  author: "Custom Stack"
-  category: "workflow"
-  complexity: 3
-  tags:
-    - example
-    - skill
-<frontmatter-end: three hyphens>
-
-# SKILL: Skill Name
-
-## Objetivo
-
-O que esta skill resolve e por que existe.
-
-## Use this skill when
-
-- Situação concreta que justifica carregar esta skill.
-
-## Do not use this skill when
-
-- Caso parecido que não deve acionar esta skill.
-
-## Output contracts
-
-O que deve ser entregue ao aplicar esta skill.
-
-## Procedure
-
-Passos para executar a skill com sucesso.
-
-## Verification
-
-Como confirmar que a skill foi aplicada corretamente.
-
-## References
-
-Links para arquivos em `references/` com conteúdo referencial detalhado (opcional).
-```
-
-## Subagents
-
-Subagents são personas especializadas por fase. Eles vivem em `.agents/subagents/` e devem ser curtos, operacionais e específicos.
-
-Use subagents para separar responsabilidades como:
-
-- **Discovery**: entendimento de requisitos e ambiguidades.
-- **Planning**: arquitetura, contratos e decomposição.
-- **Implementation**: construção dentro de escopo definido.
-- **Review**: QA, segurança, performance e consistência.
-- **Deployment**: infra, CI/CD, deploy e operação.
+Use `skill-creator` para criar ou modificar skills e `skill-reviewer` para diagnosticar readiness, escopo ou overlap de uma ou mais skills.
 
 ## Workflows
 
-Workflows vivem em `.agents/workflows/` e descrevem sequência operacional. Eles devem ser usados para processos repetíveis, não para política global nem conhecimento técnico detalhado.
+Workflows coordenam sequencias de trabalho. Eles nao substituem skills nem definem politica global.
 
-- Política global fica em `AGENTS.md`.
-- Conhecimento técnico fica em `skills/`.
-- Processo passo a passo fica em `workflows/`.
+Use workflows quando houver:
 
-## Governança do Harness
+- fases claras;
+- gates de aprovacao;
+- clarificacao de escopo;
+- artefatos encadeados;
+- manutencao do harness.
 
-Políticas de governança evolutiva para manter saúde estrutural do harness ao longo do tempo.
+Principais workflows:
 
-### Localização
+- `spec-first-development.md`: transforma demanda vaga em escopo, criterios e contratos.
+- `product-development.md`: conduz Discovery, PRD, Architecture, Roadmap e OpenSpec.
+- `harness-maintenance.md`: coordena manutencao segura do harness.
 
-Governança completa em `.agents/skills/harness-repair/references/governance.md` - carregado apenas durante manutenção/revisão do harness.
+## Subagents
 
-### Políticas principais
+Subagents nao fazem parte do caminho padrao. Use apenas quando houver ganho real de delegacao.
 
-- **Orçamento do AGENTS.md**: máximo 300-500 linhas para manter política global concisa
-- **Granularidade de referência**: 1 tópico por arquivo, máximo 50-100 linhas
-- **Hierarquia de override**: AGENTS.md > skill > workflow > subagent
-- **Ciclo de vida**: active, experimental, deprecated, archived
-- **Workflow de manutenção**: harness-maintenance.md coordenada skill-creator, skill-reviewer, harness-repair
+No harness atual, eles ficam reservados para:
 
-### Quando usar governança
+- `reviewer`: revisao independente, seguranca, performance ou debugging complexo.
+- `devops`: infra, CI/CD, deploy, rollback ou diagnostico operacional.
 
-A governança é carregada automaticamente quando:
-- Skill `harness-repair` é acionada para diagnóstico estrutural
-- Workflow `harness-maintenance` é usado para manutenção do harness
-- Usuário pede revisão de arquitetura do harness
+## Manutencao Evolutiva Sob Demanda
 
-Usuários comuns não carregam governança no contexto padrão.
+O harness evolui quando o usuario pede manutencao, ou quando uma tarefa revela problema estrutural relevante.
 
-## Princípios de manutenção
+Fluxo recomendado:
 
-- Simplicidade vence complexidade.
-- `AGENTS.md` na raiz é a fonte global canônica (orçamento: 300-500 linhas).
-- `.agents/` é a fonte modular canônica.
-- O harness deve ser generalista, não acoplado a um projeto específico.
-- Informações específicas de projeto ficam em `.agents/project/`.
-- Skills devem ser parse-safe e descobertas por `name` + `description`.
-- Conteúdo referencial denso deve ser movido para `references/` para manter densidade procedural > 30%.
-- Evite duplicar regras entre arquivos.
-- Remova documentação obsoleta quando uma decisão estrutural mudar.
-- Valide densidade procedural com `npm run validate:harness` após mudanças em skills.
+1. Definir escopo da manutencao.
+2. Diagnosticar antes de editar.
+3. Separar achados locais de problemas estruturais.
+4. Planejar mudancas pequenas e rastreaveis.
+5. Executar apenas mudancas aprovadas.
+6. Validar diff, referencias e riscos residuais.
 
-## Validação recomendada
+Rotas:
 
-Ao alterar skills, valide pelo menos:
+- `skill-creator`: criar/modificar skills.
+- `skill-reviewer`: revisar skills isoladas ou comparar overlap.
+- `harness-repair`: diagnosticar drift estrutural, bloat, boundaries e governanca.
+- `harness-maintenance.md`: orquestrar manutencao multi-artefato.
 
-- Todo `SKILL.md` começa e fecha frontmatter corretamente.
-- `name` bate com o nome da pasta.
-- `description` está entre aspas.
-- Não há `compatible_with` em frontmatter.
-- Não há separadores `---` no corpo.
-- Não há caracteres de controle no frontmatter.
-- Densidade procedural >= 30% (use `npm run validate:harness`).
+## Politica De Contexto
 
-### CLI de validação
+`context.md` e `MEMORY.md` sao templates no harness base.
 
-O projeto usa o CLI `code-ia-sota-cli` para validação automática do harness:
+Em um projeto real:
 
-- `npm run validate:harness` - valida todas as skills e workflows
-- `npm run benchmark:density` - mostra densidade de todas as skills
-- `npm run suggest:refactor` - sugere refatoração para skills com baixa densidade
+- `context.md` cresce com fatos estaveis verificados no repo ou decisoes aprovadas.
+- `MEMORY.md` cresce com descobertas, decisoes e workarounds duraveis.
+- Nenhum dos dois deve duplicar OpenSpec, PRD, roadmap ou documentacao longa.
 
-O CLI valida frontmatter, metadata, seções obrigatórias e densidade procedural.
+## Fora Do Escopo
 
-## CI Integration
-
-O repositório usa GitHub Actions para validar automaticamente a estrutura do harness em PRs e pushes para main.
-
-### Workflow
-
-O workflow `.github/workflows/validate-harness.yml`:
-
-- Roda em pull_request para main
-- Roda em push para main
-- Executa `npm run validate:harness` em `code-ia-sota-cli/`
-- Falha o build se houver erros de validação (frontmatter, metadata, placeholders)
-- Falha o build se houver warnings de densidade procedural (< 30%)
-
-### Bypassar CI
-
-Para bypassar CI em emergências:
-
-- Use `[skip ci]` ou `[ci skip]` no commit message
-- Force push com `--no-verify` (não recomendado para mudanças estruturais)
-
-## Fora do escopo atual
-
-- Mirrors obrigatórios para plataformas específicas.
-- Scripts de materialização de compatibilidade.
-- Regras específicas de um produto SaaS ou app consumidor.
+- Auto-refatoracao sem pedido ou aprovacao.
+- Mirrors obrigatorios para ferramentas especificas.
+- CLI ou CI obrigatorios para validar o harness.
+- Metricas obrigatorias de densidade/lifecycle.
+- Documentacao de produto consumidor dentro do harness base.
