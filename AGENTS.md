@@ -38,6 +38,7 @@ Para qualquer tarefa significativa:
 ## Capability Routing
 Carregar capacidades modulares apenas quando forem relevantes para a tarefa.
 
+- Projeto greenfield com intenção de construir produto (clone novo, sem `DISCOVERY.md`/`PRD.md`/`ARCHITECTURE.md` ou `context.md` com `Status: greenfield`/vazio): confirmar com o humano e entrar em `.agents/workflows/product-development.md` a partir do Discovery, em vez de implementar direto.
 - Demandas significativas, vagas, multi-step ou com contratos: usar `.agents/workflows/spec-first-development.md`.
 - Tarefas multi-step: decompor em passos verificáveis dentro do plano da tarefa.
 - Mudanças formais em projeto com OpenSpec ativo: usar `.agents/skills/openspec-bridge/SKILL.md` para encaminhar aos comandos oficiais.

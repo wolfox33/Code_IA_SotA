@@ -36,6 +36,14 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 
 ## Procedure
 
+### 0. Detectar estado do projeto
+
+- Leia `.agents/project/context.md` (campo `Status`) e verifique a existencia de `DISCOVERY.md`, `PRD.md`, `ARCHITECTURE.md` e `ROADMAP.md`.
+- Greenfield ou sem artefatos: inicialize `DISCOVERY.md`. Esta workflow e a dona do documento; nao existe skill separada para gera-lo.
+- Artefatos parciais: retome na primeira fase ainda nao `Approved`; nao recomece do zero.
+- Projeto `active`/`maintenance`: nao force o funil de produto; roteie para `spec-first-development` ou execucao direta conforme o escopo.
+- Confirme o ponto de entrada com o humano antes de gerar qualquer artefato.
+
 ### 1. Descobrir
 
 - Trabalhe sempre no mesmo `DISCOVERY.md`; nao crie `v2` ou snapshots paralelos.
@@ -84,6 +92,13 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 
 - So implemente depois que a mudanca relevante estiver descrita e aprovada no nivel adequado.
 - A implementacao segue os artefatos aprovados; se surgir mudanca relevante, volte ao OpenSpec em vez de improvisar no codigo.
+- Durante `/opsx:apply`, encadeie conforme o tipo de trabalho:
+  - regra de negocio, logica nova ou bugfix reproduzivel: `test-driven-development`;
+  - APIs, banco, integracoes externas ou fluxos criticos: `backend-resilience-by-design`;
+  - bug, regressao ou comportamento inesperado: `systematic-debugging`.
+- Antes de concluir a mudanca, rode `verification-before-completion` (autoverificacao).
+- Antes de `/opsx:archive`, em mudanca significativa, acione o subagent `reviewer` para revisao independente.
+- Ao arquivar, regenere a vista C4 afetada via `c4-architecture`, sincronize `.agents/project/context.md` e atualize `ROADMAP.md` (fase concluida e nova fase atual).
 
 ## Handoff entre fases
 
@@ -95,6 +110,7 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 
 ## Verification
 
+- O estado do projeto foi detectado antes de gerar artefatos; greenfield entrou pelo Discovery e projeto em andamento nao foi forcado ao funil completo.
 - O workflow coordena fases, nao substitui skills especializadas.
 - Cada fase tem um artefato unico e uma pergunta clara.
 - Discovery nao foi tratado como passagem rapida; houve loop com `discovery-grill` e checkpoint humano antes da aprovacao.

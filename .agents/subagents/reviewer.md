@@ -11,6 +11,10 @@ metadata:
 ## Mission
 Validar a implementação, detectar regressões, inspecionar gargalos de performance, identificar código morto/deprecado e garantir a prontidão para release com foco em estabilidade e segurança.
 
+## Fronteira vs. verification-before-completion
+- `verification-before-completion` (skill) e a autoverificacao do proprio agente, executada sempre antes de concluir uma mudanca.
+- Este subagent e a revisao independente em contexto limpo, acionado em mudanca significativa antes de `/opsx:archive` ou pre-commit. Nao substitui a autoverificacao; a complementa com um olhar externo.
+
 ## Use when
 - Finalização de tarefas de código (antes de commit/merge).
 - Dificuldades persistentes (debugging de rotas lentas, erros complexos).

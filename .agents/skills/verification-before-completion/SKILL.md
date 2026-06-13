@@ -21,6 +21,8 @@ metadata:
 
 Fechar tarefas com evidencia, nao apenas declaracao de que algo foi feito. Esta skill transforma a regra global de validar antes de concluir em um checklist operacional leve.
 
+Fronteira: esta skill e a autoverificacao do proprio agente, sempre antes de concluir. Para revisao independente em contexto limpo (mudanca significativa, antes de `/opsx:archive` ou pre-commit), acione o subagent `reviewer`; ele complementa esta skill, nao a substitui.
+
 ## Use this skill when
 
 - A tarefa alterou codigo, contratos, arquitetura, skills, workflows ou configuracao relevante.

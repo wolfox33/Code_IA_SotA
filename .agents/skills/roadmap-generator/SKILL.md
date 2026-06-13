@@ -70,6 +70,7 @@ Ao aplicar esta skill, entregue ou registre:
 
 - Mostre o que depende de que.
 - Aponte a fase atual se o projeto ja estiver em andamento.
+- Ao concluir uma fase (mudanca OpenSpec arquivada), marque-a como concluida e aponte a nova fase atual; o roadmap deve refletir o estado real de entrega.
 - Destaque proximas entregas sem listar tarefas miudas.
 - Verifique se auth, dados, billing e operacao entram antes de depender deles.
 - Ajuste a ordem quando uma integracao externa bloquear fluxos core.
@@ -91,6 +92,7 @@ Ao aplicar esta skill, entregue ou registre:
 - `ROADMAP.md` explica em que ordem construir.
 - O documento nao virou backlog infinito nem cronograma corporativo.
 - As fases respeitam dependencias tecnicas reais.
+- Fases concluidas foram marcadas e a fase atual reflete o estado real de entrega.
 
 > **Skill log**
 > - [2026-06-01] Criada para converter arquitetura aprovada em roadmap de execucao enxuto.
