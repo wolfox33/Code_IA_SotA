@@ -55,6 +55,7 @@ Orquestrar a sequencia minima de artefatos que ajuda humanos e agentes a tomar d
 ### 3. Definir a arquitetura
 
 - Quando `PRD.md` estiver `Approved`, use `architecture-generator`.
+- Gere a vista visual C4 (Context, Container, Deployment) embutida no `ARCHITECTURE.md` via `c4-architecture`; ela e derivada das decisoes, nunca fonte paralela.
 - Defina stack, banco, auth, billing, deploy, integracoes, observabilidade, riscos tecnicos e decisoes estruturais.
 - A arquitetura deve respeitar o baseline de producao: auth real, banco real, migrations, env vars, billing real em modo de teste se necessario, deploy reproduzivel, logging, tratamento de erros e testes criticos.
 - Nao aceite fundacao descartavel so porque o escopo inicial e pequeno.

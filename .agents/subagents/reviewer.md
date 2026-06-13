@@ -27,6 +27,7 @@ Validar a implementação, detectar regressões, inspecionar gargalos de perform
 
 ## Output Expected
 - Findings organizados por severidade.
+- Conformidade da implementacao com `ARCHITECTURE.md` e a vista C4: aponte imports ou dependencias que cruzem boundaries nao previstos nos containers/componentes definidos.
 - Riscos identificados (regressões potenciais).
 - Ações recomendadas de refatoração leve ou correção de bugs.
 - Plano de otimização (quando focado em performance).

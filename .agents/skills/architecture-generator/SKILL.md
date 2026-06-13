@@ -41,6 +41,7 @@ Ao aplicar esta skill, entregue ou registre:
 - Decisoes de stack e infraestrutura com justificativa suficiente
 - Baseline de producao coberto
 - Riscos tecnicos e integracoes relevantes mapeados
+- Vista visual C4 (Context, Container, Deployment) embutida no `ARCHITECTURE.md` via skill `c4-architecture`, coerente com as decisoes
 
 ## Procedure
 
@@ -68,9 +69,17 @@ Ao aplicar esta skill, entregue ou registre:
 - Destaque riscos tecnicos de escala, consistencia, seguranca ou custo.
 - Escolha a menor arquitetura que atenda o produto sem fragilidade estrutural.
 
-### 5. Verificar consistencia
+### 5. Gerar a vista visual C4
+
+- Use a skill `c4-architecture` para embutir Context, Container e Deployment no `ARCHITECTURE.md`.
+- O C4 e vista derivada: cada elemento do diagrama deve rastrear para uma decisao desta arquitetura.
+- Nao edite o C4 isoladamente; ele nasce e e atualizado a partir das decisoes deste documento.
+- Deixe Component e Dynamic para o nivel da mudanca OpenSpec, nao no doc raiz.
+
+### 6. Verificar consistencia
 
 - Confirme que a arquitetura responde "como construir".
+- Confirme que prosa e diagramas C4 dizem a mesma coisa, sem contradicao.
 - Remova backlog disfarcado e detalhes de faseamento; isso pertence ao roadmap.
 - Marque como `Draft` ate aprovacao humana.
 

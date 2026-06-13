@@ -88,7 +88,11 @@ Ao aplicar esta skill, entregue ou registre:
 
 ### 5. Verificar alinhamento
 
-- Confira consistencia com `DISCOVERY.md`, `PRD.md`, `ARCHITECTURE.md` e `ROADMAP.md` aprovados quando existirem.
+- Confira consistencia com `DISCOVERY.md`, `PRD.md`, `ARCHITECTURE.md`, a vista C4 e `ROADMAP.md` aprovados quando existirem.
+- Trate `ARCHITECTURE.md` e sua vista C4 como restricao de entrada: a mudanca cabe nos containers e boundaries existentes ou declara explicitamente que os altera.
+- Avalie se a mudanca e arquiteturalmente significativa. Criterios-guia: novo ou removido container, sistema externo ou fila; boundary de modulo novo ou cruzado; decisao transversal de auth, banco ou integracao; mudanca de topologia de deployment. Em fronteira, julgue e registre o porque em `.agents/project/context.md` na secao Architecture Decisions.
+- Se for significativa, atualize o `ARCHITECTURE.md` como alvo no propose, antes do codigo; gere Component ou Dynamic via `c4-architecture` quando a feature ou fluxo exigir.
+- Ao arquivar, regenere a vista C4 afetada a partir do `ARCHITECTURE.md` e sincronize `.agents/project/context.md`. Nunca edite o C4 isoladamente.
 - Diferencie criterio de aceite de detalhe de implementacao.
 - Garanta que a spec responda o suficiente para evitar improviso no codigo.
 - Mantenha cada task pequena o bastante para validacao objetiva.
