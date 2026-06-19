@@ -150,3 +150,4 @@ Antes de avaliar performance financeira:
 Conteúdo referencial detalhado, output contracts e pitfalls estão disponíveis em:
 - `references/output-contracts.md` - Output contracts detalhados
 - `references/pitfalls.md` - Pitfalls
+- `references/Market-representation.md` - Pipeline padrão de pesquisa orientada a representação causal de mercado (representations, state discovery, embeddings financeiros antes de forecasting/execução)

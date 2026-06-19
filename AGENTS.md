@@ -50,6 +50,8 @@ Carregar capacidades modulares apenas quando forem relevantes para a tarefa.
 - Representar visualmente a arquitetura ou mudanca arquitetural significativa em diagramas C4 (vista derivada do ARCHITECTURE.md): usar `.agents/skills/c4-architecture/SKILL.md`.
 - Mudança significativa, multi-arquivo, commit, workflow ou skill: antes de concluir, usar `.agents/skills/verification-before-completion/SKILL.md`.
 - Manutenção estrutural do harness: usar `.agents/skills/harness-repair/SKILL.md`.
+- Iniciar novo ciclo de pesquisa de sinal/estratégia quantitativa: usar `.agents/workflows/quant-research-loop.md` (parte técnica/operacional); para o mindset deliberado de pesquisa (escolha de problemas, gosto, velocidade, honestidade), combinar com `.agents/skills/research-mindset/SKILL.md`.
+- Mindset de pesquisa deliberada (escolher problemas, treinar gosto, apertar o loop, aprender com falhas) em qualquer domínio de pesquisa, não só quant: usar `.agents/skills/research-mindset/SKILL.md`.
 - Subagents em `.agents/subagents/` são excepcionais; usar apenas para revisão independente, risco operacional, paralelismo útil ou handoff claro.
 
 ## Context Strategy
